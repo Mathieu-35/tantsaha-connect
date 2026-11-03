@@ -39,7 +39,7 @@ Adresse de base : `http://localhost:3000/api/v1` (en production : l'adresse de l
 
 ## 2. API publique (utilisée par le téléphone)
 
-### Référentiel — module `referential`
+### Référentiel — `referential.*`
 
 | Méthode | Route | Rôle |
 |---|---|---|
@@ -50,7 +50,7 @@ Adresse de base : `http://localhost:3000/api/v1` (en production : l'adresse de l
 
 Utile pour le site web, les tests et le débogage. **Le téléphone, lui, utilise `/sync/pull`** (une seule demande au lieu de quatre).
 
-### Météo — module `weather`
+### Météo — `weather.*`
 
 | Méthode | Route | Rôle |
 |---|---|---|
@@ -73,7 +73,7 @@ Réponse :
 - `stale: true` = Open-Meteo injoignable, on renvoie la dernière météo connue ; le téléphone affiche « dernière mise à jour ».
 - Le serveur ne rappelle Open-Meteo que si le cache a plus de `WEATHER_CACHE_MINUTES` minutes.
 
-### Synchronisation — module `sync`
+### Synchronisation — `sync.*`
 
 | Méthode | Route | Rôle |
 |---|---|---|
@@ -136,7 +136,7 @@ Règles : le serveur crée l'appareil s'il est inconnu ; **renvoyer la même not
 
 Toutes les routes exigent `Authorization: Bearer <jeton>`. Les rôles : `ADMIN` (tout) et `AGRONOME` (données agricoles, pas les comptes).
 
-### Authentification — module `auth`
+### Authentification — `auth.*`
 
 | Méthode | Route | Rôle |
 |---|---|---|
@@ -145,7 +145,7 @@ Toutes les routes exigent `Authorization: Bearer <jeton>`. Les rôles : `ADMIN` 
 
 Limitation stricte des essais de connexion (ex. 5 par minute) pour décourager les devinettes de mot de passe.
 
-### Gestion du référentiel — module `referential`
+### Gestion du référentiel — `referential.*`
 
 | Méthode | Route | Rôle |
 |---|---|---|
@@ -161,7 +161,7 @@ Limitation stricte des essais de connexion (ex. 5 par minute) pour décourager l
 
 Les audios sont servis à l'adresse `/media/audio/<fichier>`. Le téléphone les télécharge à la synchro pour les écouter ensuite hors ligne.
 
-### Statistiques — module `stats`
+### Statistiques — `stats.*`
 
 | Méthode | Route | Rôle |
 |---|---|---|

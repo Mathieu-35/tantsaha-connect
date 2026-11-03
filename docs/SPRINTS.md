@@ -18,7 +18,7 @@ Développeur seul, sans date imposée : un sprint dure le temps qu'il faut.
 |---|---|---|---|
 | 0 | Mise en place : GitHub et dépôt unique | Outils | Le projet est sur GitHub |
 | 1 | Conception : wireframes et maquettes | Design | Maquettes mobile + web validées |
-| 2 | Serveur modulaire et sécurisé | Code serveur | API `/api/v1` propre, login admin |
+| 2 | Serveur sécurisé et API v1 | Code serveur | API `/api/v1` propre, login admin |
 | 3 | Socle mobile | Code mobile | Accueil aux couleurs finales, marche en mode avion |
 | 4 | Météo | Code mobile | Écran Météo hors ligne |
 | 5 | Journal de culture | Code mobile | Noter et synchroniser |
@@ -39,7 +39,7 @@ Développeur seul, sans date imposée : un sprint dure le temps qu'il faut.
 - [ ] Supprimer `mobile/.git`, `git init` à la racine
 - [ ] Vérifier que `.env`, `dev.db`, `node_modules` sont ignorés
 - [ ] Nettoyer les références au dossier `prototype/` inexistant (README, `.claude/launch.json`)
-- [ ] Mettre à jour `README.md` (nouvelle structure de la documentation) et `AGENTS.md` (règles de l'architecture modulaire)
+- [ ] Mettre à jour `README.md` (nouvelle structure de la documentation) et `AGENTS.md` (règles du monolithe classique)
 - [ ] Premier commit + push
 
 **Terminé quand** : le dépôt GitHub montre tous les dossiers, aucun secret n'y figure, `docs/ARCHITECTURE.md` affiche ses schémas.
@@ -67,13 +67,13 @@ Développeur seul, sans date imposée : un sprint dure le temps qu'il faut.
 
 ---
 
-## Sprint 2 — Serveur modulaire et sécurisé
+## Sprint 2 — Serveur sécurisé et API v1
 
-**Objectif** : amener le serveur à l'architecture cible ([ARCHITECTURE.md](ARCHITECTURE.md)) et à l'API décrite dans [API.md](API.md).
+**Objectif** : sécuriser le serveur et l'amener à l'API décrite dans [API.md](API.md), en gardant son architecture classique ([ARCHITECTURE.md](ARCHITECTURE.md)).
 **Pourquoi** : tout le reste (mobile, web) s'appuie sur le serveur. Corriger ses défauts maintenant évite de les répercuter partout.
 
 - [ ] **Décision** : combien de régions et de cultures au lancement ?
-- [ ] Réorganisation en **modules** (`referential`, `weather`, `sync`, `auth`, `stats`) + `shared/`
+- [ ] Ajout des fichiers `auth.*` (et `stats.*` prévus au Sprint 8) dans `routes/`, `controllers/`, `services/` : **pas de réorganisation**, on garde le monolithe classique (ADR 0011)
 - [ ] Routes sous **`/api/v1`** ; format d'erreur unique
 - [ ] `sync/push` : vérification du propriétaire (`deviceId`), réponse `accepted` / `rejected`, limite de 200 notes
 - [ ] `sync/pull` : renvoie `serverTime` et les éléments supprimés ; **`deletedAt`** sur les 4 tables de référence (migration Prisma)
@@ -83,10 +83,10 @@ Développeur seul, sans date imposée : un sprint dure le temps qu'il faut.
 - [ ] Vérifier le format réel de `/meteo/:regionId` et l'aligner avec API.md
 - [ ] Vérification complète à la main (appels `curl`, `GET /api/v1/health`)
 
-💡 *Ce que vous apprenez* : qu'est-ce qu'un module et pourquoi `index.js` sert de vitrine ; qu'est-ce qu'une migration Prisma ; hachage de mot de passe (pourquoi on ne stocke jamais le mot de passe) ; JWT ; limitation de débit.
+💡 *Ce que vous apprenez* : comment une route, un controller et un service coopèrent pour une seule demande ; qu'est-ce qu'une migration Prisma ; hachage de mot de passe (pourquoi on ne stocke jamais le mot de passe) ; JWT ; limitation de débit.
 
 **Terminé quand** : chaque route d'API.md (section 1, 2 et auth) répond comme décrit ; un téléphone ne peut pas modifier la note d'un autre ; la base garde le mot de passe haché.
-**Commit** : `feat(server): modular architecture, v1 API and admin login` · étiquette `sprint-2`
+**Commit** : `feat(server): v1 API, secured sync and admin login` · étiquette `sprint-2`
 
 ---
 

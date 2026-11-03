@@ -52,7 +52,7 @@ la vérification réelle se fait en démarrant le serveur et en appelant `/api/h
 - L'app n'utilise que `/sync/pull` et `/meteo/:id`. Les endpoints `/regions`, `/cultures`, `/calendrier`, `/conseils` existent mais sont inutilisés.
 - Prisma : `provider = "sqlite"`. Passage à PostgreSQL = changer le provider + `DATABASE_URL` ; en prod utiliser `prisma migrate deploy`, pas `migrate dev`.
 - **Un seul dépôt Git, à la racine** (ADR 0009). `.claude/` et `.env` sont ignorés : ne jamais les ajouter. Un commit n'est fait qu'à la **fin d'un sprint terminé** (voir `docs/SPRINTS.md` et `docs/GIT_GUIDE.md`).
-- **Architecture cible ≠ code actuel** : le serveur est encore rangé par type (`routes/`, `controllers/`, `services/`) ; la cible est un monolithe **modulaire** (`src/modules/<sujet>/`) avec API `/api/v1`, décrite dans `docs/ARCHITECTURE.md` et `docs/API.md`. La migration est le Sprint 2 : ne pas la faire avant.
+- **Monolithe classique** (ADR 0011) : le serveur reste rangé par type (`routes/`, `controllers/`, `services/`), PAS en modules. Fichiers nommés en **anglais** `<sujet>.<rôle>.js` (`weather.controller.js`) ; les URLs de l'API restent en français (`/meteo`). L'API cible (`/api/v1`, login admin, etc.) est décrite dans `docs/API.md` et arrive au Sprint 2 : ne pas l'anticiper.
 - Les sprints se font **dans l'ordre** ; on ne commence pas le suivant tant que la « définition de terminé » du précédent n'est pas remplie. À chaque sprint de code, expliquer à l'utilisateur (débutant) ce qu'on fait et pourquoi.
 - `prisma/seed.js` contient des données d'**exemple non validées** (mois de semis, textes malagasy) : ne pas les présenter comme agronomiquement correctes.
 

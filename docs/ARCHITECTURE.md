@@ -9,22 +9,22 @@ Les décisions sont justifiées en détail dans les [ADR](adr/README.md). L'API 
 
 ## 1. Monolithe, monolithe modulaire ou microservices ?
 
-| | Monolithe classique | **Monolithe modulaire** | Microservices |
+| | **Monolithe classique** ✅ | Monolithe modulaire | Microservices |
 |---|---|---|---|
 | **Définition** | Un seul programme, code rangé *par type* (`routes/`, `controllers/`, `services/`) | Un seul programme, code rangé *par sujet* (`weather/`, `sync/`…), chaque sujet bien isolé | Plusieurs petits programmes qui se parlent par le réseau |
 | **Déploiement** | 1 serveur | 1 serveur | N serveurs à surveiller |
 | **Complexité** | Faible | Faible à moyenne | Très élevée |
 | **Coût d'hébergement** | Minimal | Minimal | Élevé |
-| **Pour un développeur seul** | Bien au début, se brouille en grossissant | **Idéal** | Inadapté |
+| **Pour un développeur seul** | **Choisi** : le plus simple, le plus répandu | Mieux quand les sujets se multiplient ; réservé à un futur projet | Inadapté |
 
-### Mon avis : **monolithe modulaire** ✅
+### Décision : **monolithe classique** (voir [ADR 0011](adr/0011-monolithe-classique-par-type.md))
 
 1. **Un seul serveur à héberger et à surveiller** : indispensable en solo, avec un hébergement gratuit.
-2. Le projet a des **sujets clairs et séparés** : *référentiel* (cultures, calendriers, conseils), *météo*, *synchronisation*, *authentification admin*, *statistiques*. On les range chacun dans son dossier.
-3. Si un jour l'un d'eux doit devenir un service à part (la météo, par exemple), il suffit de le **sortir de son dossier** : les frontières existent déjà. On ne paie pas la complexité des microservices *avant* d'en avoir besoin.
-4. Les microservices répondent à des problèmes d'**équipes nombreuses** et de **très forte charge**. Nous n'avons ni l'un ni l'autre.
+2. **Peu de concepts à apprendre** pour un premier projet : c'est la disposition des tutoriels, donc facile à comprendre et à dépanner.
+3. Les microservices répondent à des problèmes d'**équipes nombreuses** et de **très forte charge**. Nous n'avons ni l'un ni l'autre.
+4. Si le serveur devient confus, passer au monolithe modulaire plus tard revient à **déplacer les mêmes fichiers** dans un dossier par sujet. Rien n'est perdu.
 
-> Exemple concret : aujourd'hui, pour modifier la météo, il faut ouvrir `routes/`, `controllers/` **et** `services/`. Demain, tout est dans `modules/weather/`.
+> Choix initial : le monolithe modulaire avait été proposé ([ADR 0002](adr/0002-monolithe-modulaire.md)), puis remplacé à la demande du porteur du projet.
 
 ---
 
@@ -43,64 +43,49 @@ flowchart LR
 
   subgraph Server["🖥️ Serveur — server/ (Node + Express) — UN seul programme"]
     direction TB
-    M1["module referential"]
-    M2["module weather"]
-    M3["module sync"]
-    M4["module auth"]
-    M5["module stats"]
+    R["routes"] --> C["controllers"] --> S["services"]
   end
 
   DB[("PostgreSQL\n(SQLite en dev)")]
   OM["Open-Meteo\n(météo gratuite)"]
 
-  Sync <-- "HTTPS, de temps en temps" --> M3
-  Sync --> M1
-  Sync --> M2
-  AdminUI -- "HTTPS + jeton" --> M4
-  AdminUI --> M1
-  AdminUI --> M5
-  M1 & M3 & M4 & M5 --> DB
-  M2 --> DB
-  M2 --> OM
+  Sync <-- "HTTPS, de temps en temps" --> R
+  AdminUI -- "HTTPS + jeton (Sprint 8)" --> R
+  S --> DB
+  S --> OM
 ```
 
 **Idée centrale : « d'abord le téléphone » (*offline-first*).** L'application lit et écrit **toujours dans la base du téléphone**. Elle ne dépend jamais d'internet pour fonctionner. Quand le réseau est là, elle se synchronise en arrière-plan. Conséquence très utile : **si le serveur gratuit est endormi ou en panne, le paysan ne s'en aperçoit pas.**
 
 ---
 
-## 3. Le serveur : organisé par modules
+## 3. Le serveur : rangé par type de fichier
 
-### Structure cible
+### Structure
 
 ```
 server/src/
-├── modules/
-│   ├── referential/     Régions, cultures, calendriers, conseils (lecture publique + gestion admin)
-│   │   ├── referential.routes.js
-│   │   ├── referential.controller.js
-│   │   ├── referential.service.js
-│   │   └── index.js          ← la « vitrine » : ce que les autres modules ont le droit d'utiliser
-│   ├── weather/         Prévisions Open-Meteo + cache
-│   ├── sync/            Appareils, observations, push / pull
-│   ├── auth/            Connexion de l'administrateur (e-mail + mot de passe → jeton)
-│   └── stats/           Chiffres anonymes pour le tableau de bord
-├── shared/
-│   ├── db/prisma.js     Connexion unique à la base
-│   ├── config/env.js    Lecture du .env
-│   ├── middlewares/     errorHandler, requireAdmin, rateLimit, validation
-│   └── errors/AppError.js
-├── app.js               Assemble Express
-└── server.js            Démarre le serveur
+├── routes/          index.js — la liste des adresses de l'API
+├── controllers/     <sujet>.controller.js — lisent la demande, appellent un service
+├── services/        <sujet>.service.js — la logique et l'accès à la base (Prisma)
+├── middlewares/     errorHandler, requireAdmin (Sprint 2), limitation de débit
+├── db/prisma.js     Connexion unique à la base
+├── config/env.js    Lecture du .env
+├── utils/           AppError.js et petits outils
+├── app.js           Assemble Express
+└── server.js        Démarre le serveur
 ```
+
+Les « sujets » actuels et à venir : `referential` (régions, cultures, calendriers, conseils), `weather`, `sync`, puis `auth` (connexion admin) et `stats` (tableau de bord) aux Sprints 2 et 8.
 
 ### Les règles (à ne pas casser)
 
-1. **Dans un module** : `route → controller → service → Prisma`. Le controller tient en une ligne, sans logique. **Prisma n'est importé que dans les services.**
-2. **Entre modules** : un module n'utilise **que** ce que l'autre expose dans son `index.js`. Interdit : `require('../weather/weather.service')` depuis `sync`. Autorisé : `require('../weather')`.
-3. **`shared/` ne dépend d'aucun module.** Les modules dépendent de `shared/`, jamais l'inverse.
+1. **`route → controller → service → Prisma`.** Le controller tient en une ligne, sans logique. **Prisma n'est importé que dans les services.**
+2. **Nommage** : fichiers en **anglais**, forme `<sujet>.<rôle>.js` (`weather.controller.js`, `weather.service.js`). Les adresses de l'API restent en français (`/meteo`).
+3. **Un service peut en appeler un autre** (ex. `sync.service` utilise `referential.service`), jamais l'inverse vers un controller.
 4. **Format d'erreur unique** pour toute l'API (voir API.md).
 
-*Analogie* : un immeuble de bureaux. Chaque module est un bureau avec sa porte. On passe par l'accueil (`index.js`) pour demander quelque chose, on ne fouille pas dans les tiroirs du voisin.
+*Analogie* : un restaurant. La salle (routes), les serveurs (controllers) et la cuisine (services) sont rangés ensemble par fonction : pour la météo, on passe dans les trois pièces.
 
 ---
 
@@ -220,7 +205,7 @@ erDiagram
   }
 ```
 
-- `AdminUser` est **nouveau** (module `auth`). Le mot de passe est transformé par `bcrypt` : même la personne qui lit la base ne peut pas le retrouver.
+- `AdminUser` est **nouveau** (fichiers `auth.*`). Le mot de passe est transformé par `bcrypt` : même la personne qui lit la base ne peut pas le retrouver.
 - `deletedAt` est à **ajouter** aux 4 tables de référence : sinon, quand un admin supprime un conseil, les téléphones qui l'ont déjà ne le sauront jamais.
 - Pas de `enum` ni de type `Json` Prisma : incompatibles avec SQLite. `type` et `data` sont des textes ; on passera à de vrais types PostgreSQL plus tard si utile.
 - **Aucune donnée personnelle** (nom, numéro) n'est collectée : un `Device` n'est qu'un identifiant aléatoire.
@@ -281,11 +266,11 @@ Limite connue : `pull` ne renvoie **pas** les notes → pas de restauration apr�
 
 | Aujourd'hui | Cible | Sprint |
 |---|---|---|
-| Serveur rangé par type (`routes/`, `controllers/`…) | Rangé par modules | 2 |
+| Fichiers nommés `meteo.*` / `referentiel.*` / `weather.*` (mélange français-anglais) | Tout en anglais : `weather.*`, `referential.*` (fait) | 0 |
 | URL `/api/...` | `/api/v1/...` | 2 |
 | Pas de contrôle du propriétaire d'une note | `deviceId` vérifié | 2 |
 | Pas de `deletedAt` sur les références | Ajouté | 2 |
-| Pas d'`AdminUser`, ni de login | Module `auth` | 2 |
+| Pas d'`AdminUser`, ni de login | Fichiers `auth.*` (route, controller, service) | 2 |
 | SQLite mobile sans migrations | `PRAGMA user_version` | 3 |
 | Application vide au 1ᵉʳ lancement hors ligne | `seed.json` embarqué | 3 |
 | Synchro au démarrage seulement | + au retour du réseau | 3 |

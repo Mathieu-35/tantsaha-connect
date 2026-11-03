@@ -1,5 +1,5 @@
 # ADR 0002 — Serveur en monolithe modulaire
-- Statut : Accepté
+- Statut : **Remplacé par [ADR 0011](0011-monolithe-classique-par-type.md)**
 - Date : 2026-11-03
 
 ## Contexte

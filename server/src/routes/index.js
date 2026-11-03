@@ -3,8 +3,8 @@
 // Tout est préfixé par /api (voir app.js).
 
 const { Router } = require('express');
-const referentiel = require('../controllers/referentiel.controller');
-const meteo = require('../controllers/meteo.controller');
+const referential = require('../controllers/referential.controller');
+const weather = require('../controllers/weather.controller');
 const sync = require('../controllers/sync.controller');
 
 const router = Router();
@@ -13,13 +13,13 @@ const router = Router();
 router.get('/health', (req, res) => res.json({ status: 'ok', time: new Date() }));
 
 // Données de référence (lecture seule)
-router.get('/regions', referentiel.regions);
-router.get('/cultures', referentiel.crops);
-router.get('/calendrier', referentiel.calendar);
-router.get('/conseils', referentiel.advice);
+router.get('/regions', referential.regions);
+router.get('/cultures', referential.crops);
+router.get('/calendrier', referential.calendar);
+router.get('/conseils', referential.advice);
 
 // Météo
-router.get('/meteo/:regionId', meteo.forecast);
+router.get('/meteo/:regionId', weather.forecast);
 
 // Synchronisation avec le téléphone
 router.post('/sync/push', sync.push);

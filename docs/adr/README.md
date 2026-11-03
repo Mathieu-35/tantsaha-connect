@@ -27,7 +27,7 @@ Pourquoi ? Dans six mois, personne (vous compris) ne se souviendra *pourquoi* on
 | N° | Décision | Statut |
 |---|---|---|
 | [0001](0001-offline-first.md) | Application « d'abord le téléphone » (offline-first) | Accepté |
-| [0002](0002-monolithe-modulaire.md) | Serveur en monolithe modulaire | Accepté |
+| [0002](0002-monolithe-modulaire.md) | Serveur en monolithe modulaire | Remplacé par 0011 |
 | [0003](0003-react-native-et-react-web.md) | React Native (Expo) pour le mobile, React (Vite) pour le web | Accepté |
 | [0004](0004-express-prisma-postgresql.md) | Express + Prisma ; SQLite en développement, PostgreSQL en production | Accepté |
 | [0005](0005-strategie-de-synchronisation.md) | Synchronisation : UUID client, suppression douce, dernier écrit gagne | Accepté |
@@ -36,3 +36,4 @@ Pourquoi ? Dans six mois, personne (vous compris) ne se souviendra *pourquoi* on
 | [0008](0008-palette-et-rouge-danger.md) | Palette verte/crème ; rouge réservé au danger | Accepté |
 | [0009](0009-un-seul-depot-git.md) | Un seul dépôt Git (monorepo) | Accepté |
 | [0010](0010-api-versionnee.md) | API versionnée `/api/v1` | Accepté |
+| [0011](0011-monolithe-classique-par-type.md) | Monolithe classique rangé par type de fichier (remplace 0002) | Accepté |
