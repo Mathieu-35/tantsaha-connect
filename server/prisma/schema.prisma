@@ -1,0 +1,124 @@
+// ============================================================
+// Schéma de la base de données (côté SERVEUR).
+// Chaque "model" devient une table. Chaque ligne du model est une colonne.
+//
+// Pour passer à PostgreSQL plus tard :
+//   1. changer provider = "sqlite" en provider = "postgresql"
+//   2. changer DATABASE_URL dans le fichier .env
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- DONNÉES DE RÉFÉRENCE ----------
+// Les mêmes pour tout le monde. Le téléphone les télécharge puis les garde (hors ligne).
+
+// Une région de Madagascar (sert à choisir la météo et le calendrier agricole)
+model Region {
+  id        String   @id @default(cuid())
+  code      String   @unique        // ex : "VAKINANKARATRA"
+  nameMg    String                  // nom affiché en malagasy
+  latitude  Float                   // position pour la météo
+  longitude Float
+  updatedAt DateTime @updatedAt
+
+  calendars CropCalendar[]
+  weather   WeatherCache?
+}
+
+// Une culture (riz, maïs, manioc...)
+model Crop {
+  id        String   @id @default(cuid())
+  code      String   @unique        // ex : "VARY"
+  nameMg    String                  // ex : "Vary"
+  icon      String                  // nom du pictogramme utilisé dans l'application
+  updatedAt DateTime @updatedAt
+
+  calendars    CropCalendar[]
+  advices      Advice[]
+  observations Observation[]
+}
+
+// Quand semer et récolter, pour une culture dans une région.
+// Les mois vont de 1 (janvier) à 12 (décembre).
+model CropCalendar {
+  id                String   @id @default(cuid())
+  cropId            String
+  regionId          String
+  sowStartMonth     Int
+  sowEndMonth       Int
+  harvestStartMonth Int
+  harvestEndMonth   Int
+  updatedAt         DateTime @updatedAt
+
+  crop   Crop   @relation(fields: [cropId], references: [id])
+  region Region @relation(fields: [regionId], references: [id])
+
+  // Une seule ligne par couple culture + région
+  @@unique([cropId, regionId])
+}
+
+// Un conseil agricole (texte court + fichier audio en malagasy)
+model Advice {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  cropId    String?                 // vide = conseil général
+  topic     String                  // "PEST" (ravageurs), "SOWING" (semis), "WEATHER"...
+  titleMg   String
+  textMg    String
+  audioFile String?                 // nom du fichier audio, ex : "criquets.mp3"
+  updatedAt DateTime @updatedAt
+
+  crop Crop? @relation(fields: [cropId], references: [id])
+}
+
+// ---------- DONNÉES DES UTILISATEURS ----------
+
+// Un téléphone. Pas de compte ni de mot de passe : le téléphone invente
+// lui-même un identifiant au premier lancement.
+model Device {
+  id         String   @id             // identifiant créé par le téléphone (UUID)
+  regionId   String?
+  createdAt  DateTime @default(now())
+  lastSeenAt DateTime @default(now())
+
+  observations Observation[]
+}
+
+// Une observation notée par le paysan (pluie, parasite, plantation, récolte).
+// L'identifiant est créé PAR LE TÉLÉPHONE : ainsi il peut noter sans internet,
+// puis envoyer plus tard sans risque de doublon.
+model Observation {
+  id         String    @id
+  deviceId   String
+  cropId     String?
+  type       String                   // "RAIN" | "PEST" | "PLANTING" | "HARVEST"
+  observedOn DateTime                  // date à laquelle l'événement a eu lieu
+  value      Float?                    // ex : millimètres de pluie
+  note       String?
+  createdAt  DateTime
+  updatedAt  DateTime                  // sert à savoir quelle version est la plus récente
+  deletedAt  DateTime?                 // supprimé "en douceur" : on garde la trace pour la synchronisation
+
+  device Device @relation(fields: [deviceId], references: [id])
+  crop   Crop?  @relation(fields: [cropId], references: [id])
+
+  @@index([deviceId, updatedAt])
+}
+
+// ---------- CACHE ----------
+
+// Dernière météo reçue pour une région. Évite de redemander au service météo à chaque fois.
+model WeatherCache {
+  regionId  String   @id
+  data      String                    // la réponse en texte JSON
+  fetchedAt DateTime
+
+  region Region @relation(fields: [regionId], references: [id])
+}

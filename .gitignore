@@ -1,0 +1,24 @@
+# Dépendances (réinstallables avec "npm install")
+node_modules/
+
+# Secrets et réglages personnels
+.env
+
+# Base de données locale de développement
+server/prisma/dev.db
+server/prisma/dev.db-journal
+
+# Fichiers générés par Expo
+mobile/.expo/
+mobile/dist/
+
+# Réglages de l'assistant Claude (ne doivent pas aller sur GitHub)
+.claude/
+**/.claude/
+
+# Fichiers temporaires de Word (créés quand un .docx est ouvert)
+~$*
+
+# Divers
+.DS_Store
+*.log
