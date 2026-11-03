@@ -18,7 +18,7 @@ Une application **qu'on peut utiliser sans lire, en malagasy, sans internet**, q
 | **Paysan** (Rakoto, Soa, Ravao — voir cahier) | Application mobile | Voir la météo, être prévenu du bon moment, noter ce qui se passe, écouter un conseil |
 | **Agronome / administrateur** | Site web | Corriger les calendriers et conseils, enregistrer la voix, voir l'usage |
 
-> ⚠️ **Hypothèse à valider** : la partie web est un *back-office* (gestion des données), pas une 2ᵉ application pour les paysans. Elle est née de la maquette web fournie ; elle n'est pas dans le sujet de départ. Si elle vous semble hors sujet, on la retire (Sprint 8) sans toucher au reste.
+> ✅ **Décision (2026-11-03)** : la partie web est **confirmée**. C'est un *back-office* (gestion des données), pas une 2ᵉ application pour les paysans. Elle n'est pas dans le sujet de départ : elle est un ajout assumé par le porteur du projet (Sprint 8).
 
 ## 4. Périmètre — méthode MoSCoW
 
@@ -31,7 +31,7 @@ Une application **qu'on peut utiliser sans lire, en malagasy, sans internet**, q
 | M1 | En tant que paysan, je vois **4 grosses tuiles** à l'accueil | EF1 | **M** | Chaque fonction s'ouvre en 1 toucher ; zone tactile ≥ 48 px |
 | M2 | Je **choisis ma région** une seule fois, au premier lancement | EF8 | **M** | Une seule question, en images/gros boutons ; mémorisée |
 | M3 | Je vois la **météo sur 5 jours en pictogrammes** | EF2 | **M** | Soleil / nuage / pluie / orage reconnus ; marche hors ligne avec « dernière mise à jour » |
-| M4 | Je **note** une pluie, un parasite, une plantation, une récolte | EF4, EF9 | **M** | 3 touches maximum ; culture choisie par image ; confirmation « Voatahiry » |
+| M4 | Je **note** une pluie, un parasite, une plantation, une récolte | EF4, EF9 | **M** | Saisie en **3 étapes** au plus (quoi → culture → ✓), soit 4 touches depuis l'accueil pour une pluie ; culture choisie par image ; confirmation « Voatahiry » |
 | M5 | Je peux **annuler / corriger** une note | EF10 | **M** | Suppression avec confirmation simple |
 | M6 | Je suis **prévenu** du moment de semer / récolter | EF3 | **M** | Alerte visible + sonore, même sans internet |
 | M7 | J'**écoute** des conseils illustrés | EF5 | **M** | Image + audio malagasy, sans internet |
@@ -72,7 +72,7 @@ C1 hors ligne · C2 utilisable sans lire · C3 voix malagasy · C4 couleurs adap
 
 | Question | Décision avant |
 |---|---|
-| La partie web (back-office) est-elle bien voulue ? | Sprint 1 |
+| ~~La partie web (back-office) est-elle bien voulue ?~~ **Oui, confirmée** | ~~Sprint 1~~ |
 | Combien de régions et de cultures au lancement ? | Sprint 2 |
 | Qui valide les calendriers et conseils ? | Sprint 6 |
 | Qui enregistre les voix malagasy ? | Sprint 7 |

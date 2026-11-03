@@ -52,13 +52,13 @@ Développeur seul, sans date imposée : un sprint dure le temps qu'il faut.
 **Objectif** : voir et valider **tous les écrans** avant d'écrire du code d'interface.
 **Pourquoi** : changer un dessin coûte 5 minutes ; changer un écran codé coûte une heure. Et les wireframes sont un **livrable obligatoire** du sujet.
 
-- [ ] **Décision** : la partie web (back-office) est-elle confirmée ? (PRD §3)
-- [ ] Wireframes (schémas simples, noir et blanc) des **6 écrans mobiles** et des **4 pages web** ([DESIGN.md](DESIGN.md) §5)
-- [ ] Maquettes colorées avec la palette, en HTML consultable dans le navigateur (`docs/maquettes/`)
-- [ ] Vérification des contrastes et des tailles tactiles sur les maquettes
-- [ ] Parcours des 2 scénarios du cahier sur les maquettes
-- [ ] Vous validez (ou demandez des changements) écran par écran
-- [ ] 📝 Premiers paragraphes de justification d'ergonomie
+- [x] **Décision** : la partie web (back-office) est confirmée (PRD §3)
+- [x] Wireframes des **6 écrans mobiles principaux** (+ 6 écrans secondaires) et des **4 pages web** : bascule « wireframe » dans chaque page
+- [x] Maquettes colorées avec la palette, en HTML consultable dans le navigateur (`docs/maquettes/`)
+- [x] Vérification des contrastes (pire 4,60:1) et des tailles tactiles (toutes ≥ 48 px) sur les maquettes
+- [x] Parcours cliquables : voir la météo, noter une pluie, écouter un conseil, premier lancement
+- [ ] **Vous validez** (ou demandez des changements) écran par écran, **et relisez le malagasy**
+- [x] 📝 Premiers paragraphes de justification d'ergonomie : [docs/rapport/ergonomie.md](rapport/ergonomie.md)
 
 💡 *Ce que vous apprenez* : lire un wireframe, la différence wireframe / maquette / prototype, comment la palette devient du code (variables CSS).
 

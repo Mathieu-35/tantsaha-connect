@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maquettes — Tantsaha Connect</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin: 16px 0; }
+  .big-link { display: block; background: #FBE6C2; border: 3px solid #2A7C13; border-radius: 20px; padding: 20px; text-decoration: none; color: #1F2A17; }
+  .big-link b { display: block; font-size: 22px; margin-bottom: 6px; }
+  .sw { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0; }
+  .sw div { width: 150px; border-radius: 12px; overflow: hidden; border: 2px solid #1F2A17; background: #fff; font-size: 14px; }
+  .sw i { display: block; height: 56px; }
+  .sw span { display: block; padding: 6px 8px; }
+  table { border-collapse: collapse; background: #fff; }
+  th, td { border: 1px solid #ccc; padding: 6px 10px; font-size: 15px; text-align: left; }
+</style>
+</head>
+<body>
+<nav class="modebar">
+  <a href="index.html" class="current">Accueil</a>
+  <a href="mobile.html">Mobile</a>
+  <a href="web.html">Web admin</a>
+  <span class="spacer"></span>
+  <button id="toggle-wire" aria-pressed="false">Mode : maquette (couleurs)</button>
+</nav>
+
+<main class="page">
+  <h1>Maquettes de Tantsaha Connect — Sprint 1</h1>
+  <p>Ces pages sont des <b>dessins cliquables</b>, pas la vraie application. Elles servent à décider de l'apparence <em>avant</em> d'écrire le code.</p>
+
+  <div class="cards">
+    <a class="big-link" href="mobile.html"><b>📱 Application mobile</b>12 écrans · téléphone cliquable · 4 parcours à tester</a>
+    <a class="big-link" href="web.html"><b>💻 Site d'administration</b>4 pages · pour les agronomes</a>
+  </div>
+
+  <h2>Wireframe, maquette, prototype : quelle différence ?</h2>
+  <table>
+    <tr><th>Mot</th><th>C'est…</th><th>Ici</th></tr>
+    <tr><td><b>Wireframe</b></td><td>Le squelette : où sont les éléments, sans couleur ni décor</td><td>Bouton <i>« Mode : wireframe »</i> en haut à droite</td></tr>
+    <tr><td><b>Maquette</b></td><td>Le dessin final : couleurs, tailles, textes</td><td>Mode par défaut</td></tr>
+    <tr><td><b>Prototype</b></td><td>Une maquette sur laquelle on peut cliquer</td><td>Le téléphone de la page « Mobile »</td></tr>
+  </table>
+
+  <h2>La palette</h2>
+  <div class="sw">
+    <div><i style="background:#2A7C13"></i><span><b>#2A7C13</b><br>Primaire : boutons, barres</span></div>
+    <div><i style="background:#76C457"></i><span><b>#76C457</b><br>Accent : fonds, sélection</span></div>
+    <div><i style="background:#FFF8CF"></i><span><b>#FFF8CF</b><br>Fond des écrans</span></div>
+    <div><i style="background:#FBE6C2"></i><span><b>#FBE6C2</b><br>Cartes, tuiles</span></div>
+    <div><i style="background:#C62828"></i><span><b>#C62828</b><br>Danger seulement</span></div>
+  </div>
+  <p>Détail des contrastes : <code>docs/DESIGN.md</code>.</p>
+
+  <h2>Comment juger ces maquettes</h2>
+  <ol>
+    <li><b>Sans lire.</b> Regardez un écran 3 secondes : devinez-vous à quoi il sert grâce aux images seules ?</li>
+    <li><b>Au soleil.</b> Les textes restent-ils lisibles, les boutons assez gros pour un gros doigt ?</li>
+    <li><b>Les parcours.</b> Dans « Mobile », faites les 4 tâches : sont-elles évidentes ?</li>
+    <li><b>Le malagasy.</b> Corrigez tous les mots qui sonnent faux.</li>
+  </ol>
+  <div class="note"><b>Rouge = danger.</b> Dans les maquettes, le rouge n'apparaît que pour l'alerte d'orage et la suppression. Passez en mode wireframe : une mention « (rouge) » indique où il est utilisé.</div>
+</main>
+<script src="theme.js"></script>
+</body>
+</html>

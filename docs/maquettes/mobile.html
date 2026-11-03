@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maquettes mobile — Tantsaha Connect</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+  /* ======= Styles propres aux écrans du téléphone ======= */
+  .screen { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+  .body { flex: 1; min-height: 0; padding: 12px; display: flex; flex-direction: column; gap: 12px; overflow: hidden; }
+
+  /* Barre du haut : TOUJOURS ← à gauche, 🔊 à droite (EF6 / EF7) */
+  .topbar {
+    flex: none; height: 72px; background: var(--primary); color: var(--on-primary);
+    display: grid; grid-template-columns: 92px 1fr 92px; align-items: center; padding: 0 4px;
+  }
+  .topbar .mid { text-align: center; display: flex; flex-direction: column; align-items: center; line-height: 1.1; }
+  .topbar h1 { margin: 0; font-size: 16px; font-weight: 700; }
+  .topbar .mid .ic { font-size: 26px; }
+
+  .tap {
+    min-width: 48px; min-height: 48px; border: 0; border-radius: 16px; font: inherit; cursor: pointer;
+    background: transparent; color: inherit;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .tap:active, .btn-primary:active { background: var(--primary-press); }
+  .topbar .tap { width: 88px; height: 64px; font-size: 14px; font-weight: 600; }
+  .topbar .tap .ic { font-size: 24px; line-height: 1.1; }
+
+  .offline {
+    flex: none; background: var(--surface); border-bottom: 3px solid var(--primary);
+    min-height: 44px; padding: 8px 12px; font-size: 16px; font-weight: 700; text-align: center;
+  }
+
+  /* Gros boutons */
+  .btn-primary {
+    min-height: 64px; width: 100%; border: 0; border-radius: 999px; font: inherit; font-size: 22px; font-weight: 700;
+    background: var(--primary); color: var(--on-primary); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .choice {
+    min-height: 72px; width: 100%; border: 3px solid var(--primary); border-radius: 20px; background: var(--surface);
+    color: var(--text); font: inherit; font-size: 22px; font-weight: 700; text-align: left; padding: 8px 16px; cursor: pointer;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .choice .ic { font-size: 32px; }
+  .choice.selected { background: var(--soft); }
+  .choice.selected::after { content: "✓"; margin-left: auto; font-size: 28px; color: var(--primary); }
+  .question { margin: 4px 0 0; font-size: 28px; font-weight: 800; text-align: center; }
+
+  /* Tuiles */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; flex: 1; }
+  .tile {
+    position: relative; background: var(--surface); border: 3px solid var(--primary); border-radius: 20px;
+    color: var(--text); font: inherit; font-size: 18px; font-weight: 800; cursor: pointer; padding: 6px 4px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-height: 140px;
+    overflow-wrap: anywhere;
+  }
+  .tile .big { font-size: 60px; line-height: 1; }
+  /* Accueil : 4 grandes bandes pleine largeur (les mots longs comme « Fampitandremana » restent entiers) */
+  .rows { display: flex; flex-direction: column; gap: 12px; }
+  .rows .tile { flex: 1; min-height: 0; flex-direction: row; justify-content: flex-start; gap: 12px; padding: 6px 12px; font-size: 22px; text-align: left; overflow-wrap: normal; }
+  .rows .tile .big { font-size: 48px; }
+  .badge {
+    position: absolute; top: 8px; right: 8px; min-width: 32px; height: 32px; border-radius: 999px;
+    background: var(--primary); color: var(--on-primary); font-size: 18px; display: grid; place-items: center;
+  }
+
+  /* Cartes (alertes, journal) */
+  .card {
+    background: var(--surface); border: 2px solid var(--primary); border-radius: 16px; padding: 10px 12px;
+    min-height: 76px; display: flex; align-items: center; gap: 12px; font-size: 18px;
+  }
+  .card .ic { font-size: 34px; }
+  .card b { font-size: 20px; }
+  .card > div { flex: 1; min-width: 0; }
+  .card .mini { margin-left: auto; width: 52px; height: 52px; background: var(--bg); border: 2px solid var(--primary); border-radius: 999px; font-size: 24px; }
+  .card.danger { border: 4px solid var(--danger); }
+  .card.danger .ic { color: var(--danger); }
+
+  /* Météo */
+  .today { display: flex; align-items: center; justify-content: space-between; background: var(--surface); border: 3px solid var(--primary); border-radius: 20px; padding: 10px 16px; }
+  .today .d { font-size: 22px; font-weight: 800; }
+  .today .ico { font-size: 84px; line-height: 1; }
+  .today .t { font-size: 56px; font-weight: 800; line-height: 1; }
+  .today .t small { display: block; font-size: 22px; font-weight: 600; }
+  .days { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .days li { display: grid; grid-template-columns: 1fr 56px 64px; align-items: center; min-height: 56px; background: var(--surface); border: 2px solid var(--primary); border-radius: 14px; padding: 0 14px; font-size: 20px; font-weight: 700; }
+  .days .i { font-size: 32px; text-align: center; }
+  .days .t { text-align: right; }
+  .stamp { margin: 0; text-align: center; font-size: 16px; font-weight: 600; }
+
+  /* Étapes du journal */
+  .steps { display: flex; justify-content: center; gap: 10px; }
+  .steps i { width: 44px; height: 12px; border-radius: 999px; background: var(--soft); border: 2px solid var(--primary); }
+  .steps i.on { background: var(--primary); }
+
+  /* Succès */
+  .success { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
+  .success .check { width: 160px; height: 160px; border-radius: 999px; background: var(--soft); border: 6px solid var(--primary); display: grid; place-items: center; font-size: 96px; color: var(--primary); }
+  .success h2 { margin: 0; font-size: 34px; }
+
+  /* Confirmation de suppression */
+  .confirm { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; }
+  .confirm .big { font-size: 90px; line-height: 1; }
+  .confirm h2 { margin: 0; font-size: 34px; }
+  .confirm .row { display: flex; gap: 12px; width: 100%; }
+  .confirm .btn-primary { flex: 1; }
+  .btn-danger { background: var(--danger); }
+
+  /* Conseils */
+  .photo-card {
+    border: 3px solid var(--primary); border-radius: 20px; overflow: hidden; background: var(--surface); padding: 0; cursor: pointer;
+    font: inherit; color: var(--text); text-align: left; display: flex; flex-direction: column;
+  }
+  .photo-card .photo { height: 100px; background: var(--soft); display: grid; place-items: center; font-size: 64px; }
+  .photo-card b { display: block; padding: 10px 14px; font-size: 22px; border-top: 3px solid var(--primary); }
+  .player-photo { height: 150px; background: var(--soft); border: 3px solid var(--primary); border-radius: 20px; display: grid; place-items: center; font-size: 96px; }
+  .player-title { margin: 0; font-size: 28px; font-weight: 800; text-align: center; }
+  .play { align-self: center; width: 130px; height: 130px; border-radius: 999px; border: 0; background: var(--primary); color: var(--on-primary); font-size: 60px; cursor: pointer; display: grid; place-items: center; }
+  .play-label { text-align: center; font-size: 22px; font-weight: 800; margin: 0; }
+  .progress { height: 14px; border-radius: 999px; background: var(--soft); border: 2px solid var(--primary); overflow: hidden; }
+  .progress i { display: block; height: 100%; width: 35%; background: var(--primary); }
+
+  .toast {
+    position: absolute; left: 12px; right: 12px; bottom: 16px; background: var(--dark); color: #fff; border-radius: 14px;
+    padding: 12px 14px; font-size: 16px; text-align: center; display: none; z-index: 5;
+  }
+  .toast.on { display: block; }
+
+  /* ======= Mise en page de la page ======= */
+  .live { display: flex; gap: 32px; align-items: flex-start; flex-wrap: wrap; }
+  .panel { flex: 1; min-width: 280px; max-width: 520px; background: #fff; border-radius: 12px; padding: 16px 20px; }
+  .panel h3 { margin: 0 0 8px; font-size: 18px; }
+  .scenarios { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 16px; }
+  .scenarios button { font: inherit; font-size: 16px; padding: 10px 14px; min-height: 44px; border-radius: 999px; border: 2px solid #2A7C13; background: #fff; cursor: pointer; }
+  .scenarios button.on { background: #2A7C13; color: #fff; }
+  .counter { font-size: 18px; font-weight: 700; padding: 10px 14px; background: #f4f1e6; border-radius: 10px; }
+  .counter.ok { background: #d9efcf; }
+</style>
+</head>
+<body>
+
+<nav class="modebar">
+  <a href="index.html">Accueil</a>
+  <a href="mobile.html" class="current">Mobile</a>
+  <a href="web.html">Web admin</a>
+  <span class="spacer"></span>
+  <button id="toggle-wire" aria-pressed="false">Mode : maquette (couleurs)</button>
+</nav>
+
+<main class="page">
+  <h1>Maquettes mobile</h1>
+  <p>Application du paysan. <b>Cliquez dans le téléphone</b> pour jouer un parcours, ou parcourez la vue d'ensemble plus bas.</p>
+  <div class="note warn"><b>Textes en malagasy provisoires.</b> Je les ai écrits pour montrer l'idée : ils doivent être relus et corrigés par vous (mots, orthographe, naturel). Les photos de cultures sont remplacées par des emojis ; les vrais pictogrammes et photos arrivent au Sprint 9.</div>
+
+  <h2>Parcours cliquable</h2>
+  <div class="live">
+    <div id="live" class="frame" aria-label="Téléphone interactif"></div>
+    <div class="panel">
+      <h3>Choisissez une tâche, puis réalisez-la dans le téléphone</h3>
+      <div class="scenarios" id="scenarios"></div>
+      <p id="goal" style="font-size:17px"></p>
+      <div id="counter" class="counter">Touches : 0</div>
+      <p style="font-size:14px;margin-bottom:0">Objectif ergonomique du PRD : chaque tâche se fait en <b>très peu de touches</b>, sans lire. Le compteur mesure le nombre de touches (🔊 non compté).</p>
+    </div>
+  </div>
+
+  <h2>Les 6 écrans principaux</h2>
+  <div class="gallery" id="gallery-main"></div>
+
+  <h2>Écrans secondaires</h2>
+  <div class="gallery" id="gallery-sub"></div>
+</main>
+
+<!-- ===================== BIBLIOTHÈQUE D'ÉCRANS (écrits une seule fois) ===================== -->
+<div id="library" hidden>
+
+  <section class="screen" data-id="s-region" data-title="Faritra" data-icon="📍">
+    <div class="body">
+      <p class="question">Aiza ianao?</p>
+      <button class="choice" data-go="s-home"><span class="ic">📍</span>Analamanga</button>
+      <button class="choice" data-go="s-home"><span class="ic">📍</span>Vakinankaratra</button>
+      <button class="choice" data-go="s-home"><span class="ic">📍</span>Matsiatra Ambony</button>
+      <button class="choice" data-go="s-home"><span class="ic">📍</span>Boeny</button>
+      <button class="choice" data-go="s-home"><span class="ic">📍</span>Atsinanana</button>
+    </div>
+  </section>
+
+  <section class="screen" data-id="s-home" data-title="Fandraisana" data-icon="🏠">
+    <div class="body rows">
+      <button class="tile" data-go="s-weather"><span class="big">⛅</span>Toetr'andro</button>
+      <button class="tile" data-go="s-alerts"><span class="big">🔔</span><span class="badge">2</span>Fampitandremana</button>
+      <button class="tile" data-go="s-journal"><span class="big">📒</span>Boky</button>
+      <button class="tile" data-go="s-advice"><span class="big">🌱</span>Torohevitra</button>
+    </div>
+  </section>
+
+  <section class="screen" data-id="s-weather" data-title="Toetr'andro" data-icon="⛅" data-back="1">
+    <div class="offline">📵 Tsy misy internet</div>
+    <div class="body">
+      <div class="today">
+        <div><div class="d">Androany</div><div class="ico">⛅</div></div>
+        <div class="t">24°<small>16°</small></div>
+      </div>
+      <ul class="days">
+        <li><span>Alarobia</span><span class="i">🌧️</span><span class="t">22°</span></li>
+        <li><span>Alakamisy</span><span class="i">⛈️</span><span class="t">21°</span></li>
+        <li><span>Zoma</span><span class="i">☁️</span><span class="t">23°</span></li>
+        <li><span>Asabotsy</span><span class="i">☀️</span><span class="t">26°</span></li>
+      </ul>
+      <p class="stamp">🕘 Fanavaozana farany: 06:00</p>
+    </div>
+  </section>
+
+  <section class="screen" data-id="s-alerts" data-title="Fampitandremana" data-icon="🔔" data-back="1">
+    <div class="body">
+      <article class="card danger">
+        <span class="ic">⚠️</span>
+        <div><b>Tandremo! <span class="red-note">(rouge = danger)</span></b><br>⛈️ Orana mahery · Rahampitso</div>
+        <button class="tap mini" aria-label="Henoy">🔊</button>
+      </article>
+      <article class="card">
+        <span class="ic">🌱</span>
+        <div><b>Mamafy</b><br>🌾 Vary · 10 Nov</div>
+        <button class="tap mini" aria-label="Henoy">🔊</button>
+      </article>
+      <article class="card">
+        <span class="ic">🌾</span>
+        <div><b>Mijinja</b><br>🌽 Katsaka · Janoary</div>
+        <button class="tap mini" aria-label="Henoy">🔊</button>
+      </article>
+    </div>
+  </section>
+
+  <section class="screen" data-id="s-journal" data-title="Boky" data-icon="📒" data-back="1">
+    <div class="body">
+      <button class="btn-primary" data-go="s-add-type">➕ Vaovao</button>
+      <article class="card">
+        <span class="ic">🌧️</span>
+        <div><b>Orana</b><br>Androany</div>
+        <button class="tap mini" data-go="s-confirm" aria-label="Fafao">🗑️</button>
+      </article>
+      <article class="card">
+        <span class="ic">🐛</span>
+        <div><b>Bibikely</b><br>🌽 Katsaka · Omaly</div>
+        <button class="tap mini" data-go="s-confirm" aria-label="Fafao">🗑️</button>
+      </article>
+      <article class="card">
+        <span class="ic">🌱</span>
+        <div><b>Mamboly</b><br>🌾 Vary · 28 Okt</div>
+        <button class="tap mini" data-go="s-confirm" aria-label="Fafao">🗑️</button>
+      </article>
+    </div>
+  </section>
+
+  <section class="screen" data-id="s-add-type" data-title="Vaovao" data-icon="➕" data-back="1">
+    <div class="body">
+      <div class="steps" aria-label="1/3"><i class="on"></i><i></i><i></i></div>
+      <p class="question">Inona?</p>
+      <div class="grid2">
+        <button class="tile" data-go="s-add-date" data-type="rain"><span class="big">🌧️</span>Orana</button>
+        <button class="tile" data-go="s-add-crop" data-type="pest"><span class="big">🐛</span>Bibikely</button>
+        <button class="tile" data-go="s-add-crop" data-type="planting"><span class="big">🌱</span>Mamboly</button>
+        <button class="tile" data-go="s-add-crop" data-type="harvest"><span class="big">🌾</span>Fijinjana</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" data-id="s-add-crop" data-title="Vaovao" data-icon="➕" data-back="1">
+    <div class="body">
+      <div class="steps" aria-label="2/3"><i class="on"></i><i class="on"></i><i></i></div>
+      <p class="question">Inona ny voly?</p>
+      <div class="grid2">
+        <button class="tile" data-go="s-add-date"><span class="big">🌾</span>Vary</button>
+        <button class="tile" data-go="s-add-date"><span class="big">🌽</span>Katsaka</button>
+        <button class="tile" data-go="s-add-date"><span class="big">🌿</span>Mangahazo</button>
+        <button class="tile" data-go="s-add-date"><span class="big">🫘</span>Tsaramaso</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" data-id="s-add-date" data-title="Vaovao" data-icon="➕" data-back="1">
+    <div class="body">
+      <div class="steps" aria-label="3/3"><i class="on"></i><i class="on"></i><i class="on"></i></div>
+      <p class="question">Oviana?</p>
+      <button class="choice selected"><span class="ic">📅</span>Androany</button>
+      <button class="choice"><span class="ic">📅</span>Omaly</button>
+      <button class="choice"><span class="ic">🗓️</span>Hafa andro…</button>
+      <button class="btn-primary" data-go="s-saved" style="margin-top:auto">✓ Tahiry</button>
+    </div>
+  </section>
+
+  <section class="screen" data-id="s-saved" data-title="Boky" data-icon="📒">
+    <div class="body">
+      <div class="success">
+        <div class="check">✓</div>
+        <h2>Voatahiry</h2>
+      </div>
+      <button class="btn-primary" data-go="s-journal">📒 Boky</button>
+    </div>
+  </section>
+
+  <section class="screen" data-id="s-confirm" data-title="Boky" data-icon="📒" data-back="1">
+    <div class="body">
+      <div class="confirm">
+        <div class="big">🗑️</div>
+        <h2>Fafao?</h2>
+        <div class="row">
+          <button class="btn-primary" data-back-btn>✕ Tsia</button>
+          <button class="btn-primary btn-danger" data-back-btn>✓ Eny <span class="red-note">(rouge)</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" data-id="s-advice" data-title="Torohevitra" data-icon="🌱" data-back="1">
+    <div class="body">
+      <button class="photo-card" data-go="s-player"><span class="photo">🐛</span><b>Bibikely</b></button>
+      <button class="photo-card" data-go="s-player"><span class="photo">🌱</span><b>Famafazana</b></button>
+      <button class="photo-card" data-go="s-player"><span class="photo">⛈️</span><b>Toetr'andro</b></button>
+    </div>
+  </section>
+
+  <section class="screen" data-id="s-player" data-title="Torohevitra" data-icon="🌱" data-back="1">
+    <div class="body">
+      <div class="player-photo">🐛</div>
+      <p class="player-title">Bibikely</p>
+      <button class="play" aria-label="Henoy">▶</button>
+      <p class="play-label">Henoy</p>
+      <div class="progress"><i></i></div>
+    </div>
+  </section>
+
+</div>
+
+<script src="theme.js"></script>
+<script>
+(function () {
+  // ---------- 1. Construire un écran complet (barre du haut + contenu) ----------
+  var lib = document.getElementById('library');
+
+  function build(id) {
+    var src = lib.querySelector('[data-id="' + id + '"]');
+    var el = src.cloneNode(true);
+    el.removeAttribute('data-id');
+    var back = src.dataset.back
+      ? '<button class="tap" data-back-btn><span class="ic">←</span>Hiverina</button>' : '';
+    var bar = document.createElement('header');
+    bar.className = 'topbar';
+    bar.innerHTML =
+      '<div>' + back + '</div>' +
+      '<div class="mid"><span class="ic">' + src.dataset.icon + '</span><h1>' + src.dataset.title + '</h1></div>' +
+      '<div><button class="tap" data-listen><span class="ic">🔊</span>Henoy</button></div>';
+    el.insertBefore(bar, el.firstChild);
+    return el;
+  }
+
+  // ---------- 2. Vue d'ensemble ----------
+  var captions = {
+    's-region':   ['Choix de la région (1er lancement)', 'EF8', ['Guidage explicite', 'Concision']],
+    's-home':     ['Accueil : 4 tuiles', 'EF1', ['Concision', 'Reconnaissance', 'Signifiance']],
+    's-weather':  ['Météo : 5 jours, hors ligne', 'EF2', ['Visibilité de l\'état', 'Signifiance', 'Concision']],
+    's-alerts':   ['Alertes : rouge = danger seulement', 'EF3', ['Signifiance', 'Flexibilité (🔊 par alerte)', 'Concision']],
+    's-journal':  ['Journal : liste + ➕', 'EF4, EF10', ['Reconnaissance', 'Visibilité de l\'état']],
+    's-advice':   ['Conseils : grandes cartes', 'EF5', ['Reconnaissance', 'Concision']],
+    's-add-type': ['Saisie 1/3 : quoi ?', 'EF4', ['Guidage explicite', 'Reconnaissance']],
+    's-add-crop': ['Saisie 2/3 : quelle culture ?', 'EF9', ['Reconnaissance (images)', 'Guidage explicite']],
+    's-add-date': ['Saisie 3/3 : quand ? (aujourd\'hui par défaut)', 'EF4', ['Flexibilité', 'Guidage explicite']],
+    's-saved':    ['Confirmation « Voatahiry »', '—', ['Rétroaction']],
+    's-confirm':  ['Suppression : confirmation', 'EF10', ['Gestion des erreurs', 'Guidage (choix sûr en vert)']],
+    's-player':   ['Lecteur audio', 'EF5, EF6', ['Flexibilité (voix)', 'Rétroaction']]
+  };
+  function fill(target, ids) {
+    ids.forEach(function (id) {
+      var fig = document.createElement('figure');
+      var frame = document.createElement('div');
+      frame.className = 'frame';
+      frame.appendChild(build(id));
+      var c = captions[id];
+      var cap = document.createElement('figcaption');
+      cap.innerHTML = '<b>' + c[0] + '</b>Exigence : ' + c[1] + '<br>' +
+        c[2].map(function (t) { return '<span class="crit">' + t + '</span>'; }).join('');
+      fig.appendChild(frame); fig.appendChild(cap);
+      target.appendChild(fig);
+    });
+  }
+  fill(document.getElementById('gallery-main'), ['s-region', 's-home', 's-weather', 's-alerts', 's-journal', 's-advice']);
+  fill(document.getElementById('gallery-sub'), ['s-add-type', 's-add-crop', 's-add-date', 's-saved', 's-confirm', 's-player']);
+
+  // ---------- 3. Téléphone cliquable ----------
+  var live = document.getElementById('live');
+  var counterEl = document.getElementById('counter');
+  var goalEl = document.getElementById('goal');
+  var scenEl = document.getElementById('scenarios');
+  var stack = [], taps = 0, scenario = null, chosenType = null;
+
+  var toast = document.createElement('div');
+  toast.className = 'toast';
+  var toastTimer;
+
+  var scenarios = [
+    { key: 'weather', label: '☁️ Voir la météo', start: 's-home', goal: 'Tâche : voir la météo des prochains jours.', done: function (s) { return s === 's-weather'; } },
+    { key: 'rain',    label: '🌧️ Noter une pluie', start: 's-home', goal: 'Tâche : noter qu\'il a plu aujourd\'hui.', done: function (s) { return s === 's-saved' && chosenType === 'rain'; } },
+    { key: 'advice',  label: '🔊 Écouter un conseil', start: 's-home', goal: 'Tâche : écouter un conseil sur les parasites (Bibikely).', done: function (s) { return s === 's-player'; } },
+    { key: 'first',   label: '📍 Premier lancement', start: 's-region', goal: 'Tâche : choisir sa région et arriver à l\'accueil.', done: function (s) { return s === 's-home' && taps > 0; } }
+  ];
+
+  function show(id) {
+    live.replaceChildren(build(id), toast);
+    live.dataset.screen = id;
+  }
+  function updateCounter(id) {
+    var ok = scenario && scenario.done(id);
+    counterEl.textContent = ok
+      ? '✅ Réussi en ' + taps + ' touche' + (taps > 1 ? 's' : '')
+      : 'Touches : ' + taps;
+    counterEl.classList.toggle('ok', !!ok);
+  }
+  function go(id, count) {
+    stack.push(id);
+    if (count) taps++;
+    show(id);
+    updateCounter(id);
+  }
+  function back() {
+    if (stack.length > 1) { stack.pop(); taps++; show(stack[stack.length - 1]); updateCounter(stack[stack.length - 1]); }
+  }
+  function start(sc) {
+    scenario = sc; stack = []; taps = 0; chosenType = null;
+    Array.prototype.forEach.call(scenEl.children, function (b) { b.classList.toggle('on', b.dataset.key === sc.key); });
+    goalEl.textContent = sc.goal;
+    go(sc.start, false);
+  }
+
+  live.addEventListener('click', function (e) {
+    var t = e.target.closest('button');
+    if (!t) return;
+    if (t.hasAttribute('data-listen')) {
+      toast.textContent = '🔊 La voix malagasy sera ajoutée au Sprint 7';
+      toast.classList.add('on');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { toast.classList.remove('on'); }, 2200);
+      return;
+    }
+    if (t.hasAttribute('data-back-btn')) { back(); return; }
+    if (t.dataset.type) chosenType = t.dataset.type;
+    if (t.dataset.go) go(t.dataset.go, true);
+  });
+
+  scenarios.forEach(function (sc) {
+    var b = document.createElement('button');
+    b.textContent = sc.label; b.dataset.key = sc.key;
+    b.addEventListener('click', function () { start(sc); });
+    scenEl.appendChild(b);
+  });
+  start(scenarios[0]);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maquettes web admin — Tantsaha Connect</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+  /* ======= Cadre d'un écran d'ordinateur ======= */
+  .scroll-x { overflow-x: auto; padding-bottom: 8px; }
+  .webframe {
+    width: 1120px; height: 700px; border: 8px solid var(--dark); border-radius: 18px; overflow: hidden;
+    background: var(--bg); color: var(--text); display: flex; font-size: 16px;
+  }
+  .gallery.web figure { width: 1120px; }
+
+  /* Barre latérale sombre (inspirée de l'image 2) */
+  .side { width: 88px; flex: none; background: var(--dark); color: #fff; display: flex; flex-direction: column; align-items: center; padding: 14px 0; gap: 6px; }
+  .side .logo { font-size: 30px; margin-bottom: 10px; }
+  .side button {
+    width: 76px; min-height: 60px; border: 0; border-radius: 14px; background: transparent; color: #fff; cursor: pointer;
+    font: inherit; font-size: 13px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  }
+  .side button .ic { font-size: 24px; }
+  .side button.active { background: var(--soft); color: #1F2A17; font-weight: 700; }
+  .side .grow { flex: 1; }
+
+  .main { flex: 1; min-width: 0; padding: 14px 24px; overflow: hidden; display: flex; flex-direction: column; gap: 12px; }
+  .head { display: flex; align-items: center; justify-content: space-between; }
+  .head h2 { margin: 0; font-size: 26px; }
+  .head .right { display: flex; gap: 12px; align-items: center; }
+  .pill { min-height: 44px; padding: 0 20px; border-radius: 999px; border: 0; background: var(--dark); color: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+  .pill.green { background: var(--primary); }
+  .avatar { width: 44px; height: 44px; border-radius: 999px; background: var(--soft); border: 2px solid var(--primary); display: grid; place-items: center; font-size: 22px; }
+
+  .card { background: var(--surface); border: 2px solid var(--primary); border-radius: 16px; padding: 12px 14px; }
+  .region { padding: 8px 12px; }
+  .card h3 { margin: 0 0 8px; font-size: 18px; }
+  .card .more { float: right; font-size: 14px; font-weight: 600; }
+
+  /* Tableau de bord */
+  .dash {
+    flex: 1; min-height: 0; display: grid; gap: 12px; align-content: start;
+    grid-template-columns: 250px 1fr 1.4fr;
+    grid-template-areas: "kpi todo season" "wea types season" "reg reg reg";
+  }
+  .kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; grid-area: kpi; }
+  .a-todo { grid-area: todo; } .a-season { grid-area: season; } .a-wea { grid-area: wea; } .a-types { grid-area: types; } .a-reg { grid-area: reg; }
+  .kpi .n { font-size: 40px; font-weight: 800; line-height: 1.1; }
+  .kpi small { font-size: 14px; display: block; }
+  .weather .t { font-size: 40px; font-weight: 800; }
+  .bars { display: flex; flex-direction: column; gap: 8px; }
+  .bar { display: grid; grid-template-columns: 90px 1fr 32px; align-items: center; gap: 8px; font-size: 15px; }
+  .bar .track { height: 16px; background: var(--bg); border: 2px solid var(--primary); border-radius: 999px; overflow: hidden; }
+  .bar .track i { display: block; height: 100%; background: var(--soft); border-right: 2px solid var(--primary); }
+  .todo { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .todo li { display: flex; justify-content: space-between; gap: 10px; align-items: center; background: var(--bg); border: 2px solid var(--primary); border-radius: 12px; padding: 8px 12px; font-size: 15px; }
+  .todo small { display: block; font-size: 13px; }
+
+  .chip { display: inline-block; padding: 2px 12px; border-radius: 999px; font-size: 13px; font-weight: 700; border: 2px solid var(--primary); background: var(--bg); white-space: nowrap; }
+  .chip.ok { background: var(--soft); }
+  .chip.todo-chip { background: var(--surface); }
+  .chip.block { background: var(--danger); border-color: var(--danger); color: #fff; }
+
+  /* Calendrier de saison */
+  .season { display: grid; grid-template-columns: 96px repeat(12, 1fr); gap: 3px; font-size: 13px; align-items: center; }
+  .season .m { text-align: center; font-weight: 700; }
+  .season .c { height: 30px; border-radius: 6px; background: var(--bg); border: 1px solid rgba(0,0,0,.12); display: grid; place-items: center; font-size: 15px; }
+  .season .c.sow { background: var(--soft); border: 2px solid var(--primary); }
+  .season .c.har { background: var(--surface); border: 2px solid var(--primary); }
+  .legend { font-size: 13px; margin-top: 8px; }
+
+  .regions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .region b { font-size: 18px; }
+  .region small { display: block; font-size: 14px; }
+  .span2 { grid-column: 2 / 4; }
+
+  /* Pages Calendriers / Conseils */
+  .split { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 330px; gap: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th { text-align: left; font-size: 13px; padding: 6px 8px; border-bottom: 2px solid var(--primary); }
+  td { padding: 8px; border-bottom: 1px solid rgba(0,0,0,.14); }
+  tr.sel td { background: var(--soft); }
+  .filters { display: flex; gap: 10px; margin-bottom: 10px; }
+  select, input[type=text], input[type=email], input[type=password], textarea {
+    font: inherit; font-size: 15px; min-height: 40px; padding: 6px 10px; border: 2px solid var(--primary); border-radius: 10px; background: #fff; color: var(--text); width: 100%;
+  }
+  textarea { min-height: 84px; resize: none; }
+  .filters select { width: auto; }
+  label { display: block; font-size: 14px; font-weight: 700; margin: 10px 0 4px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .btn-sm { min-height: 40px; padding: 0 14px; border-radius: 10px; border: 2px solid var(--primary); background: var(--bg); font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--text); }
+  .audio-box { display: flex; align-items: center; gap: 10px; background: var(--bg); border: 2px dashed var(--primary); border-radius: 12px; padding: 10px; font-size: 14px; }
+
+  /* Connexion */
+  .login { flex: 1; display: grid; place-items: center; background: var(--soft); }
+  .login .box { width: 400px; background: var(--bg); border: 3px solid var(--primary); border-radius: 20px; padding: 28px; }
+  .login h2 { margin: 6px 0 4px; font-size: 24px; text-align: center; }
+  .login p { margin: 0 0 8px; text-align: center; font-size: 14px; }
+  .login .logo { font-size: 48px; text-align: center; }
+  .login .pill { width: 100%; margin-top: 18px; min-height: 48px; font-size: 17px; }
+
+  .panel-note { font-size: 13px; margin: 8px 0 0; }
+</style>
+</head>
+<body>
+
+<nav class="modebar">
+  <a href="index.html">Accueil</a>
+  <a href="mobile.html">Mobile</a>
+  <a href="web.html" class="current">Web admin</a>
+  <span class="spacer"></span>
+  <button id="toggle-wire" aria-pressed="false">Mode : maquette (couleurs)</button>
+</nav>
+
+<main class="page">
+  <h1>Maquettes web — administration</h1>
+  <p>Site réservé aux <b>agronomes / administrateurs</b>. Il sert à tenir à jour les calendriers, les conseils et les voix qui arrivent ensuite sur les téléphones. <b>Cliquez dans la barre latérale</b> du cadre ci-dessous.</p>
+  <div class="note warn"><b>Toutes les données affichées sont des exemples inventés</b> (calendriers non validés, chiffres fictifs). Les textes de l'interface sont en français ; les contenus destinés aux paysans (titres, conseils) sont en malagasy, à relire par vous. Cette maquette est pensée pour un <b>écran d'ordinateur</b> (≥ 1100 px).</div>
+
+  <h2>Parcours cliquable</h2>
+  <div class="scroll-x"><div id="live" class="webframe" aria-label="Site web interactif"></div></div>
+
+  <h2>Les 4 pages</h2>
+  <div class="gallery web" id="gallery"></div>
+</main>
+
+<!-- ===================== BIBLIOTHÈQUE DE PAGES ===================== -->
+<div id="library" hidden>
+
+  <section data-id="login" data-nav="none" data-title="Connexion">
+    <div class="login">
+      <div class="box">
+        <div class="logo">🌱</div>
+        <h2>Tantsaha Connect</h2>
+        <p>Espace d'administration</p>
+        <label for="em">E-mail</label>
+        <input id="em" type="email" value="agronome@exemple.mg" tabindex="-1">
+        <label for="pw">Mot de passe</label>
+        <input id="pw" type="password" value="••••••••••" tabindex="-1">
+        <button class="pill green" data-go="dash">Se connecter</button>
+      </div>
+    </div>
+  </section>
+
+  <section data-id="dash" data-nav="dash" data-title="Tableau de bord">
+    <div class="main">
+      <div class="head">
+        <h2>Bonjour 👋</h2>
+        <div class="right"><button class="pill">Ajouter ＋</button><div class="avatar">👤</div></div>
+      </div>
+      <div class="dash">
+        <div class="kpis">
+          <div class="card kpi"><h3>Téléphones actifs</h3><div class="n">12</div><small>7 derniers jours</small></div>
+          <div class="card kpi"><h3>Notes</h3><div class="n">48</div><small>cette semaine</small></div>
+        </div>
+        <div class="card a-todo">
+          <h3>À valider <a class="more" href="#" tabindex="-1">Tout voir</a></h3>
+          <ul class="todo">
+            <li><span>Calendrier Vary · Boeny<small>Mois non validés</small></span><span class="chip todo-chip">À faire</span></li>
+            <li><span>Conseil « Bibikely »<small>Audio manquant</small></span><span class="chip todo-chip">À faire</span></li>
+            <li><span>Calendrier Katsaka · Atsinanana<small>Mois à confirmer <span class="red-note">(rouge)</span></small></span><span class="chip block">Bloquant</span></li>
+          </ul>
+        </div>
+        <div class="card a-season">
+          <h3>Calendrier de saison <small style="font-weight:400">(Analamanga, exemple)</small></h3>
+          <div class="season" id="season"></div>
+          <div class="legend">🌱 semis · 🌾 récolte</div>
+        </div>
+        <div class="card weather a-wea">
+          <h3>Météo · Analamanga</h3>
+          <div class="t">24 °C ⛅</div>
+          <small>Pluie 7,5 mm · mise à jour 06:00</small>
+        </div>
+        <div class="card a-types">
+          <h3>Notes par type <small style="font-weight:400">(semaine)</small></h3>
+          <div class="bars">
+            <div class="bar"><span>🌧️ Orana</span><span class="track"><i style="width:92%"></i></span><b>22</b></div>
+            <div class="bar"><span>🐛 Bibikely</span><span class="track"><i style="width:46%"></i></span><b>11</b></div>
+            <div class="bar"><span>🌱 Mamboly</span><span class="track"><i style="width:38%"></i></span><b>9</b></div>
+            <div class="bar"><span>🌾 Fijinjana</span><span class="track"><i style="width:25%"></i></span><b>6</b></div>
+          </div>
+        </div>
+        <div class="regions a-reg">
+          <div class="card region"><b>📍 Analamanga</b><small>4 cultures · 8 téléphones</small></div>
+          <div class="card region"><b>📍 Boeny</b><small>4 cultures · 2 téléphones</small></div>
+          <div class="card region"><b>📍 Atsinanana</b><small>4 cultures · 2 téléphones</small></div>
+          <div class="card region"><b>📍 Autres (2)</b><small>0 téléphone</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-id="cal" data-nav="cal" data-title="Calendriers">
+    <div class="main">
+      <div class="head">
+        <h2>Calendriers de culture</h2>
+        <div class="right"><button class="pill">Ajouter ＋</button><div class="avatar">👤</div></div>
+      </div>
+      <div class="split">
+        <div class="card">
+          <div class="filters">
+            <select tabindex="-1"><option>Toutes les régions</option></select>
+            <select tabindex="-1"><option>Toutes les cultures</option></select>
+          </div>
+          <table>
+            <thead><tr><th>Culture</th><th>Région</th><th>Semis</th><th>Récolte</th><th>État</th><th></th></tr></thead>
+            <tbody>
+              <tr class="sel"><td>🌾 Vary</td><td>Analamanga</td><td>Oct – Déc</td><td>Mar – Mai</td><td><span class="chip todo-chip">À valider</span></td><td><button class="btn-sm">Modifier</button></td></tr>
+              <tr><td>🌽 Katsaka</td><td>Analamanga</td><td>Oct – Jan</td><td>Mar – Avr</td><td><span class="chip ok">✓ Validé</span></td><td><button class="btn-sm">Modifier</button></td></tr>
+              <tr><td>🌿 Mangahazo</td><td>Analamanga</td><td>Oct – Déc</td><td>Juin – Août</td><td><span class="chip todo-chip">À valider</span></td><td><button class="btn-sm">Modifier</button></td></tr>
+              <tr><td>🫘 Tsaramaso</td><td>Analamanga</td><td>Mar – Avr</td><td>Juin – Juil</td><td><span class="chip todo-chip">À valider</span></td><td><button class="btn-sm">Modifier</button></td></tr>
+              <tr><td>🌾 Vary</td><td>Boeny</td><td>Oct – Déc</td><td>Mar – Mai</td><td><span class="chip todo-chip">À valider</span></td><td><button class="btn-sm">Modifier</button></td></tr>
+              <tr><td>🌽 Katsaka</td><td>Atsinanana</td><td>Oct – Jan</td><td>Mar – Avr</td><td><span class="chip block">Bloquant</span></td><td><button class="btn-sm">Modifier</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h3>Modifier : 🌾 Vary · Analamanga</h3>
+          <div class="two">
+            <div><label>Début du semis</label><select tabindex="-1"><option>Octobre</option></select></div>
+            <div><label>Fin du semis</label><select tabindex="-1"><option>Décembre</option></select></div>
+            <div><label>Début de récolte</label><select tabindex="-1"><option>Mars</option></select></div>
+            <div><label>Fin de récolte</label><select tabindex="-1"><option>Mai</option></select></div>
+          </div>
+          <label><input type="checkbox" tabindex="-1"> Marquer comme <b>validé</b> par un agronome</label>
+          <p class="panel-note">Les téléphones recevront la modification à leur prochaine synchronisation.</p>
+          <div style="display:flex;gap:10px;margin-top:14px"><button class="pill green">Enregistrer</button><button class="btn-sm">Annuler</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-id="adv" data-nav="adv" data-title="Conseils">
+    <div class="main">
+      <div class="head">
+        <h2>Conseils et voix malagasy</h2>
+        <div class="right"><button class="pill">Ajouter ＋</button><div class="avatar">👤</div></div>
+      </div>
+      <div class="split">
+        <div class="card">
+          <table>
+            <thead><tr><th>Titre (malagasy)</th><th>Culture</th><th>Thème</th><th>Audio</th><th></th></tr></thead>
+            <tbody>
+              <tr class="sel"><td>🐛 Bibikely</td><td>Toutes</td><td>Ravageurs</td><td><span class="chip todo-chip">Manquant</span></td><td><button class="btn-sm">Modifier</button></td></tr>
+              <tr><td>🌱 Famafazana</td><td>🌾 Vary</td><td>Semis</td><td><span class="chip ok">✓ 0:24</span></td><td><button class="btn-sm">Modifier</button></td></tr>
+              <tr><td>⛈️ Toetr'andro</td><td>Toutes</td><td>Météo</td><td><span class="chip ok">✓ 0:18</span></td><td><button class="btn-sm">Modifier</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h3>Modifier : 🐛 Bibikely</h3>
+          <label>Titre (malagasy)</label><input type="text" value="Bibikely" tabindex="-1">
+          <label>Texte (malagasy)</label><textarea tabindex="-1">Texte du conseil…</textarea>
+          <div class="two">
+            <div><label>Culture</label><select tabindex="-1"><option>Toutes</option></select></div>
+            <div><label>Thème</label><select tabindex="-1"><option>Ravageurs</option></select></div>
+          </div>
+          <label>Voix</label>
+          <div class="audio-box">🎙️ <span style="flex:1">Aucun fichier mp3</span><button class="btn-sm">Choisir…</button></div>
+          <div style="display:flex;gap:10px;margin-top:14px"><button class="pill green">Enregistrer</button><button class="btn-sm">Annuler</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script src="theme.js"></script>
+<script>
+(function () {
+  var lib = document.getElementById('library');
+  var items = [
+    { id: 'dash', icon: '🏠', label: 'Tableau de bord' },
+    { id: 'cal',  icon: '📅', label: 'Calendriers' },
+    { id: 'adv',  icon: '💬', label: 'Conseils' }
+  ];
+
+  // Calendrier de saison (exemple, non validé)
+  var months = 'JFMAMJJASOND'.split('');
+  var crops = [
+    ['🌾 Vary',      { s: [10, 11, 12], h: [3, 4, 5] }],
+    ['🌽 Katsaka',   { s: [10, 11, 12, 1], h: [3, 4] }],
+    ['🌿 Mangahazo', { s: [10, 11, 12], h: [6, 7, 8] }],
+    ['🫘 Tsaramaso', { s: [3, 4], h: [6, 7] }]
+  ];
+
+  // Construit un écran : barre latérale + contenu.
+  function build(id) {
+    var src = lib.querySelector('[data-id="' + id + '"]');
+    var el = src.cloneNode(true);
+    el.removeAttribute('data-id');
+    el.style.display = 'flex'; el.style.flex = '1'; el.style.minWidth = '0';
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'display:flex;flex:1;min-width:0';
+    if (src.dataset.nav !== 'none') {
+      var side = document.createElement('nav');
+      side.className = 'side';
+      side.innerHTML = '<div class="logo">🌱</div>' + items.map(function (it) {
+        return '<button data-go="' + it.id + '" class="' + (it.id === src.dataset.nav ? 'active' : '') + '"><span class="ic">' + it.icon + '</span>' + it.label + '</button>';
+      }).join('') + '<div class="grow"></div><button data-go="login"><span class="ic">⎋</span>Sortir</button>';
+      wrap.appendChild(side);
+    }
+    el.style.display = 'flex'; el.style.flexDirection = 'column';
+    wrap.appendChild(el);
+    // Remplit le calendrier de saison
+    var season = wrap.querySelector('#season');
+    if (season) {
+      season.removeAttribute('id');
+      var h = '<span></span>' + months.map(function (m) { return '<span class="m">' + m + '</span>'; }).join('');
+      crops.forEach(function (c) {
+        h += '<span>' + c[0] + '</span>';
+        for (var m = 1; m <= 12; m++) {
+          var cls = c[1].s.indexOf(m) >= 0 ? 'sow' : (c[1].h.indexOf(m) >= 0 ? 'har' : '');
+          h += '<span class="c ' + cls + '">' + (cls === 'sow' ? '🌱' : cls === 'har' ? '🌾' : '') + '</span>';
+        }
+      });
+      season.innerHTML = h;
+    }
+    return wrap;
+  }
+
+  // Vue d'ensemble : les 4 pages
+  var gal = document.getElementById('gallery');
+  [['login', 'Connexion', 'W1', 'Guidage explicite, Concision'],
+   ['dash', 'Tableau de bord', 'W4', 'Visibilité de l\'état, Concision'],
+   ['cal', 'Calendriers', 'W2', 'Reconnaissance, Rétroaction'],
+   ['adv', 'Conseils et audio', 'W3', 'Flexibilité (texte + voix), Guidage']].forEach(function (p) {
+    var fig = document.createElement('figure');
+    var f = document.createElement('div'); f.className = 'webframe'; f.appendChild(build(p[0]));
+    var cap = document.createElement('figcaption');
+    cap.innerHTML = '<b>' + p[1] + '</b>Exigence : ' + p[2] + ' · ' + p[3];
+    fig.appendChild(f); fig.appendChild(cap); gal.appendChild(fig);
+  });
+
+  // Cadre interactif
+  var live = document.getElementById('live');
+  function show(id) { live.replaceChildren(build(id)); }
+  live.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-go]');
+    if (b) show(b.dataset.go);
+  });
+  show('login');
+})();
+</script>
+</body>
+</html>

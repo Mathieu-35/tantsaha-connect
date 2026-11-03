@@ -52,7 +52,9 @@ Ne **jamais** compter sur la couleur seule : chaque état a aussi une **icône**
 | Élément | Règle |
 |---|---|
 | Zone tactile | ≥ 48 × 48 px (idéal : tuiles et boutons principaux ≥ 96 px de haut) |
-| Texte courant | ≥ 18 px ; titres ≥ 24 px ; 1 à 2 mots par bouton |
+| Texte courant (mobile) | ≥ 18 px ; titres ≥ 24 px ; 1 à 2 mots par bouton. Exception : les étiquettes sous les icônes de la barre du haut (≥ 14 px), toujours doublées d'une icône et d'une voix |
+| Texte (web admin) | ≥ 15 px ; l'administrateur lit et utilise un ordinateur |
+| Mots longs | Jamais coupés : « Fampitandremana » (15 lettres) doit tenir sur une ligne. C'est pourquoi l'accueil est en 4 bandes pleine largeur et non en grille 2×2 |
 | Coins | Arrondis 16 px (cartes, tuiles), 999 px (boutons « pilule », pastilles) |
 | Espacement | Multiples de 8 px |
 | Ombres | Légères ; la **bordure** porte le contraste, pas l'ombre |
@@ -89,7 +91,7 @@ Ne **jamais** compter sur la couleur seule : chaque état a aussi une **icône**
 | # | Écran | Contenu clé |
 |---|---|---|
 | 0 | **Choix de la région** (1ᵉʳ lancement) | Une seule question, gros boutons de région, 🔊 |
-| 1 | **Accueil** | 4 grosses tuiles : Toetr'andro · Fampitandremana · Boky · Torohevitra |
+| 1 | **Accueil** | 4 grandes bandes pleine largeur (icône + mot) : Toetr'andro · Fampitandremana · Boky · Torohevitra |
 | 2 | **Météo** | Aujourd'hui en grand (pictogramme + température), 4 jours suivants en ligne, « dernière mise à jour » |
 | 3 | **Alertes** | Cartes : icône du geste + 1 ou 2 mots + date ; rouge seulement si danger |
 | 4 | **Journal** | Liste des notes + gros bouton ➕ ; saisie en 3 étapes (type → culture → date) ; grande coche finale |
@@ -100,6 +102,8 @@ Ne **jamais** compter sur la couleur seule : chaque état a aussi une **icône**
 ### Web (4 pages)
 
 Connexion · Tableau de bord · Calendriers (liste + édition) · Conseils (liste + édition + envoi d'audio).
+
+**Réalisé au Sprint 1** : [docs/maquettes/](maquettes/index.html) (12 écrans mobiles cliquables, 4 pages web, bascule wireframe / maquette) et [docs/rapport/ergonomie.md](rapport/ergonomie.md). L'aperçu se lance avec la configuration « maquettes » de `.claude/launch.json` (fichier local, non versionné), ou en ouvrant `docs/maquettes/index.html` dans le navigateur.
 
 ## 6. Où vivent les couleurs dans le code
 
