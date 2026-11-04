@@ -8,16 +8,22 @@
     "start": "node src/server.js",
     "db:migrate": "prisma migrate dev",
     "db:seed": "node prisma/seed.js",
-    "db:studio": "prisma studio"
+    "db:reset": "prisma migrate reset",
+    "db:studio": "prisma studio",
+    "admin:create": "node scripts/create-admin.js",
+    "export:seed": "node scripts/export-seed.js"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^18.0.9",
-    "express": "^5.3.0"
+    "express": "^5.3.0",
+    "express-rate-limit": "^8.7.3",
+    "jsonwebtoken": "^9.0.3"
   },
   "devDependencies": {
     "prisma": "^6.19.3"

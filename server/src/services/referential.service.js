@@ -2,19 +2,22 @@
 // Les "controllers" l'appellent ; ils ne touchent jamais directement à Prisma.
 //
 // Ici : les données de référence (régions, cultures, calendrier, conseils).
+// Les éléments supprimés "en douceur" (deletedAt rempli) sont cachés dans les listes publiques.
 
 const prisma = require('../db/prisma');
 
-const listRegions = () => prisma.region.findMany({ orderBy: { nameMg: 'asc' } });
+const alive = { deletedAt: null };
 
-const listCrops = () => prisma.crop.findMany({ orderBy: { nameMg: 'asc' } });
+const listRegions = () => prisma.region.findMany({ where: alive, orderBy: { nameMg: 'asc' } });
+
+const listCrops = () => prisma.crop.findMany({ where: alive, orderBy: { nameMg: 'asc' } });
 
 const listCalendar = (regionId) =>
-  prisma.cropCalendar.findMany({ where: regionId ? { regionId } : {} });
+  prisma.cropCalendar.findMany({ where: { ...alive, ...(regionId && { regionId }) } });
 
 const listAdvice = ({ cropId, topic } = {}) =>
   prisma.advice.findMany({
-    where: { ...(cropId && { cropId }), ...(topic && { topic }) },
+    where: { ...alive, ...(cropId && { cropId }), ...(topic && { topic }) },
     orderBy: { titleMg: 'asc' },
   });
 

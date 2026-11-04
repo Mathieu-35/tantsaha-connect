@@ -1,11 +1,14 @@
 // ROUTES = la liste des adresses (URL) que le serveur comprend,
 // et quel controller répond à chacune.
-// Tout est préfixé par /api (voir app.js).
+// Tout est préfixé par /api/v1 (voir app.js).
 
 const { Router } = require('express');
 const referential = require('../controllers/referential.controller');
 const weather = require('../controllers/weather.controller');
 const sync = require('../controllers/sync.controller');
+const auth = require('../controllers/auth.controller');
+const requireAdmin = require('../middlewares/requireAdmin');
+const { loginLimiter } = require('../middlewares/rateLimit');
 
 const router = Router();
 
@@ -24,5 +27,10 @@ router.get('/meteo/:regionId', weather.forecast);
 // Synchronisation avec le téléphone
 router.post('/sync/push', sync.push);
 router.get('/sync/pull', sync.pull);
+
+// Administration (site web) : la connexion est publique mais très limitée,
+// le reste exige un jeton (requireAdmin).
+router.post('/admin/auth/login', loginLimiter, auth.login);
+router.get('/admin/me', requireAdmin(), auth.me);
 
 module.exports = router;

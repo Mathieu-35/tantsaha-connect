@@ -1,0 +1,341 @@
+{
+  "exportedAt": "2026-11-03T04:51:17.189Z",
+  "regions": [
+    {
+      "id": "reg_analamanga",
+      "code": "ANALAMANGA",
+      "nameMg": "Analamanga",
+      "latitude": -18.91,
+      "longitude": 47.52,
+      "updatedAt": "2026-11-03T04:51:14.629Z",
+      "deletedAt": null
+    },
+    {
+      "id": "reg_atsinanana",
+      "code": "ATSINANANA",
+      "nameMg": "Atsinanana",
+      "latitude": -18.15,
+      "longitude": 49.4,
+      "updatedAt": "2026-11-03T04:51:14.696Z",
+      "deletedAt": null
+    },
+    {
+      "id": "reg_boeny",
+      "code": "BOENY",
+      "nameMg": "Boeny",
+      "latitude": -15.72,
+      "longitude": 46.32,
+      "updatedAt": "2026-11-03T04:51:14.681Z",
+      "deletedAt": null
+    },
+    {
+      "id": "reg_haute_matsiatra",
+      "code": "HAUTE_MATSIATRA",
+      "nameMg": "Haute Matsiatra",
+      "latitude": -21.45,
+      "longitude": 47.09,
+      "updatedAt": "2026-11-03T04:51:14.663Z",
+      "deletedAt": null
+    },
+    {
+      "id": "reg_vakinankaratra",
+      "code": "VAKINANKARATRA",
+      "nameMg": "Vakinankaratra",
+      "latitude": -19.87,
+      "longitude": 47.03,
+      "updatedAt": "2026-11-03T04:51:14.648Z",
+      "deletedAt": null
+    }
+  ],
+  "crops": [
+    {
+      "id": "crop_katsaka",
+      "code": "KATSAKA",
+      "nameMg": "Katsaka",
+      "icon": "corn",
+      "updatedAt": "2026-11-03T04:51:14.725Z",
+      "deletedAt": null
+    },
+    {
+      "id": "crop_mangahazo",
+      "code": "MANGAHAZO",
+      "nameMg": "Mangahazo",
+      "icon": "cassava",
+      "updatedAt": "2026-11-03T04:51:14.739Z",
+      "deletedAt": null
+    },
+    {
+      "id": "crop_tsaramaso",
+      "code": "TSARAMASO",
+      "nameMg": "Tsaramaso",
+      "icon": "bean",
+      "updatedAt": "2026-11-03T04:51:14.753Z",
+      "deletedAt": null
+    },
+    {
+      "id": "crop_vary",
+      "code": "VARY",
+      "nameMg": "Vary",
+      "icon": "rice",
+      "updatedAt": "2026-11-03T04:51:14.711Z",
+      "deletedAt": null
+    }
+  ],
+  "calendars": [
+    {
+      "id": "cal_katsaka_analamanga",
+      "cropId": "crop_katsaka",
+      "regionId": "reg_analamanga",
+      "sowStartMonth": 10,
+      "sowEndMonth": 12,
+      "harvestStartMonth": 2,
+      "harvestEndMonth": 4,
+      "updatedAt": "2026-11-03T04:51:14.786Z",
+      "deletedAt": null
+    },
+    {
+      "id": "cal_katsaka_atsinanana",
+      "cropId": "crop_katsaka",
+      "regionId": "reg_atsinanana",
+      "sowStartMonth": 10,
+      "sowEndMonth": 12,
+      "harvestStartMonth": 2,
+      "harvestEndMonth": 4,
+      "updatedAt": "2026-11-03T04:51:15.046Z",
+      "deletedAt": null
+    },
+    {
+      "id": "cal_katsaka_boeny",
+      "cropId": "crop_katsaka",
+      "regionId": "reg_boeny",
+      "sowStartMonth": 10,
+      "sowEndMonth": 12,
+      "harvestStartMonth": 2,
+      "harvestEndMonth": 4,
+      "updatedAt": "2026-11-03T04:51:14.971Z",
+      "deletedAt": null
+    },
+    {
+      "id": "cal_katsaka_haute_matsiatra",
+      "cropId": "crop_katsaka",
+      "regionId": "reg_haute_matsiatra",
+      "sowStartMonth": 10,
+      "sowEndMonth": 12,
+      "harvestStartMonth": 2,
+      "harvestEndMonth": 4,
+      "updatedAt": "2026-11-03T04:51:14.911Z",
+      "deletedAt": null
+    },
+    {
+      "id": "cal_katsaka_vakinankaratra",
+      "cropId": "crop_katsaka",
+      "regionId": "reg_vakinankaratra",
+      "sowStartMonth": 10,
+      "sowEndMonth": 12,
+      "harvestStartMonth": 2,
+      "harvestEndMonth": 4,
+      "updatedAt": "2026-11-03T04:51:14.847Z",
+      "deletedAt": null
+    },
+    {
+      "id": "cal_mangahazo_analamanga",
+      "cropId": "crop_mangahazo",
+      "regionId": "reg_analamanga",
+      "sowStartMonth": 10,
+      "sowEndMonth": 12,
+      "harvestStartMonth": 6,
+      "harvestEndMonth": 9,
+      "updatedAt": "2026-11-03T04:51:14.801Z",
+      "deletedAt": null
+    },
+    {
+      "id": "cal_mangahazo_atsinanana",
+      "cropId": "crop_mangahazo",
+      "regionId": "reg_atsinanana",
+      "sowStartMonth": 10,
+      "sowEndMonth": 12,
+      "harvestStartMonth": 6,
+      "harvestEndMonth": 9,
+      "updatedAt": "2026-11-03T04:51:15.063Z",
+      "deletedAt": null
+    },
+    {
+      "id": "cal_mangahazo_boeny",
+      "cropId": "crop_mangahazo",
+      "regionId": "reg_boeny",
+      "sowStartMonth": 10,
+      "sowEndMonth": 12,
+      "harvestStartMonth": 6,
+      "harvestEndMonth": 9,
+      "updatedAt": "2026-11-03T04:51:14.986Z",
+      "deletedAt": null
+    },
+    {
+      "id": "cal_mangahazo_haute_matsiatra",
+      "cropId": "crop_mangahazo",
+      "regionId": "reg_haute_matsiatra",
+      "sowStartMonth": 10,
+      "sowEndMonth": 12,
+      "harvestStartMonth": 6,
+      "harvestEndMonth": 9,
+      "updatedAt": "2026-11-03T04:51:14.925Z",
+      "deletedAt": null
+    },
+    {
+      "id": "cal_mangahazo_vakinankaratra",
+      "cropId": "crop_mangahazo",
+      "regionId": "reg_vakinankaratra",
+      "sowStartMonth": 10,
+      "sowEndMonth": 12,
+      "harvestStartMonth": 6,
+      "harvestEndMonth": 9,
+      "updatedAt": "2026-11-03T04:51:14.862Z",
+      "deletedAt": null
+    },
+    {
+      "id": "cal_tsaramaso_analamanga",
+      "cropId": "crop_tsaramaso",
+      "regionId": "reg_analamanga",
+      "sowStartMonth": 3,
+      "sowEndMonth": 5,
+      "harvestStartMonth": 7,
+      "harvestEndMonth": 8,
+      "updatedAt": "2026-11-03T04:51:14.817Z",
+      "deletedAt": null
+    },
+    {
+      "id": "cal_tsaramaso_atsinanana",
+      "cropId": "crop_tsaramaso",
+      "regionId": "reg_atsinanana",
+      "sowStartMonth": 3,
+      "sowEndMonth": 5,
+      "harvestStartMonth": 7,
+      "harvestEndMonth": 8,
+      "updatedAt": "2026-11-03T04:51:15.079Z",
+      "deletedAt": null
+    },
+    {
+      "id": "cal_tsaramaso_boeny",
+      "cropId": "crop_tsaramaso",
+      "regionId": "reg_boeny",
+      "sowStartMonth": 3,
+      "sowEndMonth": 5,
+      "harvestStartMonth": 7,
+      "harvestEndMonth": 8,
+      "updatedAt": "2026-11-03T04:51:15.015Z",
+      "deletedAt": null
+    },
+    {
+      "id": "cal_tsaramaso_haute_matsiatra",
+      "cropId": "crop_tsaramaso",
+      "regionId": "reg_haute_matsiatra",
+      "sowStartMonth": 3,
+      "sowEndMonth": 5,
+      "harvestStartMonth": 7,
+      "harvestEndMonth": 8,
+      "updatedAt": "2026-11-03T04:51:14.940Z",
+      "deletedAt": null
+    },
+    {
+      "id": "cal_tsaramaso_vakinankaratra",
+      "cropId": "crop_tsaramaso",
+      "regionId": "reg_vakinankaratra",
+      "sowStartMonth": 3,
+      "sowEndMonth": 5,
+      "harvestStartMonth": 7,
+      "harvestEndMonth": 8,
+      "updatedAt": "2026-11-03T04:51:14.878Z",
+      "deletedAt": null
+    },
+    {
+      "id": "cal_vary_analamanga",
+      "cropId": "crop_vary",
+      "regionId": "reg_analamanga",
+      "sowStartMonth": 10,
+      "sowEndMonth": 12,
+      "harvestStartMonth": 3,
+      "harvestEndMonth": 5,
+      "updatedAt": "2026-11-03T04:51:14.770Z",
+      "deletedAt": null
+    },
+    {
+      "id": "cal_vary_atsinanana",
+      "cropId": "crop_vary",
+      "regionId": "reg_atsinanana",
+      "sowStartMonth": 10,
+      "sowEndMonth": 12,
+      "harvestStartMonth": 3,
+      "harvestEndMonth": 5,
+      "updatedAt": "2026-11-03T04:51:15.030Z",
+      "deletedAt": null
+    },
+    {
+      "id": "cal_vary_boeny",
+      "cropId": "crop_vary",
+      "regionId": "reg_boeny",
+      "sowStartMonth": 10,
+      "sowEndMonth": 12,
+      "harvestStartMonth": 3,
+      "harvestEndMonth": 5,
+      "updatedAt": "2026-11-03T04:51:14.955Z",
+      "deletedAt": null
+    },
+    {
+      "id": "cal_vary_haute_matsiatra",
+      "cropId": "crop_vary",
+      "regionId": "reg_haute_matsiatra",
+      "sowStartMonth": 10,
+      "sowEndMonth": 12,
+      "harvestStartMonth": 3,
+      "harvestEndMonth": 5,
+      "updatedAt": "2026-11-03T04:51:14.892Z",
+      "deletedAt": null
+    },
+    {
+      "id": "cal_vary_vakinankaratra",
+      "cropId": "crop_vary",
+      "regionId": "reg_vakinankaratra",
+      "sowStartMonth": 10,
+      "sowEndMonth": 12,
+      "harvestStartMonth": 3,
+      "harvestEndMonth": 5,
+      "updatedAt": "2026-11-03T04:51:14.832Z",
+      "deletedAt": null
+    }
+  ],
+  "advices": [
+    {
+      "id": "adv_pest_general",
+      "code": "PEST_GENERAL",
+      "cropId": null,
+      "topic": "PEST",
+      "titleMg": "Fiadiana amin’ny bibikely",
+      "textMg": "Jereo isan’andro ny voly. Raha misy bibikely, esory avy hatrany ary angatahy torohevitra.",
+      "audioFile": "pest_general.mp3",
+      "updatedAt": "2026-11-03T04:51:15.094Z",
+      "deletedAt": null
+    },
+    {
+      "id": "adv_sowing_rain",
+      "code": "SOWING_RAIN",
+      "cropId": null,
+      "topic": "SOWING",
+      "titleMg": "Mamafy rehefa avy orana",
+      "textMg": "Andraso ny orana tsara vao mamafy, mba hahavita ny voa.",
+      "audioFile": "sowing_rain.mp3",
+      "updatedAt": "2026-11-03T04:51:15.106Z",
+      "deletedAt": null
+    },
+    {
+      "id": "adv_weather_storm",
+      "code": "WEATHER_STORM",
+      "cropId": null,
+      "topic": "WEATHER",
+      "titleMg": "Rehefa misy tafio-drivotra",
+      "textMg": "Aza miasa any an-tsaha rehefa misy tafio-drivotra na kotrokorana.",
+      "audioFile": "weather_storm.mp3",
+      "updatedAt": "2026-11-03T04:51:15.118Z",
+      "deletedAt": null
+    }
+  ]
+}

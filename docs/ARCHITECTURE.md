@@ -135,54 +135,54 @@ erDiagram
   Crop   ||--o{ Observation : "concerne (facultatif)"
 
   Region {
-    int id PK
+    string id PK "stable : reg_analamanga"
     string code UK
     string nameMg
     float latitude
     float longitude
     datetime updatedAt
-    datetime deletedAt "à ajouter"
+    datetime deletedAt "suppression douce"
   }
   Crop {
-    int id PK
+    string id PK "stable : crop_vary"
     string code UK
     string nameMg
     string icon
     datetime updatedAt
-    datetime deletedAt "à ajouter"
+    datetime deletedAt "suppression douce"
   }
   CropCalendar {
-    int id PK
-    int cropId FK
-    int regionId FK
+    string id PK "stable : cal_vary_boeny"
+    string cropId FK
+    string regionId FK
     int sowStartMonth
     int sowEndMonth
     int harvestStartMonth
     int harvestEndMonth
     datetime updatedAt
-    datetime deletedAt "à ajouter"
+    datetime deletedAt "suppression douce"
   }
   Advice {
-    int id PK
+    string id PK "stable : adv_pest_general"
     string code UK
-    int cropId FK "facultatif"
+    string cropId FK "facultatif"
     string topic
     string titleMg
     string textMg
     string audioFile "facultatif"
     datetime updatedAt
-    datetime deletedAt "à ajouter"
+    datetime deletedAt "suppression douce"
   }
   Device {
     string id PK "UUID créé par le téléphone"
-    int regionId FK
+    string regionId FK "facultatif"
     datetime createdAt
     datetime lastSeenAt
   }
   Observation {
     string id PK "UUID créé par le téléphone"
     string deviceId FK
-    int cropId FK "facultatif"
+    string cropId FK "facultatif"
     string type "RAIN, PEST, PLANTING, HARVEST"
     date observedOn
     float value "facultatif"
@@ -192,12 +192,12 @@ erDiagram
     datetime deletedAt "suppression douce"
   }
   WeatherCache {
-    int regionId PK
+    string regionId PK
     string data "JSON texte"
     datetime fetchedAt
   }
   AdminUser {
-    int id PK
+    string id PK "cuid"
     string email UK
     string passwordHash "jamais le mot de passe en clair"
     string role "ADMIN, AGRONOME"
@@ -205,8 +205,9 @@ erDiagram
   }
 ```
 
-- `AdminUser` est **nouveau** (fichiers `auth.*`). Le mot de passe est transformé par `bcrypt` : même la personne qui lit la base ne peut pas le retrouver.
-- `deletedAt` est à **ajouter** aux 4 tables de référence : sinon, quand un admin supprime un conseil, les téléphones qui l'ont déjà ne le sauront jamais.
+- `AdminUser` (fichiers `auth.*`) : le mot de passe est transformé par `bcrypt` : même la personne qui lit la base ne peut pas le retrouver.
+- `deletedAt` sur les 4 tables de référence : quand un admin supprime un conseil, la ligne reste en base avec une date de suppression, et les téléphones l'apprennent à leur prochaine synchro.
+- **Identifiants stables** : les données de départ ont des identifiants fixés dans `seed.js` (`reg_…`, `crop_…`, `cal_…`, `adv_…`). Sans cela, l'identifiant d'une culture serait différent dans chaque base (développement, production) et dans le `seed.json` embarqué : le téléphone parlerait d'une culture que le serveur ne connaîtrait pas.
 - Pas de `enum` ni de type `Json` Prisma : incompatibles avec SQLite. `type` et `data` sont des textes ; on passera à de vrais types PostgreSQL plus tard si utile.
 - **Aucune donnée personnelle** (nom, numéro) n'est collectée : un `Device` n'est qu'un identifiant aléatoire.
 
@@ -228,7 +229,7 @@ Versionnée avec `PRAGMA user_version` (voir §7).
 
 | Étape | Ce qui se passe |
 |---|---|
-| **Push** | Le téléphone envoie ses observations `synced = 0`. Le serveur répond avec la liste des `id` acceptés ; le téléphone les marque `synced = 1`. |
+| **Push** | Le téléphone envoie ses observations `synced = 0`. Le serveur répond avec la liste des `id` acceptés et des `id` refusés (avec la raison) ; le téléphone les marque `synced = 1`, car un refus est définitif. |
 | **Pull** | Le téléphone demande « donne-moi ce qui a changé depuis `last_pull` » et enregistre la réponse, y compris les éléments `deletedAt`. |
 | **Quand** | Au démarrage **et** au retour du réseau (Sprint 3). Toujours en silence, jamais bloquant. |
 
@@ -264,15 +265,18 @@ Limite connue : `pull` ne renvoie **pas** les notes → pas de restauration apr�
 
 ## 9. Écart entre l'état actuel et la cible
 
-| Aujourd'hui | Cible | Sprint |
-|---|---|---|
-| Fichiers nommés `meteo.*` / `referentiel.*` / `weather.*` (mélange français-anglais) | Tout en anglais : `weather.*`, `referential.*` (fait) | 0 |
-| URL `/api/...` | `/api/v1/...` | 2 |
-| Pas de contrôle du propriétaire d'une note | `deviceId` vérifié | 2 |
-| Pas de `deletedAt` sur les références | Ajouté | 2 |
-| Pas d'`AdminUser`, ni de login | Fichiers `auth.*` (route, controller, service) | 2 |
-| SQLite mobile sans migrations | `PRAGMA user_version` | 3 |
-| Application vide au 1ᵉʳ lancement hors ligne | `seed.json` embarqué | 3 |
-| Synchro au démarrage seulement | + au retour du réseau | 3 |
-| Pas de `web/` | Site admin React | 8 |
-| Un dépôt Git imbriqué dans `mobile/` | Un seul dépôt à la racine | 0 |
+| Point | Cible | Sprint | État |
+|---|---|---|---|
+| Un dépôt Git imbriqué dans `mobile/` | Un seul dépôt à la racine | 0 | ✅ |
+| Fichiers `meteo.*` / `referentiel.*` / `weather.*` mélangés | Tout en anglais | 0 | ✅ |
+| URL `/api/...` | `/api/v1/...` | 2 | ✅ |
+| Pas de contrôle du propriétaire d'une note | `deviceId` vérifié | 2 | ✅ |
+| Pas de `deletedAt` sur les références | Ajouté + annoncé par `pull` | 2 | ✅ |
+| Pas d'`AdminUser`, ni de login | Fichiers `auth.*`, bcrypt, JWT | 2 | ✅ |
+| Pas de limitation de débit | 120/min ; 5 connexions/min | 2 | ✅ |
+| Identifiants au hasard dans le seed | Identifiants stables | 2 | ✅ |
+| Pas d'export des données embarquées | `npm run export:seed` | 2 | ✅ |
+| SQLite mobile sans migrations | `PRAGMA user_version` | 3 | ⬜ |
+| Application vide au 1ᵉʳ lancement hors ligne | `seed.json` chargé au 1ᵉʳ lancement | 3 | ⬜ (fichier généré, pas encore lu) |
+| Synchro au démarrage seulement | + au retour du réseau | 3 | ⬜ |
+| Pas de `web/` | Site admin React | 8 | ⬜ |

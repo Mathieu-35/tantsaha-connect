@@ -72,16 +72,19 @@ Développeur seul, sans date imposée : un sprint dure le temps qu'il faut.
 **Objectif** : sécuriser le serveur et l'amener à l'API décrite dans [API.md](API.md), en gardant son architecture classique ([ARCHITECTURE.md](ARCHITECTURE.md)).
 **Pourquoi** : tout le reste (mobile, web) s'appuie sur le serveur. Corriger ses défauts maintenant évite de les répercuter partout.
 
-- [ ] **Décision** : combien de régions et de cultures au lancement ?
-- [ ] Ajout des fichiers `auth.*` (et `stats.*` prévus au Sprint 8) dans `routes/`, `controllers/`, `services/` : **pas de réorganisation**, on garde le monolithe classique (ADR 0011)
-- [ ] Routes sous **`/api/v1`** ; format d'erreur unique
-- [ ] `sync/push` : vérification du propriétaire (`deviceId`), réponse `accepted` / `rejected`, limite de 200 notes
-- [ ] `sync/pull` : renvoie `serverTime` et les éléments supprimés ; **`deletedAt`** sur les 4 tables de référence (migration Prisma)
-- [ ] Limitation de débit (`express-rate-limit`) et taille maximale
-- [ ] Table **`AdminUser`**, mot de passe haché (bcrypt), `POST /admin/auth/login`, `GET /admin/me`, script `npm run admin:create`
-- [ ] Script **`npm run export:seed`** qui écrit `seed.json` (utilisé au Sprint 3)
-- [ ] Vérifier le format réel de `/meteo/:regionId` et l'aligner avec API.md
-- [ ] Vérification complète à la main (appels `curl`, `GET /api/v1/health`)
+- [x] **Décision** : on garde les 5 régions et 4 cultures actuelles (ajout possible plus tard par le site web, sans code)
+- [x] Ajout des fichiers `auth.*` dans `routes/`, `controllers/`, `services/` : **pas de réorganisation**, on garde le monolithe classique (ADR 0011). (`stats.*` arrive au Sprint 8.)
+- [x] Routes sous **`/api/v1`** ; format d'erreur unique `{ error: { code, message } }`
+- [x] `sync/push` : vérification du propriétaire (`deviceId`), réponse `accepted` / `rejected` note par note, limite de 200 notes
+- [x] `sync/pull` : renvoie `serverTime` et les suppressions ; **`deletedAt`** sur les 4 tables de référence (migration Prisma)
+- [x] Limitation de débit (`express-rate-limit`) et taille maximale (256 ko)
+- [x] Table **`AdminUser`**, mot de passe haché (bcrypt), `POST /admin/auth/login`, `GET /admin/me`, script `npm run admin:create`
+- [x] Script **`npm run export:seed`** qui écrit `mobile/src/data/seed.json` (utilisé au Sprint 3)
+- [x] Format réel de `/meteo/:regionId` aligné avec API.md
+- [x] **Identifiants stables** pour les données de départ (ajouté : sans cela le `seed.json` embarqué et la production divergeraient)
+- [x] Vérification automatique complète sur une base jetable : **46 contrôles réussis**
+- [ ] **Vous** : réinitialisez votre base de développement (`npm run db:reset`) pour qu'elle reçoive les identifiants stables, puis relancez le serveur et ouvrez `/api/v1/health`
+- [ ] **Vous** : créez votre compte admin (`npm run admin:create`)
 
 💡 *Ce que vous apprenez* : comment une route, un controller et un service coopèrent pour une seule demande ; qu'est-ce qu'une migration Prisma ; hachage de mot de passe (pourquoi on ne stocke jamais le mot de passe) ; JWT ; limitation de débit.
 

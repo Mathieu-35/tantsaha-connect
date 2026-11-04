@@ -26,7 +26,8 @@ model Region {
   nameMg    String                  // nom affiché en malagasy
   latitude  Float                   // position pour la météo
   longitude Float
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?                // supprimé "en douceur" : les téléphones apprennent le retrait
 
   calendars CropCalendar[]
   weather   WeatherCache?
@@ -38,7 +39,8 @@ model Crop {
   code      String   @unique        // ex : "VARY"
   nameMg    String                  // ex : "Vary"
   icon      String                  // nom du pictogramme utilisé dans l'application
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
   calendars    CropCalendar[]
   advices      Advice[]
@@ -55,7 +57,8 @@ model CropCalendar {
   sowEndMonth       Int
   harvestStartMonth Int
   harvestEndMonth   Int
-  updatedAt         DateTime @updatedAt
+  updatedAt         DateTime  @updatedAt
+  deletedAt         DateTime?
 
   crop   Crop   @relation(fields: [cropId], references: [id])
   region Region @relation(fields: [regionId], references: [id])
@@ -73,7 +76,8 @@ model Advice {
   titleMg   String
   textMg    String
   audioFile String?                 // nom du fichier audio, ex : "criquets.mp3"
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
   crop Crop? @relation(fields: [cropId], references: [id])
 }
@@ -110,6 +114,19 @@ model Observation {
   crop   Crop?  @relation(fields: [cropId], references: [id])
 
   @@index([deviceId, updatedAt])
+}
+
+// ---------- ADMINISTRATION (site web) ----------
+
+// Une personne qui peut se connecter au site d'administration (agronome, administrateur).
+// Les paysans, eux, n'ont PAS de compte. On ne stocke JAMAIS le mot de passe lui-même,
+// seulement son "empreinte" (hash bcrypt) : impossible à retransformer en mot de passe.
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         String   @default("AGRONOME")  // "ADMIN" (tout) ou "AGRONOME" (données agricoles)
+  createdAt    DateTime @default(now())
 }
 
 // ---------- CACHE ----------

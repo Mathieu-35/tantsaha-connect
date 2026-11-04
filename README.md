@@ -34,7 +34,11 @@ npm run db:seed
 npm run dev
 ```
 
-Vérification : ouvrez <http://localhost:3000/api/health> dans un navigateur. Vous devez voir `{"status":"ok",...}`.
+Avant `npm run dev`, ouvrez `server/.env` et remplacez `JWT_SECRET` par une clé aléatoire d'au moins 32 caractères (la commande pour en générer une est écrite dans le fichier). Sans elle, le serveur refuse de démarrer.
+
+Vérification : ouvrez <http://localhost:3000/api/v1/health> dans un navigateur. Vous devez voir `{"status":"ok",...}`.
+
+Pour se connecter au futur site d'administration, créez un compte : `npm run admin:create` (le script pose les questions).
 
 ### 2. Application mobile
 
@@ -59,17 +63,24 @@ Sur l'iPhone : installez **Expo Go** (App Store), puis scannez le QR code avec l
 | server | `npm run dev` | Lance le serveur (redémarre à chaque modification) |
 | server | `npm run db:seed` | Remplit la base avec les données de départ |
 | server | `npm run db:studio` | Ouvre une page pour voir le contenu de la base |
+| server | `npm run db:reset` | **Efface** la base de développement, la recrée et la remplit (demande confirmation) |
+| server | `npm run admin:create` | Crée un compte pour le site d'administration |
+| server | `npm run export:seed` | Écrit `mobile/src/data/seed.json` (données embarquées dans l'application) |
 | mobile | `npx expo start` | Lance l'application |
 
 ## API du serveur
 
 | Méthode | Adresse | Rôle |
 |---|---|---|
-| GET | `/api/health` | Le serveur est-il vivant ? |
-| GET | `/api/regions`, `/api/cultures`, `/api/calendrier`, `/api/conseils` | Données de référence |
-| GET | `/api/meteo/:regionId` | Prévisions sur 5 jours (avec cache) |
-| POST | `/api/sync/push` | Le téléphone envoie ses observations |
-| GET | `/api/sync/pull?since=...` | Le téléphone récupère les données modifiées |
+| GET | `/api/v1/health` | Le serveur est-il vivant ? |
+| GET | `/api/v1/regions`, `/cultures`, `/calendrier`, `/conseils` | Données de référence |
+| GET | `/api/v1/meteo/:regionId` | Prévisions sur 5 jours (avec cache) |
+| POST | `/api/v1/sync/push` | Le téléphone envoie ses observations |
+| GET | `/api/v1/sync/pull?since=...` | Le téléphone récupère les données modifiées |
+| POST | `/api/v1/admin/auth/login` | Connexion au site d'administration |
+| GET | `/api/v1/admin/me` | Qui suis-je ? (jeton requis) |
+
+Détail complet : [docs/API.md](docs/API.md).
 
 ## Feuille de route
 

@@ -54,15 +54,25 @@ const advices = [
   },
 ];
 
+// IDENTIFIANTS STABLES : on fixe l'id de chaque élément de départ (ex. "crop_vary") au lieu de
+// laisser la base en inventer un au hasard. Ainsi le serveur de production et le fichier
+// seed.json embarqué dans l'application parlent des MÊMES identifiants ; sinon un téléphone
+// enverrait "culture X" et le serveur répondrait "inconnue".
+const id = (prefix, ...codes) => `${prefix}_${codes.join('_').toLowerCase()}`;
+
 async function main() {
   const regionRows = [];
   for (const r of regions) {
-    regionRows.push(await prisma.region.upsert({ where: { code: r.code }, create: r, update: r }));
+    regionRows.push(await prisma.region.upsert({
+      where: { code: r.code }, create: { id: id('reg', r.code), ...r }, update: r,
+    }));
   }
 
   const cropRows = {};
   for (const c of crops) {
-    cropRows[c.code] = await prisma.crop.upsert({ where: { code: c.code }, create: c, update: c });
+    cropRows[c.code] = await prisma.crop.upsert({
+      where: { code: c.code }, create: { id: id('crop', c.code), ...c }, update: c,
+    });
   }
 
   for (const region of regionRows) {
@@ -70,14 +80,14 @@ async function main() {
       const cropId = cropRows[cropCode].id;
       await prisma.cropCalendar.upsert({
         where: { cropId_regionId: { cropId, regionId: region.id } },
-        create: { cropId, regionId: region.id, ...months },
+        create: { id: id('cal', cropCode, region.code), cropId, regionId: region.id, ...months },
         update: months,
       });
     }
   }
 
   for (const a of advices) {
-    await prisma.advice.upsert({ where: { code: a.code }, create: a, update: a });
+    await prisma.advice.upsert({ where: { code: a.code }, create: { id: id('adv', a.code), ...a }, update: a });
   }
 
   console.log('Base remplie : régions, cultures, calendrier, conseils.');
