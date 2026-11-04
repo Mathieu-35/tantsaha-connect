@@ -1,5 +1,5 @@
 // SYNCHRONISATION : échange avec le serveur QUAND il y a du réseau.
-// À appeler au démarrage de l'application, et plus tard quand le réseau revient.
+// Appelée au démarrage, et automatiquement quand le réseau revient.
 // Elle ne plante jamais : sans réseau elle renvoie simplement { ok: false }.
 
 import { api } from './api';
@@ -9,6 +9,9 @@ import { saveReference } from '../db/referenceRepository';
 
 export async function syncAll() {
   try {
+    const deviceId = await getDeviceId();
+    const regionId = await getMeta('region_id');
+
     // 1. ENVOYER nos observations pas encore envoyées
     const rows = await listUnsynced();
     if (rows.length > 0) {
@@ -23,7 +26,7 @@ export async function syncAll() {
         updatedAt: r.updated_at,
         deletedAt: r.deleted_at,
       }));
-      await api.push(await getDeviceId(), observations);
+      await api.push(deviceId, regionId, observations);
       await markSynced(rows.map((r) => r.id));
     }
 
@@ -35,7 +38,6 @@ export async function syncAll() {
 
     return { ok: true };
   } catch (error) {
-    // Pas de réseau ou serveur éteint : ce n'est pas grave, on réessaiera plus tard.
     return { ok: false, error: error.message };
   }
 }

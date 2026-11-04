@@ -2,7 +2,7 @@
 // Jamais de texte écrit "en dur" dans les écrans : on les prend dans ce fichier.
 // Avantage : pour corriger un mot, un seul endroit à modifier (ou ajouter une autre langue).
 //
-// ⚠️ À faire relire par des locuteurs natifs, surtout les mots pour les paysans.
+// À faire relire par des locuteurs natifs, surtout les mots pour les paysans.
 
 export const t = {
   appName: 'Tantsaha Connect',
@@ -19,4 +19,7 @@ export const t = {
   online: 'Misy internet',
   offline: 'Tsy misy internet',
   saved: 'Voatahiry',
+
+  regionQuestion: 'Aiza ianao?',
+  syncing: 'Mampitovy...',
 };

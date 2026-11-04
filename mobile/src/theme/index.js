@@ -1,25 +1,28 @@
 // THÈME : toutes les couleurs et tailles de l'application au même endroit.
-// Pour changer l'apparence, on modifie ici et tout l'application suit.
+// Pour changer l'apparence, on modifie ici et toute l'application suit.
 //
+// Palette : #2A7C13 · #76C457 · #FFF8CF · #FBE6C2
+// Contrastes vérifiés (WCAG AA) — voir docs/DESIGN.md pour le tableau complet.
 // Règle culturelle (cahier des charges C4) : le ROUGE est réservé au danger / à l'interdit.
 
 export const colors = {
-  primary: '#2e7d32',      // vert : validation, "ok", barre du haut
-  primaryLight: '#e8f5e9',
-  meteo: '#1565c0',        // bleu
-  alertes: '#ef6c00',      // orange (pas rouge !)
-  journal: '#6d4c41',      // brun
-  conseils: '#f9a825',     // jaune
-  danger: '#c62828',       // rouge : uniquement danger / interdit
-  text: '#1b1b1b',
-  textOnDark: '#ffffff',
-  background: '#fafafa',
+  primary: '#2A7C13',
+  primaryPress: '#1E5A0E',
+  accent: '#76C457',
+  background: '#FFF8CF',
+  surface: '#FBE6C2',
+  text: '#1F2A17',
+  textOnPrimary: '#FFFFFF',
+  danger: '#C62828',
 };
 
 export const sizes = {
-  text: 20,            // grand texte pour lecture facile
-  title: 24,
-  minTouch: 56,        // taille minimale d'un bouton (le minimum recommandé est 48)
-  radius: 20,
-  gap: 16,
+  textBody: 18,
+  textLarge: 22,
+  title: 28,
+  minTouch: 48,
+  radius: 16,
+  radiusPill: 999,
+  gap: 12,
+  padding: 12,
 };

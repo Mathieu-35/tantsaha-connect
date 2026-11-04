@@ -1,15 +1,16 @@
-// ÉCRAN D'ACCUEIL : 4 grandes tuiles, compréhensibles sans lire (icône + couleur + un mot).
+// ÉCRAN D'ACCUEIL : 4 grandes bandes pleine largeur (icône + mot).
+// Pleine largeur et non grille 2×2 pour que « Fampitandremana » (15 lettres) ne soit jamais coupé.
+// Chaque bande a une bordure verte et un fond beige (surface), lisible sans effort.
 
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors, sizes } from '../theme';
 import { t } from '../i18n/mg';
 
-// Les 4 tuiles : on les décrit dans un tableau, puis on les dessine avec .map()
 const TILES = [
-  { screen: 'Meteo', label: t.meteo, icon: '⛅', color: colors.meteo },
-  { screen: 'Alertes', label: t.alertes, icon: '🔔', color: colors.alertes },
-  { screen: 'Journal', label: t.journal, icon: '📒', color: colors.journal },
-  { screen: 'Conseils', label: t.conseils, icon: '🌱', color: colors.conseils, darkText: true },
+  { screen: 'Meteo', label: t.meteo, icon: '⛅' },
+  { screen: 'Alertes', label: t.alertes, icon: '🔔' },
+  { screen: 'Journal', label: t.journal, icon: '📒' },
+  { screen: 'Conseils', label: t.conseils, icon: '🌱' },
 ];
 
 export default function HomeScreen({ navigation }) {
@@ -23,13 +24,11 @@ export default function HomeScreen({ navigation }) {
           accessibilityLabel={tile.label}
           style={({ pressed }) => [
             styles.tile,
-            { backgroundColor: tile.color, transform: [{ scale: pressed ? 0.96 : 1 }] },
+            pressed && styles.tilePressed,
           ]}
         >
           <Text style={styles.icon}>{tile.icon}</Text>
-          <Text style={[styles.label, { color: tile.darkText ? colors.text : colors.textOnDark }]}>
-            {tile.label}
-          </Text>
+          <Text style={styles.label}>{tile.label}</Text>
         </Pressable>
       ))}
     </View>
@@ -39,20 +38,31 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',          // les tuiles passent à la ligne : 2 par rangée
+    padding: sizes.padding,
     gap: sizes.gap,
-    padding: sizes.gap,
     backgroundColor: colors.background,
   },
   tile: {
-    width: '47%',
-    aspectRatio: 1,
-    borderRadius: sizes.radius,
+    flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
+    gap: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderWidth: 3,
+    borderColor: colors.primary,
+    borderRadius: sizes.radius + 4,
+    backgroundColor: colors.surface,
   },
-  icon: { fontSize: 64 },
-  label: { fontSize: 18, fontWeight: 'bold' },
+  tilePressed: {
+    backgroundColor: colors.accent,
+  },
+  icon: {
+    fontSize: 48,
+  },
+  label: {
+    fontSize: sizes.textLarge,
+    fontWeight: '800',
+    color: colors.text,
+  },
 });

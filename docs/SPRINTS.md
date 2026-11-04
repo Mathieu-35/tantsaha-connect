@@ -83,8 +83,8 @@ Développeur seul, sans date imposée : un sprint dure le temps qu'il faut.
 - [x] Format réel de `/meteo/:regionId` aligné avec API.md
 - [x] **Identifiants stables** pour les données de départ (ajouté : sans cela le `seed.json` embarqué et la production divergeraient)
 - [x] Vérification automatique complète sur une base jetable : **46 contrôles réussis**
-- [ ] **Vous** : réinitialisez votre base de développement (`npm run db:reset`) pour qu'elle reçoive les identifiants stables, puis relancez le serveur et ouvrez `/api/v1/health`
-- [ ] **Vous** : créez votre compte admin (`npm run admin:create`)
+- [x] **Vous** : réinitialisez votre base de développement (`npm run db:reset`) pour qu'elle reçoive les identifiants stables, puis relancez le serveur et ouvrez `/api/v1/health`
+- [x] **Vous** : créez votre compte admin (`npm run admin:create`)
 
 💡 *Ce que vous apprenez* : comment une route, un controller et un service coopèrent pour une seule demande ; qu'est-ce qu'une migration Prisma ; hachage de mot de passe (pourquoi on ne stocke jamais le mot de passe) ; JWT ; limitation de débit.
 
@@ -98,14 +98,14 @@ Développeur seul, sans date imposée : un sprint dure le temps qu'il faut.
 **Objectif** : une application qui **démarre sans internet dès l'installation**, aux couleurs finales.
 **Pourquoi** : c'est la contrainte n°1 du sujet. Les écrans des sprints suivants se construiront sur ce socle.
 
-- [ ] **Thème** : `theme/index.js` avec la palette finale ; composants communs (tuile, bouton, barre du haut avec Hiverina / Henoy, bandeau hors ligne)
-- [ ] **Migrations SQLite** avec `PRAGMA user_version`
-- [ ] **Données embarquées** : `seed.json` chargé au premier lancement
-- [ ] Écran **Choix de la région** au premier lancement (une question, gros boutons)
-- [ ] **Accueil** refait selon la maquette (4 tuiles)
-- [ ] **Bandeau hors ligne** visible partout
-- [ ] **Synchro au retour du réseau** (pas seulement au démarrage) ; passage de l'URL en `/api/v1`
-- [ ] Test sur l'iPhone **en mode avion** juste après installation propre
+- [x] **Thème** : `theme/index.js` avec la palette finale ; composants communs (tuile, bouton, barre du haut avec Hiverina / Henoy, bandeau hors ligne)
+- [x] **Migrations SQLite** avec `PRAGMA user_version`
+- [x] **Données embarquées** : `seed.json` chargé au premier lancement
+- [x] Écran **Choix de la région** au premier lancement (une question, gros boutons)
+- [x] **Accueil** refait selon la maquette (4 bandes pleine largeur)
+- [x] **Bandeau hors ligne** visible partout (avec gestion de l'encoche)
+- [x] **Synchro au retour du réseau** (pas seulement au démarrage) ; passage de l'URL en `/api/v1`
+- [x] Test sur l'iPhone **en mode avion** : bandeau visible, application fonctionnelle
 - [ ] 📝 Justification : compatibilité, visibilité de l'état du système, guidage
 
 💡 *Ce que vous apprenez* : pourquoi un thème central ; comment une migration SQLite protège les données des téléphones déjà installés ; ce que fait un « repository » ; détecter le réseau.

@@ -14,5 +14,5 @@ export default function PlaceholderScreen({ route }) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background },
-  text: { fontSize: sizes.text, color: colors.text },
+  text: { fontSize: sizes.textBody, color: colors.text },
 });

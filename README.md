@@ -88,10 +88,10 @@ Le détail est dans [docs/SPRINTS.md](docs/SPRINTS.md). On ne passe au sprint su
 
 - [x] Cahier des charges, PRD, architecture, API, ADR, charte de design
 - [x] Première version du serveur et du socle mobile (à reprendre aux Sprints 2 et 3)
-- [ ] Sprint 0 — GitHub et dépôt unique
-- [ ] Sprint 1 — Wireframes et maquettes (mobile + web)
-- [ ] Sprint 2 — Serveur sécurisé et API v1
-- [ ] Sprint 3 — Socle mobile (thème, données embarquées, hors ligne)
+- [x] Sprint 0 — GitHub et dépôt unique
+- [x] Sprint 1 — Wireframes et maquettes (mobile + web)
+- [x] Sprint 2 — Serveur sécurisé et API v1
+- [x] Sprint 3 — Socle mobile (thème, données embarquées, hors ligne)
 - [ ] Sprint 4 — Météo
 - [ ] Sprint 5 — Journal de culture
 - [ ] Sprint 6 — Alertes

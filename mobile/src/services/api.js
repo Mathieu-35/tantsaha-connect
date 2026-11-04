@@ -8,7 +8,7 @@ async function request(path, options) {
   const response = await fetch(`${API_URL}${path}`, {
     ...options,
     headers: { 'Content-Type': 'application/json' },
-    signal: AbortSignal.timeout(10000), // abandonne après 10 s (réseau lent = fréquent)
+    signal: AbortSignal.timeout(10000),
   });
   if (!response.ok) throw new Error(`Erreur serveur ${response.status}`);
   return response.json();
@@ -16,7 +16,10 @@ async function request(path, options) {
 
 export const api = {
   pull: (since) => request(`/sync/pull${since ? `?since=${encodeURIComponent(since)}` : ''}`),
-  push: (deviceId, observations) =>
-    request('/sync/push', { method: 'POST', body: JSON.stringify({ deviceId, observations }) }),
+  push: (deviceId, regionId, observations) =>
+    request('/sync/push', {
+      method: 'POST',
+      body: JSON.stringify({ deviceId, regionId, observations }),
+    }),
   weather: (regionId) => request(`/meteo/${regionId}`),
 };
