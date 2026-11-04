@@ -64,6 +64,18 @@ Pour tester sans toucher à `dev.db` : lancer le serveur avec `DATABASE_URL` poi
 - Les sprints se font **dans l'ordre** ; on ne commence pas le suivant tant que la « définition de terminé » du précédent n'est pas remplie. À chaque sprint de code, expliquer à l'utilisateur (débutant) ce qu'on fait et pourquoi.
 - `prisma/seed.js` contient des données d'**exemple non validées** (mois de semis, textes malagasy) : ne pas les présenter comme agronomiquement correctes.
 
+## Préférences du développeur
+
+- **Débutant en programmation** : expliquer simplement ce qu'on fait et pourquoi, surtout pour le code. Pas de jargon sans explication.
+- Communiquer en **français**.
+- Travaille **seul, sans deadline**.
+- Préfère des **instructions directes étape par étape** plutôt que des choix ouverts.
+- Messages de commit en **anglais** (Conventional Commits) mais toujours donner la **traduction française** à côté.
+- À la fin de chaque sprint : donner les **commandes git exactes** prêtes à copier (`git add`, `commit`, `push`, `tag`).
+- Vérifier `git status` avant chaque commit pour s'assurer qu'aucun `.env` ou `dev.db` n'est inclus.
+- Test mobile sur **iPhone XS** via `npx expo start --tunnel` (le mode LAN est bloqué par le pare-feu).
+- Compte GitHub : `Mathieu-35` (dépôt privé `tantsaha-connect`). Compte Expo : `sahiniaina`.
+
 ## Documentation
 
 - `README.md`, `Cahier_des_charges.md` (exigences fonctionnelles, ergonomie, contraintes), `docs/PRD.md` (priorités MoSCoW), `docs/ARCHITECTURE.md` (modules, schéma de base), `docs/API.md`, `docs/adr/` (décisions), `docs/DESIGN.md` (palette `#2A7C13 #76C457 #FFF8CF #FBE6C2`, contrastes), `docs/SPRINTS.md`, `docs/GIT_GUIDE.md`, `docs/HEBERGEMENT.md`.
