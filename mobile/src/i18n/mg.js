@@ -80,4 +80,14 @@ export const t = {
     cassava: '🥔',
     bean: '🫘',
   },
+
+  // Alertes
+  alertsEmpty: 'Tsy misy fampitandremana ankehitriny.',
+  alertTitle: { SOW: 'Mamafy', HARVEST: 'Mijinja', STORM: 'Tafio-drivotra' },
+  alertEmoji: { SOW: '🌱', HARVEST: '🧺', STORM: '⛈️' },
+  alertStormBody: 'Tafio-drivotra ho avy. Mitandrema!',
+  monthNames: [
+    'Janoary', 'Febroary', 'Martsa', 'Aprily', 'Mey', 'Jona',
+    'Jolay', 'Aogositra', 'Septambra', 'Oktobra', 'Novambra', 'Desambra',
+  ],
 };

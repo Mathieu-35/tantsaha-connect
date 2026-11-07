@@ -27,7 +27,7 @@ npm install
 npx expo start             # Expo Go ; `npm run android|ios|web` aussi
 ```
 
-Aucun script de test, de lint, de typecheck ni de CI n'existe. Ne pas en inventer :
+Seul test existant : le moteur d'alertes, avec l'outil intégré à Node (`cd mobile && node --test src/domain/alertEngine.test.js`). Aucun script de test global, de lint, de typecheck ni de CI n'existe. Ne pas en inventer :
 la vérification réelle se fait en démarrant le serveur et en appelant `/api/v1/health`.
 Pour tester sans toucher à `dev.db` : lancer le serveur avec `DATABASE_URL` pointant vers une base jetable (`prisma migrate deploy` + `node prisma/seed.js`, puis `PORT` libre) et `JWT_SECRET` ≥ 32 caractères ; les variables d'environnement déjà posées priment sur `.env`.
 
@@ -55,8 +55,9 @@ Pour tester sans toucher à `dev.db` : lancer le serveur avec `DATABASE_URL` poi
 - Les UUID d'observation sont créés par le mobile (`expo-crypto`) et acceptés tels quels par le serveur.
 - **Schéma SQLite mobile sans migrations** : le DDL est inline dans `src/db/database.js`, en `CREATE TABLE IF NOT EXISTS`, et `SCHEMA_VERSION` n'est jamais lu. Modifier une table existante n'affecte pas les installations déjà faites ; prévoir une migration manuelle (`PRAGMA user_version`).
 - Le serveur renvoie du **camelCase** (`nameMg`, `cropId`), SQLite stocke du **snake_case** (`name_mg`, `crop_id`) ; le mapping se fait dans les repositories.
-- Météo et Journal ont leurs vrais écrans ; Alertes/Conseils pointent encore vers `PlaceholderScreen`. Un nouvel écran = fichier dans `src/screens/` + `Stack.Screen` dans `AppNavigator.js`.
-- Code déjà présent mais non branché : `weather_cache` (mobile), `api.weather()`, `expo-audio`, `expo-notifications`. Aucune logique d'alerte n'existe encore.
+- Météo, Journal et Alertes ont leurs vrais écrans ; Conseils pointe encore vers `PlaceholderScreen`.
+- **Alertes** : logique pure dans `mobile/src/domain/alertEngine.js` (sans import Expo, testable avec Node). `notificationService.js` efface et reprogramme toutes les notifications locales à chaque appel (au démarrage et à l'ouverture de l'écran Alertes). Heure d'envoi : `NOTIFY_HOUR`/`NOTIFY_MINUTE` dans le moteur. Les calendriers du seed sont identiques pour les 5 régions et **non validés**. Un nouvel écran = fichier dans `src/screens/` + `Stack.Screen` dans `AppNavigator.js`.
+- Code encore non branché : `expo-audio` (voix, Sprint 7).
 - L'app n'utilise que `/sync/pull`, `/sync/push` et `/meteo/:id`. Les endpoints `/regions`, `/cultures`, `/calendrier`, `/conseils` servent au site web et au débogage.
 - Prisma : `provider = "sqlite"`. Passage à PostgreSQL = changer le provider + `DATABASE_URL` ; en prod utiliser `prisma migrate deploy`, pas `migrate dev`.
 - **Un seul dépôt Git, à la racine** (ADR 0009). `.claude/` et `.env` sont ignorés : ne jamais les ajouter. Un commit n'est fait qu'à la **fin d'un sprint terminé** (voir `docs/SPRINTS.md` et `docs/GIT_GUIDE.md`).

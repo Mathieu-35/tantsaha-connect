@@ -15,6 +15,7 @@ import OfflineBanner from './src/components/OfflineBanner';
 import { getDb } from './src/db/database';
 import { loadSeedIfEmpty } from './src/db/referenceRepository';
 import { syncAll } from './src/services/syncService';
+import { refreshAlertNotifications } from './src/services/notificationService';
 import { startNetworkWatch, setOnReconnect } from './src/services/networkService';
 
 export default function App() {
@@ -32,6 +33,9 @@ export default function App() {
 
       const result = await syncAll();
       console.log('Synchronisation au démarrage :', result);
+
+      const alerts = await refreshAlertNotifications();
+      console.log('Notifications programmées :', alerts);
     }
     boot();
   }, []);

@@ -155,12 +155,12 @@ Développeur seul, sans date imposée : un sprint dure le temps qu'il faut.
 
 **Objectif** : l'application prévient le paysan au bon moment, même sans internet.
 
-- [ ] **Décision** : qui valide les calendriers agricoles ? (les valeurs actuelles sont des **exemples**)
-- [ ] **Moteur d'alertes** : fonction pure `domain/` (calendrier + date + cultures suivies → alertes)
-- [ ] Quelques **tests** du moteur (outil de test intégré à Node)
-- [ ] Écran **Alertes** (icône du geste, 1–2 mots, date ; rouge seulement pour danger)
-- [ ] **Notifications locales** programmées sur le téléphone
-- [ ] Alerte « orage annoncé » à partir de la dernière météo reçue
+- [x] **Décision** : on code avec les **exemples** (cohérents avec la saison des pluies) ; la validation par un technicien agricole se fera plus tard. **Ne pas donner l'application à de vrais paysans avant.**
+- [x] **Moteur d'alertes** : fonction pure `mobile/src/domain/alertEngine.js` (calendrier + date + météo → alertes). Toutes les cultures de la région comptent : le choix de « cultures suivies » n'existe pas encore.
+- [x] **9 tests** du moteur : `cd mobile && node --test src/domain/alertEngine.test.js`
+- [x] Écran **Alertes** (icône du geste, 1–2 mots, date ; rouge seulement pour l'orage)
+- [x] **Notifications locales** programmées sur le téléphone (07:00)
+- [x] Alerte « orage annoncé » à partir de la dernière météo reçue
 - [ ] 📝 Justification : signifiance, flexibilité, gestion des erreurs
 
 💡 *Ce que vous apprenez* : pourquoi une logique « pure » (sans écran, sans base) se teste facilement ; notifications locales vs notifications push.

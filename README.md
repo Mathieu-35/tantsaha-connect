@@ -94,7 +94,7 @@ Le détail est dans [docs/SPRINTS.md](docs/SPRINTS.md). On ne passe au sprint su
 - [x] Sprint 3 — Socle mobile (thème, données embarquées, hors ligne)
 - [x] Sprint 4 — Météo
 - [x] Sprint 5 — Journal de culture
-- [ ] Sprint 6 — Alertes
+- [x] Sprint 6 — Alertes
 - [ ] Sprint 7 — Conseils et voix malagasy
 - [ ] Sprint 8 — Site web d'administration
 - [ ] Sprint 9 — Ergonomie, tests utilisateurs, Android

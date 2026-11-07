@@ -11,6 +11,7 @@ import RegionChoiceScreen from '../screens/RegionChoiceScreen';
 import PlaceholderScreen from '../screens/PlaceholderScreen';
 import WeatherScreen from '../screens/WeatherScreen';
 import JournalScreen from '../screens/JournalScreen';
+import AlertsScreen from '../screens/AlertsScreen';
 import NewNoteScreen from '../screens/NewNoteScreen';
 import { colors, sizes } from '../theme';
 import { t } from '../i18n/mg';
@@ -52,7 +53,7 @@ export default function AppNavigator() {
         />
         <Stack.Screen name="Home" component={HomeScreen} options={{ title: t.appName, headerBackVisible: false }} />
         <Stack.Screen name="Meteo" component={WeatherScreen} options={{ title: t.meteo }} />
-        <Stack.Screen name="Alertes" component={PlaceholderScreen} options={{ title: t.alertes }} />
+        <Stack.Screen name="Alertes" component={AlertsScreen} options={{ title: t.alertes }} />
         <Stack.Screen name="Journal" component={JournalScreen} options={{ title: t.journal }} />
         <Stack.Screen name="NewNote" component={NewNoteScreen} options={{ title: t.addNote }} />
         <Stack.Screen name="Conseils" component={PlaceholderScreen} options={{ title: t.conseils }} />

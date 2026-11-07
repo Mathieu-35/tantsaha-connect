@@ -71,6 +71,18 @@ export async function listCrops() {
   return (await getDb()).getAllAsync('SELECT * FROM crops ORDER BY name_mg');
 }
 
+// Calendrier d'une région, en camelCase (le reste de l'application ne voit pas le snake_case)
+export async function listCalendars(regionId) {
+  const rows = await (await getDb()).getAllAsync('SELECT * FROM calendars WHERE region_id = ?', regionId);
+  return rows.map((r) => ({
+    cropId: r.crop_id,
+    sowStartMonth: r.sow_start_month,
+    sowEndMonth: r.sow_end_month,
+    harvestStartMonth: r.harvest_start_month,
+    harvestEndMonth: r.harvest_end_month,
+  }));
+}
+
 export async function listAdvices() {
   return (await getDb()).getAllAsync('SELECT * FROM advices ORDER BY title_mg');
 }
