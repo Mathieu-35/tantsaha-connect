@@ -136,12 +136,12 @@ Développeur seul, sans date imposée : un sprint dure le temps qu'il faut.
 
 **Objectif** : noter plantation, pluie, parasite, récolte en 3 touches.
 
-- [ ] Sélecteur de culture **par image**
-- [ ] Saisie : type → culture → date (aujourd'hui par défaut), un seul choix par étape
-- [ ] Grosse coche + « Voatahiry » (message et vibration)
-- [ ] Liste des notes (les plus récentes d'abord)
-- [ ] **Annuler / supprimer** avec confirmation (rouge seulement pour la suppression)
-- [ ] Vérification de bout en bout : noter en mode avion → réseau → la note arrive **sur le serveur, une seule fois**
+- [x] Sélecteur de culture **par image**
+- [x] Saisie : type → culture → date (aujourd'hui par défaut), un seul choix par étape
+- [x] Grosse coche + « Voatahiry » (message et vibration)
+- [x] Liste des notes (les plus récentes d'abord)
+- [x] **Annuler / supprimer** avec confirmation (rouge seulement pour la suppression)
+- [x] Vérification de bout en bout : noter en mode avion → réseau → la note arrive **sur le serveur, une seule fois**
 - [ ] 📝 Justification : reconnaissance plutôt que rappel, protection contre les erreurs
 
 💡 *Ce que vous apprenez* : `synced`, suppression douce, pourquoi un envoi répété ne crée pas de doublon.

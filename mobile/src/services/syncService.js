@@ -26,8 +26,10 @@ export async function syncAll() {
         updatedAt: r.updated_at,
         deletedAt: r.deleted_at,
       }));
-      await api.push(deviceId, regionId, observations);
-      await markSynced(rows.map((r) => r.id));
+      const result = await api.push(deviceId, regionId, observations);
+      // Un refus du serveur est définitif : on arrête de renvoyer cette note.
+      const handled = [...result.accepted, ...result.rejected.map((r) => r.id)];
+      await markSynced(handled);
     }
 
     // 2. RÉCUPÉRER ce qui a changé sur le serveur depuis la dernière fois

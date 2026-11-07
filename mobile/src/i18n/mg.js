@@ -49,4 +49,35 @@ export const t = {
 
   rain: 'Orana',
   tempMin: 'Ambanin\'ny',
+
+  // Journal
+  journalEmpty: 'Mbola tsy misy naoty.',
+  addNote: 'Hanampy naoty',
+  stepType: 'Inona no nitranga?',
+  stepCrop: 'Voly inona?',
+  stepDate: 'Oviana?',
+  yesterday: 'Omaly',
+  confirmDelete: 'Hofafana ve ity naoty ity?',
+  yes: 'Eny',
+  no: 'Tsia',
+  delete: 'Fafana',
+
+  obsType: {
+    PLANTING: 'Fambolena',
+    RAIN: 'Orana',
+    PEST: 'Bibikely',
+    HARVEST: 'Fijinjana',
+  },
+  obsEmoji: {
+    PLANTING: '🌱',
+    RAIN: '🌧️',
+    PEST: '🐛',
+    HARVEST: '🧺',
+  },
+  cropEmoji: {
+    rice: '🌾',
+    corn: '🌽',
+    cassava: '🥔',
+    bean: '🫘',
+  },
 };

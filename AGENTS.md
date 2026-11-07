@@ -48,14 +48,14 @@ Pour tester sans toucher à `dev.db` : lancer le serveur avec `DATABASE_URL` poi
 ## Points non évidents
 
 - **Sync** : lancée une seule fois dans `App.js` au démarrage (aucun écouteur réseau). `push` envoie les observations `synced = 0` ; conflit = last-write-wins sur `updatedAt` ; suppression douce via `deletedAt`. `pull` ne renvoie **que les données de référence**, jamais les observations : pas de restauration après réinstallation.
-- **Réponse du `push` serveur** : `{ serverTime, accepted: [ids], rejected: [{id, reason}] }`. Chaque note est jugée séparément ; un refus est définitif. Le mobile marque encore **toutes** les notes `synced` après une réponse 200 (suffisant pour l'instant ; à affiner au Sprint 5). Une note n'est modifiable que par le `deviceId` qui l'a créée ; dates futures > 1 jour ramenées à l'heure du serveur ; max 200 notes / 256 ko.
+- **Réponse du `push` serveur** : `{ serverTime, accepted: [ids], rejected: [{id, reason}] }`. Chaque note est jugée séparément ; un refus est définitif. Le mobile marque `synced` les notes `accepted` **et** `rejected` (un refus est définitif, inutile de renvoyer). Une note n'est modifiable que par le `deviceId` qui l'a créée ; dates futures > 1 jour ramenées à l'heure du serveur ; max 200 notes / 256 ko.
 - **`pull`** : sans `since` il omet les éléments supprimés ; avec `since` il les renvoie (`deletedAt` non nul). Les listes publiques (`/regions`…) cachent les supprimés.
 - **Auth admin** : bcryptjs + JWT (`auth.service.js`, `requireAdmin(roles?)`). Limites : 120 req/min, 5 logins/min (`rateLimit.js`, par IP ; derrière un proxy il faudra `trust proxy`, Sprint 10). Erreurs toujours `{ error: { code, message } }` (`AppError(message, status, code?)`).
 - **`seed.json`** (`mobile/src/data/`) est généré par `npm run export:seed` ; il est versionné dans Git. Le mobile ne le lit pas encore (Sprint 3). Les ids des données de départ sont fixés dans `prisma/seed.js` : ne pas revenir à des ids aléatoires, sinon le seed embarqué et la production divergent.
 - Les UUID d'observation sont créés par le mobile (`expo-crypto`) et acceptés tels quels par le serveur.
 - **Schéma SQLite mobile sans migrations** : le DDL est inline dans `src/db/database.js`, en `CREATE TABLE IF NOT EXISTS`, et `SCHEMA_VERSION` n'est jamais lu. Modifier une table existante n'affecte pas les installations déjà faites ; prévoir une migration manuelle (`PRAGMA user_version`).
 - Le serveur renvoie du **camelCase** (`nameMg`, `cropId`), SQLite stocke du **snake_case** (`name_mg`, `crop_id`) ; le mapping se fait dans les repositories.
-- Écrans Météo/Alertes/Journal/Conseils pointent tous vers `PlaceholderScreen`. Un nouvel écran = fichier dans `src/screens/` + `Stack.Screen` dans `AppNavigator.js`.
+- Météo et Journal ont leurs vrais écrans ; Alertes/Conseils pointent encore vers `PlaceholderScreen`. Un nouvel écran = fichier dans `src/screens/` + `Stack.Screen` dans `AppNavigator.js`.
 - Code déjà présent mais non branché : `weather_cache` (mobile), `api.weather()`, `expo-audio`, `expo-notifications`. Aucune logique d'alerte n'existe encore.
 - L'app n'utilise que `/sync/pull`, `/sync/push` et `/meteo/:id`. Les endpoints `/regions`, `/cultures`, `/calendrier`, `/conseils` servent au site web et au débogage.
 - Prisma : `provider = "sqlite"`. Passage à PostgreSQL = changer le provider + `DATABASE_URL` ; en prod utiliser `prisma migrate deploy`, pas `migrate dev`.
@@ -68,6 +68,8 @@ Pour tester sans toucher à `dev.db` : lancer le serveur avec `DATABASE_URL` poi
 
 - **Débutant en programmation** : expliquer simplement ce qu'on fait et pourquoi, surtout pour le code. Pas de jargon sans explication.
 - Communiquer en **français**.
+- **Explications courtes** : phrases brèves et très claires, schémas (flèches, tableaux) plutôt que longs paragraphes.
+- **Commits uniquement à son nom** : jamais de ligne `Co-Authored-By` (IA).
 - Travaille **seul, sans deadline**.
 - Préfère des **instructions directes étape par étape** plutôt que des choix ouverts.
 - Messages de commit en **anglais** (Conventional Commits) mais toujours donner la **traduction française** à côté.
