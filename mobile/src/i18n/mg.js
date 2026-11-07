@@ -22,4 +22,31 @@ export const t = {
 
   regionQuestion: 'Aiza ianao?',
   syncing: 'Mampitovy...',
+
+  // Météo
+  today: 'Androany',
+  lastUpdate: 'Fanavaozana farany',
+  noWeatherData: 'Tsy mbola misy toetr\'andro. Mila internet aloha.',
+  staleWarning: 'Toetr\'andro taloha — mila internet hanavao.',
+  weatherLoading: 'Miandry toetr\'andro...',
+
+  // Noms des jours
+  dayNames: ['Alahady', 'Alatsinainy', 'Talata', 'Alarobia', 'Alakamisy', 'Zoma', 'Asabotsy'],
+
+  // Icônes et descriptions
+  weatherLabel: {
+    SUN: 'Masoandro',
+    CLOUD: 'Rahona',
+    RAIN: 'Orana',
+    STORM: 'Tafio-drivotra',
+  },
+  weatherEmoji: {
+    SUN: '☀️',
+    CLOUD: '☁️',
+    RAIN: '🌧️',
+    STORM: '⛈️',
+  },
+
+  rain: 'Orana',
+  tempMin: 'Ambanin\'ny',
 };

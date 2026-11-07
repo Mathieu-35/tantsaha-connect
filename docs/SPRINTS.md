@@ -119,10 +119,10 @@ Développeur seul, sans date imposée : un sprint dure le temps qu'il faut.
 
 **Objectif** : voir la météo des 5 prochains jours, même sans réseau.
 
-- [ ] `weatherRepository` (la table `weather_cache` existe déjà) et branchement de `api.weather()`
-- [ ] Écran **Météo** : aujourd'hui en grand, 4 jours suivants, pictogrammes (soleil, nuage, pluie, orage), températures
-- [ ] « Dernière mise à jour : … » quand les données viennent du cache ; message rassurant si aucune donnée
-- [ ] Bouton **Henoy** de l'écran (temporairement : texte parlé simulé, la voix arrive au Sprint 7)
+- [x] `weatherRepository` (la table `weather_cache` existe déjà) et branchement de `api.weather()`
+- [x] Écran **Météo** : aujourd'hui en grand, 4 jours suivants, pictogrammes (soleil, nuage, pluie, orage), températures
+- [x] « Dernière mise à jour : … » quand les données viennent du cache ; message rassurant si aucune donnée
+- [x] Bouton **Henoy** de l'écran (temporairement : texte parlé simulé, la voix arrive au Sprint 7)
 - [ ] 📝 Justification : signifiance des pictogrammes, rétroaction, concision
 
 💡 *Ce que vous apprenez* : stratégie « cache d'abord, réseau ensuite » ; états d'un écran (chargement, vide, erreur, à jour, périmé).

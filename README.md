@@ -92,7 +92,7 @@ Le détail est dans [docs/SPRINTS.md](docs/SPRINTS.md). On ne passe au sprint su
 - [x] Sprint 1 — Wireframes et maquettes (mobile + web)
 - [x] Sprint 2 — Serveur sécurisé et API v1
 - [x] Sprint 3 — Socle mobile (thème, données embarquées, hors ligne)
-- [ ] Sprint 4 — Météo
+- [x] Sprint 4 — Météo
 - [ ] Sprint 5 — Journal de culture
 - [ ] Sprint 6 — Alertes
 - [ ] Sprint 7 — Conseils et voix malagasy
