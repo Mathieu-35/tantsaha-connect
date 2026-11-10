@@ -7,7 +7,8 @@ const referential = require('../controllers/referential.controller');
 const weather = require('../controllers/weather.controller');
 const sync = require('../controllers/sync.controller');
 const auth = require('../controllers/auth.controller');
-const requireAdmin = require('../middlewares/requireAdmin');
+const adminData = require('../controllers/admin.controller');
+const requireAdmin =require('../middlewares/requireAdmin');
 const { loginLimiter } = require('../middlewares/rateLimit');
 
 const router = Router();
@@ -32,5 +33,13 @@ router.get('/sync/pull', sync.pull);
 // le reste exige un jeton (requireAdmin).
 router.post('/admin/auth/login', loginLimiter, auth.login);
 router.get('/admin/me', requireAdmin(), auth.me);
+
+// Gestion des données (comptes ADMIN et AGRONOME). :resource = regions | cultures | calendrier | conseils
+const farmData = requireAdmin(['ADMIN', 'AGRONOME']);
+router.get('/admin/stats/summary', farmData, adminData.statsSummary);
+router.get('/admin/:resource', farmData, adminData.list);
+router.post('/admin/:resource', farmData, adminData.create);
+router.put('/admin/:resource/:id', farmData, adminData.update);
+router.delete('/admin/:resource/:id', farmData, adminData.remove);
 
 module.exports = router;

@@ -19,6 +19,15 @@ npm run admin:create       # crée un compte du site d'administration (questions
 npm run export:seed        # écrit mobile/src/data/seed.json (données embarquées dans l'app)
 ```
 
+Site web d'administration (http://localhost:5173, serveur lancé avant) :
+
+```bash
+cd web
+npm install
+npm run dev                # VITE_API_URL pour changer l'API (défaut http://localhost:3000/api/v1)
+npm run build              # vérifie que ça compile
+```
+
 Mobile :
 
 ```bash
@@ -57,6 +66,7 @@ Pour tester sans toucher à `dev.db` : lancer le serveur avec `DATABASE_URL` poi
 - Le serveur renvoie du **camelCase** (`nameMg`, `cropId`), SQLite stocke du **snake_case** (`name_mg`, `crop_id`) ; le mapping se fait dans les repositories.
 - Météo, Journal, Alertes et Conseils ont leurs vrais écrans (`PlaceholderScreen` n'est plus utilisé).
 - **Alertes** : logique pure dans `mobile/src/domain/alertEngine.js` (sans import Expo, testable avec Node). `notificationService.js` efface et reprogramme toutes les notifications locales à chaque appel (au démarrage et à l'ouverture de l'écran Alertes). Heure d'envoi : `NOTIFY_HOUR`/`NOTIFY_MINUTE` dans le moteur. Les calendriers du seed sont identiques pour les 5 régions et **non validés**. Un nouvel écran = fichier dans `src/screens/` + `Stack.Screen` dans `AppNavigator.js`.
+- **Admin (Sprint 8)** : `/admin/:resource` (regions, cultures, calendrier, conseils) est géré par un seul service (`admin.service.js`, table `ENTITIES` : champs et validation). Les modifications changent `updatedAt` donc partent au prochain `/sync/pull`. Le site `web/` (React + Vite, JS, sans routeur ; jeton en `sessionStorage`) ne parle au serveur que par `web/src/api.js` ; ses textes sont en français. Pas encore : envoi d'audio, pages régions/cultures.
 - **Voix (Sprint 7)** : bouton `components/ListenButton.js` (expo-audio, un seul son à la fois via `services/audioService.js`). Les audios sont dans `mobile/assets/audio/` et listés en toutes lettres dans `src/data/audioMap.js` (clés : `audioFile` du conseil sans extension, `screen_*` pour chaque écran). Les fichiers actuels sont des **bips provisoires** (.wav), pas de la voix malagasy : les remplacer par les vrais enregistrements et corriger `audioMap.js` si l'extension change.
 - L'app n'utilise que `/sync/pull`, `/sync/push` et `/meteo/:id`. Les endpoints `/regions`, `/cultures`, `/calendrier`, `/conseils` servent au site web et au débogage.
 - Prisma : `provider = "sqlite"`. Passage à PostgreSQL = changer le provider + `DATABASE_URL` ; en prod utiliser `prisma migrate deploy`, pas `migrate dev`.

@@ -194,10 +194,12 @@ Développeur seul, sans date imposée : un sprint dure le temps qu'il faut.
 **Objectif** : permettre à un agronome de mettre à jour les données sans toucher au code.
 **Pourquoi** : sans cela, chaque correction de calendrier demande de modifier le code et de republier.
 
-- [ ] Création de `web/` (React + Vite), thème CSS aux couleurs de la palette
-- [ ] Routes serveur `/admin/...` : CRUD cultures, régions, calendriers, conseils ; envoi d'audio ; `/admin/stats`
-- [ ] Pages : Connexion · Tableau de bord · Calendriers · Conseils
-- [ ] Vérification de bout en bout : modifier un calendrier sur le web → le téléphone le reçoit à la synchro
+- [x] Création de `web/` (React + Vite), thème CSS aux couleurs de la palette
+- [x] Routes serveur `/admin/...` : CRUD cultures, régions, calendriers, conseils ; `/admin/stats/summary`
+- [ ] Envoi d'audio (`multipart`) — **reporté** : le téléphone n'a pas encore de téléchargement d'audios
+- [x] Pages : Connexion · Tableau de bord · Calendriers · Conseils (pas de page pour régions/cultures : l'API existe)
+- [x] Vérification serveur : modification d'un calendrier → visible dans `/sync/pull` (testé sur base jetable)
+- [x] Vérification sur le téléphone : modifier sur le web → le téléphone le reçoit à la synchro (testé sur iPhone)
 - [ ] 📝 Capture d'écran pour le rapport
 
 💡 *Ce que vous apprenez* : React côté web, protéger des routes avec un jeton, envoyer un fichier (`multipart`).

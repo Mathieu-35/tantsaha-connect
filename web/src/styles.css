@@ -1,0 +1,59 @@
+/* THÈME : palette de l'application mobile (docs/DESIGN.md).
+   Le ROUGE reste réservé aux dangers (supprimer, erreurs). */
+:root {
+  --primary: #2a7c13;
+  --primary-press: #1e5a0e;
+  --accent: #76c457;
+  --background: #fff8cf;
+  --surface: #fbe6c2;
+  --text: #1f2a17;
+  --on-primary: #ffffff;
+  --danger: #c62828;
+  --radius: 12px;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, sans-serif; font-size: 16px; color: var(--text); background: var(--background); }
+h1, h2 { margin: 0 0 12px; }
+
+.topbar { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; background: var(--primary); color: var(--on-primary); padding: 10px 20px; }
+.topbar h1 { font-size: 20px; margin: 0; margin-right: auto; }
+.topbar .who { font-size: 14px; opacity: 0.9; }
+.tabs { display: flex; gap: 8px; padding: 12px 20px 0; flex-wrap: wrap; }
+.tab { border: 2px solid var(--primary); background: transparent; color: var(--primary); border-radius: 999px; padding: 8px 18px; font-weight: 600; cursor: pointer; }
+.tab.active { background: var(--primary); color: var(--on-primary); }
+.page { padding: 20px; max-width: 1000px; margin: 0 auto; }
+
+.card { background: var(--surface); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; }
+.card.editing { border: 2px solid var(--accent); }
+
+.btn { background: var(--primary); color: var(--on-primary); border: 0; border-radius: 999px; padding: 9px 18px; font-size: 15px; font-weight: 600; cursor: pointer; }
+.btn:hover { background: var(--primary-press); }
+.btn:disabled { opacity: 0.5; cursor: default; }
+.btn.ghost { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+.btn.ghost:hover { background: var(--surface); }
+.btn.danger { background: var(--danger); }
+.btn.small { padding: 5px 12px; font-size: 14px; }
+
+label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+input, select, textarea { display: block; width: 100%; margin-top: 4px; padding: 8px 10px; font: inherit; border: 2px solid var(--accent); border-radius: 8px; background: #fff; color: var(--text); }
+textarea { min-height: 80px; }
+.row { display: flex; gap: 12px; flex-wrap: wrap; }
+.row > * { flex: 1 1 140px; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+
+.error { background: #fdecea; color: var(--danger); border: 2px solid var(--danger); border-radius: 8px; padding: 8px 12px; margin-bottom: 12px; }
+.ok { background: #eaf6e4; color: var(--primary); border: 2px solid var(--accent); border-radius: 8px; padding: 8px 12px; margin-bottom: 12px; }
+.muted { opacity: 0.7; font-size: 14px; }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.stat { background: var(--surface); border-radius: var(--radius); padding: 16px; text-align: center; }
+.stat .n { font-size: 40px; font-weight: 700; color: var(--primary); }
+
+table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: var(--radius); overflow: hidden; }
+th, td { padding: 8px; text-align: left; border-bottom: 1px solid var(--background); }
+th { background: var(--accent); color: var(--text); font-size: 14px; }
+td select { margin: 0; padding: 4px 6px; }
+
+.login { max-width: 380px; margin: 10vh auto; }
+.login .card { padding: 24px; }

@@ -162,11 +162,9 @@ Les comptes se créent en ligne de commande : `npm run admin:create` (pas d'insc
 
 Limitation : **5 essais de connexion par minute** et par adresse (6ᵉ → 429).
 
-### Routes à construire au Sprint 8 🆕
+### Gestion du référentiel — `admin.*` (Sprint 8, **existe** sauf l'audio)
 
-Limitation stricte des essais de connexion (ex. 5 par minute) pour décourager les devinettes de mot de passe.
-
-### Gestion du référentiel — `referential.*`
+Rôles `ADMIN` et `AGRONOME`. Validation : champs obligatoires, mois de 1 à 12, latitude/longitude plausibles. Erreurs : 400 (champ invalide), 404 (introuvable), 409 (doublon de code ou de couple culture + région). Suppression douce (`204`).
 
 | Méthode | Route | Rôle |
 |---|---|---|
@@ -178,16 +176,16 @@ Limitation stricte des essais de connexion (ex. 5 par minute) pour décourager l
 | PUT / DELETE | `/admin/calendrier/:id` | idem |
 | GET / POST | `/admin/conseils` | idem |
 | PUT / DELETE | `/admin/conseils/:id` | idem |
-| POST | `/admin/conseils/:id/audio` | Envoi du fichier audio (`multipart/form-data`, champ `file`, mp3, 2 Mo max) |
+| POST | `/admin/conseils/:id/audio` | 🆕 **pas encore fait** — envoi du fichier audio (`multipart/form-data`, champ `file`, mp3, 2 Mo max) |
 
-Les audios sont servis à l'adresse `/media/audio/<fichier>`. Le téléphone les télécharge à la synchro pour les écouter ensuite hors ligne.
+À venir : les audios seront servis à `/media/audio/<fichier>` et le téléphone les téléchargera à la synchro pour les écouter hors ligne.
 
 ### Statistiques — `stats.*`
 
 | Méthode | Route | Rôle |
 |---|---|---|
-| GET | `/admin/stats/summary` | Téléphones actifs (7 jours), notes cette semaine |
-| GET | `/admin/stats/observations?regionId=&type=&from=&to=` | Comptages par région / type / semaine |
+| GET | `/admin/stats/summary` | Téléphones actifs (7 jours), notes cette semaine, notes par type, totaux du référentiel |
+| GET | `/admin/stats/observations?regionId=&type=&from=&to=` | 🆕 pas fait (le résumé suffit pour l'instant) |
 
 Les statistiques sont **anonymes** : jamais de `deviceId` dans les réponses.
 

@@ -3,7 +3,7 @@
 // donc chaque fichier est listé ici.
 //
 // ⚠️ Les fichiers actuels sont des SONS PROVISOIRES (bips), pas de la voix.
-// Pour mettre la vraie voix : remplacer le fichier dans assets/audio/ (même nom)
+// Pour mettre la vraie voix : je vais ensore remplacer le fichier dans assets/audio/ (même nom)
 // et, si le format change (ex. .mp3), corriger la ligne correspondante ci-dessous.
 //
 // Clés :
