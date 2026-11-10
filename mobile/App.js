@@ -16,6 +16,7 @@ import { getDb } from './src/db/database';
 import { loadSeedIfEmpty } from './src/db/referenceRepository';
 import { syncAll } from './src/services/syncService';
 import { refreshAlertNotifications } from './src/services/notificationService';
+import { initAudio } from './src/services/audioService';
 import { startNetworkWatch, setOnReconnect } from './src/services/networkService';
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
       const seeded = await loadSeedIfEmpty();
       if (seeded) console.log('Données embarquées chargées (seed.json)');
 
+      await initAudio();
       startNetworkWatch();
       setOnReconnect(() => {
         console.log('Réseau retrouvé — synchronisation...');

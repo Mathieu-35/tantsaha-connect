@@ -11,6 +11,7 @@ import { listCalendars, listCrops } from '../db/referenceRepository';
 import { getWeather } from '../db/weatherRepository';
 import { computeAlerts } from '../domain/alertEngine';
 import { refreshAlertNotifications } from '../services/notificationService';
+import ListenButton from '../components/ListenButton';
 
 function periodText(alert) {
   return `${t.monthNames[alert.startMonth - 1]} – ${t.monthNames[alert.endMonth - 1]}`;
@@ -65,6 +66,7 @@ export default function AlertsScreen() {
 
   return (
     <View style={styles.container}>
+      <ListenButton audioKey="screen_alerts" style={styles.listen} />
       <FlatList
         data={alerts}
         keyExtractor={(a, i) => `${a.kind}-${a.cropId || a.date}-${i}`}
@@ -78,6 +80,7 @@ export default function AlertsScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background, padding: sizes.padding },
+  listen: { marginBottom: sizes.gap },
   list: { paddingBottom: 32 },
   empty: { fontSize: sizes.textBody, color: colors.text, textAlign: 'center', marginTop: 40 },
   row: {

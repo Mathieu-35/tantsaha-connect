@@ -9,6 +9,7 @@ import { t } from '../i18n/mg';
 import { listObservations, deleteObservation } from '../db/observationsRepository';
 import { listCrops } from '../db/referenceRepository';
 import { syncAll } from '../services/syncService';
+import ListenButton from '../components/ListenButton';
 
 function formatDate(iso) {
   const [y, m, d] = iso.split('-');
@@ -74,6 +75,7 @@ export default function JournalScreen({ navigation }) {
         <Text style={styles.addText}>➕ {t.addNote}</Text>
       </Pressable>
 
+      <ListenButton audioKey="screen_journal" style={styles.listen} />
       <FlatList
         data={notes}
         keyExtractor={(n) => n.id}
@@ -97,6 +99,7 @@ const styles = StyleSheet.create({
   },
   addBtnPressed: { backgroundColor: colors.primaryPress },
   addText: { color: colors.textOnPrimary, fontSize: sizes.textLarge, fontWeight: 'bold' },
+  listen: { marginBottom: sizes.gap },
   list: { paddingBottom: 32 },
   empty: { fontSize: sizes.textBody, color: colors.text, textAlign: 'center', marginTop: 40 },
   row: {

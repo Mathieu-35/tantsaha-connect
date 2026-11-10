@@ -174,11 +174,11 @@ Développeur seul, sans date imposée : un sprint dure le temps qu'il faut.
 
 **Objectif** : la version vocale demandée par le sujet.
 
-- [ ] **Décision** : qui enregistre les voix ?
-- [ ] Enregistrement des messages (Audacity), format mp3 léger
-- [ ] Audios **embarqués** dans l'application pour le premier lancement + fichier de correspondance
-- [ ] Écran **Conseils** : cartes avec photo, lecteur lecture / pause énorme
-- [ ] Bouton **Henoy** fonctionnel sur **chaque écran** (message clé de l'écran)
+- [x] **Décision** : voix enregistrées plus tard ; on code avec des **sons provisoires** (bips) à remplacer
+- [ ] Enregistrement des messages (Audacity), format mp3 léger — **à faire plus tard** (remplacer les fichiers de `mobile/assets/audio/`)
+- [x] Audios **embarqués** dans l'application + fichier de correspondance (`src/data/audioMap.js`)
+- [x] Écran **Conseils** : cartes (icône du thème, pas de photo), bouton lecture / pause énorme
+- [x] Bouton **Henoy** fonctionnel sur Météo, Alertes, Journal et Conseils (accueil et saisie de note : pas de bouton)
 - [ ] Remplacement des conseils d'exemple par des conseils **validés**
 - [ ] 📝 Justification : flexibilité (texte ou voix), accessibilité
 

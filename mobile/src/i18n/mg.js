@@ -15,6 +15,7 @@ export const t = {
 
   back: 'Hiverina',
   listen: 'Henoy',
+  pause: 'Ajanony', // à faire relire par un locuteur natif
 
   online: 'Misy internet',
   offline: 'Tsy misy internet',
@@ -80,6 +81,10 @@ export const t = {
     cassava: '🥔',
     bean: '🫘',
   },
+
+  // Conseils
+  adviceEmpty: 'Mbola tsy misy torohevitra.',
+  adviceTopicEmoji: { PEST: '🐛', SOWING: '🌱', WEATHER: '⛈️' },
 
   // Alertes
   alertsEmpty: 'Tsy misy fampitandremana ankehitriny.',

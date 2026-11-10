@@ -8,7 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/HomeScreen';
 import RegionChoiceScreen from '../screens/RegionChoiceScreen';
-import PlaceholderScreen from '../screens/PlaceholderScreen';
+import AdviceScreen from '../screens/AdviceScreen';
 import WeatherScreen from '../screens/WeatherScreen';
 import JournalScreen from '../screens/JournalScreen';
 import AlertsScreen from '../screens/AlertsScreen';
@@ -56,7 +56,7 @@ export default function AppNavigator() {
         <Stack.Screen name="Alertes" component={AlertsScreen} options={{ title: t.alertes }} />
         <Stack.Screen name="Journal" component={JournalScreen} options={{ title: t.journal }} />
         <Stack.Screen name="NewNote" component={NewNoteScreen} options={{ title: t.addNote }} />
-        <Stack.Screen name="Conseils" component={PlaceholderScreen} options={{ title: t.conseils }} />
+        <Stack.Screen name="Conseils" component={AdviceScreen} options={{ title: t.conseils }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

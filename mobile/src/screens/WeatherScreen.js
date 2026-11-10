@@ -3,7 +3,8 @@
 // Source : d'abord le cache SQLite (instantané), puis une requête au serveur.
 
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator, Pressable, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import ListenButton from '../components/ListenButton';
 import { colors, sizes } from '../theme';
 import { t } from '../i18n/mg';
 import { getMeta } from '../db/metaRepository';
@@ -121,17 +122,8 @@ export default function WeatherScreen() {
         </View>
       ))}
 
-      {/* Bouton Henoy — simule la voix pour l'instant (Sprint 7 = vraie voix) */}
-      <Pressable
-        style={({ pressed }) => [styles.listenBtn, pressed && styles.listenBtnPressed]}
-        onPress={() => {
-          const label = t.weatherLabel[todayData.icon] || '';
-          const msg = `${t.today}: ${label}, ${Math.round(todayData.tempMax)}°, ${t.tempMin} ${Math.round(todayData.tempMin)}°.`;
-          Alert.alert(t.listen, msg);
-        }}
-      >
-        <Text style={styles.listenText}>🔊 {t.listen}</Text>
-      </Pressable>
+      {/* Bouton Henoy : voix embarquée (provisoire = bips, voir audioMap.js) */}
+      <ListenButton audioKey="screen_weather" style={styles.listenBtn} />
 
       {/* Dernière mise à jour */}
       {fetchedAt && (
@@ -189,18 +181,7 @@ const styles = StyleSheet.create({
   dayTempMin: { fontSize: 14, color: colors.text, opacity: 0.6 },
   dayRain: { fontSize: 14, color: colors.primary, fontWeight: '600', minWidth: 36, textAlign: 'right' },
 
-  listenBtn: {
-    backgroundColor: colors.primary,
-    borderRadius: sizes.radiusPill,
-    paddingVertical: 14,
-    alignItems: 'center',
-    marginTop: sizes.gap,
-    marginBottom: sizes.gap,
-    minHeight: sizes.minTouch,
-    justifyContent: 'center',
-  },
-  listenBtnPressed: { backgroundColor: colors.primaryPress },
-  listenText: { color: colors.textOnPrimary, fontSize: sizes.textLarge, fontWeight: 'bold' },
+  listenBtn: { marginTop: sizes.gap, marginBottom: sizes.gap },
 
   lastUpdate: { textAlign: 'center', fontSize: 14, color: colors.text, opacity: 0.6, marginTop: 8 },
 });

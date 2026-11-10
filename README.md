@@ -95,7 +95,7 @@ Le détail est dans [docs/SPRINTS.md](docs/SPRINTS.md). On ne passe au sprint su
 - [x] Sprint 4 — Météo
 - [x] Sprint 5 — Journal de culture
 - [x] Sprint 6 — Alertes
-- [ ] Sprint 7 — Conseils et voix malagasy
+- [x] Sprint 7 — Conseils et voix malagasy (voix provisoires : enregistrements à venir)
 - [ ] Sprint 8 — Site web d'administration
 - [ ] Sprint 9 — Ergonomie, tests utilisateurs, Android
 - [ ] Sprint 10 — Mise en ligne et rapport
