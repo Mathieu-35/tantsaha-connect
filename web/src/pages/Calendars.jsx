@@ -3,6 +3,8 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { api } from '../api';
+import Icon from '../components/Icon.jsx';
+import { MonthsBar } from '../components/Motifs.jsx';
 
 const MONTHS = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 const FIELDS = [
@@ -45,6 +47,7 @@ export default function Calendars({ onSessionExpired }) {
   useEffect(() => { reload(); }, [reload]);
 
   const cropName = (id) => crops.find((c) => c.id === id)?.nameMg || id;
+  const cropIcon = (id) => crops.find((c) => c.id === id)?.icon || 'plant';
   const regionRows = rows.filter((r) => r.regionId === regionId);
   const missingCrops = crops.filter((c) => !regionRows.some((r) => r.cropId === c.id));
 
@@ -57,7 +60,7 @@ export default function Calendars({ onSessionExpired }) {
     try {
       const data = Object.fromEntries(FIELDS.map(([f]) => [f, row[f]]));
       await api.update('calendrier', row.id, data);
-      setMessage({ kind: 'ok', text: `✅ ${cropName(row.cropId)} enregistré. Les téléphones le recevront à la prochaine synchro.` });
+      setMessage({ kind: 'ok', text: `${cropName(row.cropId)} enregistré. Les téléphones le recevront à la prochaine synchro.` });
       await reload();
     } catch (err) { fail(err); }
   }
@@ -83,8 +86,13 @@ export default function Calendars({ onSessionExpired }) {
   return (
     <>
       <h2>Calendriers agricoles</h2>
-      <p className="muted">⚠️ Les valeurs de départ sont des exemples non validés : à vérifier par un technicien agricole.</p>
-      {message && <div className={message.kind === 'ok' ? 'ok' : 'error'}>{message.text}</div>}
+      <p className="warn"><Icon name="warning" size={32} />Les valeurs de départ sont des exemples non validés : à vérifier par un technicien agricole.</p>
+      {message && (
+        <div className={message.kind === 'ok' ? 'ok' : 'error'}>
+          {message.kind === 'ok' && <Icon name="done" size={32} />}
+          {message.text}
+        </div>
+      )}
 
       <label>
         Région
@@ -93,21 +101,29 @@ export default function Calendars({ onSessionExpired }) {
         </select>
       </label>
 
+      <div className="tablewrap">
       <table>
         <thead>
           <tr>
             <th>Culture</th>
             {FIELDS.map(([f, label]) => <th key={f}>{label}</th>)}
+            <th>Aperçu des 12 mois</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
           {regionRows.map((row) => (
             <tr key={row.id}>
-              <td><strong>{cropName(row.cropId)}</strong></td>
+              <td><div className="crop-cell"><Icon name={cropIcon(row.cropId)} size={40} />{cropName(row.cropId)}</div></td>
               {FIELDS.map(([f]) => (
                 <td key={f}><MonthSelect value={row[f]} onChange={(v) => edit(row.id, f, v)} /></td>
               ))}
+              <td>
+                <div className="legend">Semis</div>
+                <MonthsBar start={row.sowStartMonth} end={row.sowEndMonth} color="#2A7C13" />
+                <div className="legend">Récolte</div>
+                <MonthsBar start={row.harvestStartMonth} end={row.harvestEndMonth} color="#E0A526" />
+              </td>
               <td>
                 <div className="actions">
                   <button className="btn small" disabled={!row.dirty} onClick={() => save(row)}>Enregistrer</button>
@@ -116,9 +132,10 @@ export default function Calendars({ onSessionExpired }) {
               </td>
             </tr>
           ))}
-          {regionRows.length === 0 && <tr><td colSpan={6} className="muted">Aucun calendrier pour cette région.</td></tr>}
+          {regionRows.length === 0 && <tr><td colSpan={7} className="muted">Aucun calendrier pour cette région.</td></tr>}
         </tbody>
       </table>
+      </div>
 
       {missingCrops.length > 0 && (
         <div className="actions" style={{ marginTop: 12 }}>

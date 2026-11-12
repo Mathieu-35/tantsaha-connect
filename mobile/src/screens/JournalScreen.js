@@ -4,12 +4,21 @@
 import { useCallback, useState } from 'react';
 import { View, Text, Pressable, FlatList, StyleSheet, Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { colors, sizes } from '../theme';
+import { colors, fonts, sizes } from '../theme';
 import { t } from '../i18n/mg';
+import Pictogram, { pictoFor } from '../components/Pictogram';
 import { listObservations, deleteObservation } from '../db/observationsRepository';
 import { listCrops } from '../db/referenceRepository';
 import { syncAll } from '../services/syncService';
 import ListenButton from '../components/ListenButton';
+
+// Couleur du talon de chaque type de note
+const STUB_COLOR = {
+  PLANTING: colors.accent,
+  RAIN: colors.rainSoft,
+  PEST: colors.sand,
+  HARVEST: colors.ochre,
+};
 
 function formatDate(iso) {
   const [y, m, d] = iso.split('-');
@@ -50,17 +59,30 @@ export default function JournalScreen({ navigation }) {
   function renderItem({ item }) {
     const crop = crops[item.crop_id];
     return (
-      <View style={styles.row}>
-        <Text style={styles.rowEmoji}>{t.obsEmoji[item.type]}</Text>
+      <View style={styles.ticket}>
+        {/* Talon coloré : une couleur par type de note */}
+        <View style={[styles.stub, { backgroundColor: STUB_COLOR[item.type] || colors.surface }]}>
+          <Pictogram name={pictoFor.observation[item.type]} size={52} tone={colors.cream} />
+        </View>
+        <View style={[styles.notch, { top: -18 }]} />
+        <View style={[styles.notch, { bottom: -18 }]} />
         <View style={styles.rowText}>
-          <Text style={styles.rowTitle}>
-            {t.obsType[item.type]}
-            {crop ? ` · ${t.cropEmoji[crop.icon] || ''} ${crop.name_mg}` : ''}
-          </Text>
+          <Text style={styles.rowTitle}>{t.obsType[item.type]}</Text>
+          {crop && (
+            <View style={styles.cropLine}>
+              <Pictogram name={pictoFor.crop[crop.icon] || 'plant'} size={26} />
+              <Text style={styles.cropName}>{crop.name_mg}</Text>
+            </View>
+          )}
           <Text style={styles.rowDate}>{formatDate(item.observed_on)}</Text>
         </View>
-        <Pressable style={styles.deleteBtn} onPress={() => confirmDelete(item.id)}>
-          <Text style={styles.deleteText}>🗑</Text>
+        <Pressable
+          style={styles.deleteBtn}
+          onPress={() => confirmDelete(item.id)}
+          accessibilityRole="button"
+          accessibilityLabel={t.delete}
+        >
+          <Pictogram name="trash" size={34} color={colors.danger} />
         </Pressable>
       </View>
     );
@@ -71,8 +93,11 @@ export default function JournalScreen({ navigation }) {
       <Pressable
         style={({ pressed }) => [styles.addBtn, pressed && styles.addBtnPressed]}
         onPress={() => navigation.navigate('NewNote')}
+        accessibilityRole="button"
+        accessibilityLabel={t.addNote}
       >
-        <Text style={styles.addText}>➕ {t.addNote}</Text>
+        <Pictogram name="add" size={40} color={colors.textOnPrimary} />
+        <Text style={styles.addText}>{t.addNote}</Text>
       </Pressable>
 
       <ListenButton audioKey="screen_journal" style={styles.listen} />
@@ -88,37 +113,63 @@ export default function JournalScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background, padding: sizes.padding },
+  container: { flex: 1, backgroundColor: colors.background, padding: sizes.padding + 4 },
   addBtn: {
+    flexDirection: 'row',
+    gap: 12,
     backgroundColor: colors.primary,
     borderRadius: sizes.radiusPill,
-    minHeight: sizes.minTouch + 8,
+    minHeight: 68,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: sizes.gap,
   },
-  addBtnPressed: { backgroundColor: colors.primaryPress },
-  addText: { color: colors.textOnPrimary, fontSize: sizes.textLarge, fontWeight: 'bold' },
+  addBtnPressed: { backgroundColor: colors.primaryPress, transform: [{ scale: 0.97 }] },
+  addText: { color: colors.textOnPrimary, fontSize: 24, fontFamily: fonts.bodyBold },
   listen: { marginBottom: sizes.gap },
   list: { paddingBottom: 32 },
-  empty: { fontSize: sizes.textBody, color: colors.text, textAlign: 'center', marginTop: 40 },
-  row: {
+  empty: { fontFamily: fonts.body, fontSize: sizes.textBody, color: colors.text, textAlign: 'center', marginTop: 40 },
+
+  // Ticket : talon coloré + bord perforé
+  ticket: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.surface,
-    borderRadius: sizes.radius,
-    padding: sizes.padding,
+    minHeight: 92,
+    backgroundColor: colors.paper,
+    borderWidth: 3,
+    borderColor: colors.text,
+    borderRadius: 16,
     marginBottom: sizes.gap,
+    overflow: 'hidden',
   },
-  rowEmoji: { fontSize: 36, marginRight: 12 },
-  rowText: { flex: 1 },
-  rowTitle: { fontSize: sizes.textBody, fontWeight: 'bold', color: colors.text },
-  rowDate: { fontSize: 14, color: colors.text, opacity: 0.7, marginTop: 2 },
+  stub: {
+    width: 88,
+    alignSelf: 'stretch',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRightWidth: 3,
+    borderStyle: 'dashed',
+    borderColor: colors.text,
+  },
+  notch: {
+    position: 'absolute',
+    left: 70,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: colors.background,
+    borderWidth: 3,
+    borderColor: colors.text,
+  },
+  rowText: { flex: 1, paddingVertical: 8, paddingLeft: 14, gap: 2 },
+  rowTitle: { fontFamily: fonts.title, fontSize: 24, color: colors.text },
+  cropLine: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  cropName: { fontFamily: fonts.body, fontSize: sizes.textBody, color: colors.text },
+  rowDate: { fontFamily: fonts.bodyBold, fontSize: sizes.textSmall, color: colors.text, opacity: 0.85 },
   deleteBtn: {
-    minWidth: sizes.minTouch,
+    width: 56,
     minHeight: sizes.minTouch,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  deleteText: { fontSize: 26, color: colors.danger },
 });

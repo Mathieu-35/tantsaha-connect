@@ -213,9 +213,9 @@ Développeur seul, sans date imposée : un sprint dure le temps qu'il faut.
 
 **Objectif** : vérifier que de **vrais utilisateurs** comprennent.
 
-- [ ] Remplacement des emojis par de **vrais pictogrammes** (licences notées)
-- [ ] Contrôle des contrastes, tailles de texte, zones tactiles ≥ 48 px
-- [ ] **Test avec 3 à 5 personnes** du public cible : « montrez-moi comment voir la météo »
+- [x] Remplacement des emojis par de **vrais pictogrammes** (licences notées dans DESIGN.md §7)
+- [x] Contrôle des contrastes, tailles de texte, zones tactiles ≥ 48 px
+- [ ] **Test avec 3 à 5 personnes** du public cible : « montrez-moi comment voir la météo » — fiche et compte rendu prêts : [rapport/tests-utilisateurs.md](rapport/tests-utilisateurs.md)
 - [ ] Corrections issues des tests
 - [ ] Relecture du malagasy par un second locuteur
 - [ ] Test sur un **téléphone Android basique** (ou émulateur)

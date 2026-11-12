@@ -110,3 +110,27 @@ Connexion · Tableau de bord · Calendriers (liste + édition) · Conseils (list
 - Mobile : `mobile/src/theme/index.js` (la source unique ; aucune couleur écrite dans les écrans).
 - Web : variables CSS dans `web/src/theme.css` (`--primary`, `--bg`, `--surface`…).
 - Les deux utilisent **les mêmes valeurs** que le tableau du §1.
+
+## 7. Identité visuelle (Sprint 9)
+
+Direction : « artisanat malagasy » — des formes franches, de la couleur posée de travers, des motifs locaux.
+
+| Élément | Choix | Licence |
+|---|---|---|
+| Titres | Bricolage Grotesque 800 / 600 (`@expo-google-fonts/bricolage-grotesque`) | SIL OFL (libre) |
+| Texte | Atkinson Hyperlegible 400 / 700 (`@expo-google-fonts/atkinson-hyperlegible`), conçue pour les personnes qui voient mal | SIL OFL (libre) |
+| Icônes | 25 icônes **dessinées pour le projet** (trait épais arrondi + couleur décalée), SVG via `react-native-svg` | Dessins originaux du projet |
+| Logo | Un ravenala (arbre du voyageur) sous un soleil d'ocre | Original |
+| Motifs | Losanges (esprit zafimaniry), rayures de lamba, courbes de rizières en terrasses | Interprétations originales |
+
+**Couleurs ajoutées** : ocre `#E0A526` (riz mûr, soleil ; texte foncé dessus : 7,1:1) et bleu pluie `#2E6A8E` (texte blanc dessus : 5,8:1). Le rouge reste réservé au danger.
+
+**Cartes** : une forme par rôle (panneau vert à terrasses = météo du jour ; pastilles hautes = prévisions ; ticket à talon coloré = note du journal ; bandeau rouge fixe = tempête ; carte à coins asymétriques + frise des 12 mois = période de semis / récolte ; bulle de parole = conseil).
+
+**Mouvement** : on garde seulement ce qui informe (appui = réduction de 3 %, coche « Voatahiry » dessinée une fois, Henoy ↔ pause). Supprimés : icône qui flotte en boucle, pulsation de l'alerte, rebonds. Pas d'animation si le téléphone demande de les réduire.
+
+**Dans le code** : couleurs et polices dans `mobile/src/theme/index.js` ; icônes dans `components/Pictogram.js` (une table : pour changer une icône, on change ses formes) ; motifs dans `components/Motifs.js` ; logo dans `components/Logo.js`. Maquettes : canvas « Tantsaha Connect — Identité visuelle ».
+
+**Site web** : même identité (polices `@fontsource/bricolage-grotesque` et `@fontsource/atkinson-hyperlegible`, icônes `web/src/components/Icon.jsx` copiées du mobile, motifs `Motifs.jsx`, couleurs dans `web/src/styles.css`). Cartes : panneau vert (téléphones actifs), bloc ocre (notes), tickets à talon coloré (types de note), feuilles cousues (totaux, formulaires), bulles (conseils), frise des 12 mois dans les calendriers.
+
+**À valider** : les motifs par des artisans / locuteurs ; la compréhension de chaque icône (panier = récolte, graine = haricot, carotte = manioc) lors des tests du Sprint 9.

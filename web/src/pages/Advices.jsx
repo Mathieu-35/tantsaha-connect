@@ -3,12 +3,14 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { api } from '../api';
+import Icon from '../components/Icon.jsx';
 
 const TOPICS = [
   ['PEST', 'Parasites'],
   ['SOWING', 'Semis'],
   ['WEATHER', 'Météo'],
 ];
+const TOPIC_ICON = { PEST: 'pest', SOWING: 'plant', WEATHER: 'storm' };
 const EMPTY = { code: '', topic: 'PEST', cropId: '', titleMg: '', textMg: '' };
 
 export default function Advices({ onSessionExpired }) {
@@ -53,7 +55,7 @@ export default function Advices({ onSessionExpired }) {
     try {
       if (editingId) await api.update('conseils', editingId, data);
       else await api.create('conseils', data);
-      setMessage({ kind: 'ok', text: '✅ Conseil enregistré. Les téléphones le recevront à la prochaine synchro.' });
+      setMessage({ kind: 'ok', text: 'Conseil enregistré. Les téléphones le recevront à la prochaine synchro.' });
       cancel();
       await reload();
     } catch (err) { fail(err); }
@@ -71,10 +73,15 @@ export default function Advices({ onSessionExpired }) {
   return (
     <>
       <h2>Conseils</h2>
-      <p className="muted">⚠️ Les conseils de départ sont des exemples : à faire valider avant usage réel.</p>
-      {message && <div className={message.kind === 'ok' ? 'ok' : 'error'}>{message.text}</div>}
+      <p className="warn"><Icon name="warning" size={32} />Les conseils de départ sont des exemples : à faire valider avant usage réel.</p>
+      {message && (
+        <div className={message.kind === 'ok' ? 'ok' : 'error'}>
+          {message.kind === 'ok' && <Icon name="done" size={32} />}
+          {message.text}
+        </div>
+      )}
 
-      <form className={`card ${editingId ? 'editing' : ''}`} onSubmit={submit}>
+      <form className={`card paper ${editingId ? 'editing' : ''}`} onSubmit={submit}>
         <strong>{editingId ? 'Modifier le conseil' : 'Nouveau conseil'}</strong>
         <div className="row" style={{ marginTop: 8 }}>
           <label>Code (unique, ex. PEST_RIZ)
@@ -105,13 +112,18 @@ export default function Advices({ onSessionExpired }) {
       </form>
 
       {advices.map((a) => (
-        <div className="card" key={a.id}>
-          <strong>{a.titleMg}</strong>
-          <div className="muted">
-            {a.code} · {TOPICS.find(([v]) => v === a.topic)?.[1] || a.topic} ·{' '}
-            {a.cropId ? crops.find((c) => c.id === a.cropId)?.nameMg : 'général'}
+        <div className="bubble" key={a.id}>
+          <div className="head">
+            <Icon name={TOPIC_ICON[a.topic] || 'tip'} size={56} />
+            <div>
+              <h3>{a.titleMg}</h3>
+              <div className="muted">
+                {a.code} · {TOPICS.find(([v]) => v === a.topic)?.[1] || a.topic} ·{' '}
+                {a.cropId ? crops.find((c) => c.id === a.cropId)?.nameMg : 'général'}
+              </div>
+            </div>
           </div>
-          <p>{a.textMg}</p>
+          <p className="text">{a.textMg}</p>
           <div className="actions">
             <button className="btn small" onClick={() => startEdit(a)}>Modifier</button>
             <button className="btn small danger" onClick={() => remove(a)}>Supprimer</button>

@@ -5,8 +5,9 @@
 
 import { StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors, sizes } from '../theme';
+import { colors, fonts, sizes } from '../theme';
 import { t } from '../i18n/mg';
+import Pictogram from './Pictogram';
 import { useIsConnected } from '../services/networkService';
 
 export default function OfflineBanner() {
@@ -15,7 +16,8 @@ export default function OfflineBanner() {
   if (isConnected !== false) return null;
   return (
     <View style={[styles.banner, { paddingTop: insets.top + 8 }]}>
-      <Text style={styles.text}>📵 {t.offline}</Text>
+      <Pictogram name="offline" size={24} />
+      <Text style={styles.text}>{t.offline}</Text>
     </View>
   );
 }
@@ -29,10 +31,12 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
+    gap: 8,
   },
   text: {
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: fonts.bodyBold,
     color: colors.text,
     textAlign: 'center',
   },

@@ -9,6 +9,9 @@
 import { useEffect } from 'react';
 import { View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { useFonts } from 'expo-font';
+import { BricolageGrotesque_600SemiBold, BricolageGrotesque_800ExtraBold } from '@expo-google-fonts/bricolage-grotesque';
+import { AtkinsonHyperlegible_400Regular, AtkinsonHyperlegible_700Bold } from '@expo-google-fonts/atkinson-hyperlegible';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppNavigator from './src/navigation/AppNavigator';
 import OfflineBanner from './src/components/OfflineBanner';
@@ -20,6 +23,14 @@ import { initAudio } from './src/services/audioService';
 import { startNetworkWatch, setOnReconnect } from './src/services/networkService';
 
 export default function App() {
+  // Polices embarquées dans l'application (marchent hors ligne).
+  const [fontsLoaded] = useFonts({
+    BricolageGrotesque_600SemiBold,
+    BricolageGrotesque_800ExtraBold,
+    AtkinsonHyperlegible_400Regular,
+    AtkinsonHyperlegible_700Bold,
+  });
+
   useEffect(() => {
     async function boot() {
       await getDb();
@@ -41,6 +52,8 @@ export default function App() {
     }
     boot();
   }, []);
+
+  if (!fontsLoaded) return null;
 
   return (
     <SafeAreaProvider>

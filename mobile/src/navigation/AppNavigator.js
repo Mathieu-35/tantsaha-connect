@@ -13,7 +13,7 @@ import WeatherScreen from '../screens/WeatherScreen';
 import JournalScreen from '../screens/JournalScreen';
 import AlertsScreen from '../screens/AlertsScreen';
 import NewNoteScreen from '../screens/NewNoteScreen';
-import { colors, sizes } from '../theme';
+import { colors, fonts } from '../theme';
 import { t } from '../i18n/mg';
 import { getMeta } from '../db/metaRepository';
 import { getDb } from '../db/database';
@@ -41,7 +41,7 @@ export default function AppNavigator() {
         screenOptions={{
           headerStyle: { backgroundColor: colors.primary },
           headerTintColor: colors.textOnPrimary,
-          headerTitleStyle: { fontSize: sizes.textLarge, fontWeight: 'bold' },
+          headerTitleStyle: { fontSize: 22, fontFamily: fonts.title },
           headerBackTitle: t.back,
           contentStyle: { backgroundColor: colors.background },
         }}
@@ -51,7 +51,7 @@ export default function AppNavigator() {
           component={RegionChoiceScreen}
           options={{ title: t.appName, headerBackVisible: false }}
         />
-        <Stack.Screen name="Home" component={HomeScreen} options={{ title: t.appName, headerBackVisible: false }} />
+        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Meteo" component={WeatherScreen} options={{ title: t.meteo }} />
         <Stack.Screen name="Alertes" component={AlertsScreen} options={{ title: t.alertes }} />
         <Stack.Screen name="Journal" component={JournalScreen} options={{ title: t.journal }} />

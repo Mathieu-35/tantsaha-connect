@@ -41,12 +41,6 @@ export const t = {
     RAIN: 'Orana',
     STORM: 'Tafio-drivotra',
   },
-  weatherEmoji: {
-    SUN: '☀️',
-    CLOUD: '☁️',
-    RAIN: '🌧️',
-    STORM: '⛈️',
-  },
 
   rain: 'Orana',
   tempMin: 'Ambanin\'ny',
@@ -69,26 +63,14 @@ export const t = {
     PEST: 'Bibikely',
     HARVEST: 'Fijinjana',
   },
-  obsEmoji: {
-    PLANTING: '🌱',
-    RAIN: '🌧️',
-    PEST: '🐛',
-    HARVEST: '🧺',
-  },
-  cropEmoji: {
-    rice: '🌾',
-    corn: '🌽',
-    cassava: '🥔',
-    bean: '🫘',
-  },
 
   // Conseils
   adviceEmpty: 'Mbola tsy misy torohevitra.',
-  adviceTopicEmoji: { PEST: '🐛', SOWING: '🌱', WEATHER: '⛈️' },
 
   // Alertes
   alertsEmpty: 'Tsy misy fampitandremana ankehitriny.',
   alertTitle: { SOW: 'Mamafy', HARVEST: 'Mijinja', STORM: 'Tafio-drivotra' },
+  // Emoji gardés seulement pour le TITRE des notifications (une notification ne peut pas afficher une icône vectorielle).
   alertEmoji: { SOW: '🌱', HARVEST: '🧺', STORM: '⛈️' },
   alertStormBody: 'Tafio-drivotra ho avy. Mitandrema!',
   monthNames: [

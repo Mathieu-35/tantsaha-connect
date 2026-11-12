@@ -3,10 +3,11 @@
 // Si aucun audio n'existe pour cette clé, le bouton ne s'affiche pas.
 
 import { useEffect } from 'react';
-import { Pressable, Text, StyleSheet } from 'react-native';
+import { Pressable, Text, View, StyleSheet } from 'react-native';
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
-import { colors, sizes } from '../theme';
+import { colors, fonts, sizes } from '../theme';
 import { t } from '../i18n/mg';
+import Pictogram from './Pictogram';
 import { audioFiles } from '../data/audioMap';
 import { claimPlayback, releasePlayback } from '../services/audioService';
 
@@ -35,7 +36,10 @@ function Player({ source, style }) {
       onPress={toggle}
       style={({ pressed }) => [styles.btn, pressed && styles.pressed, style]}
     >
-      <Text style={styles.text}>{status.playing ? `⏸ ${t.pause}` : `🔊 ${t.listen}`}</Text>
+      <View style={styles.content}>
+        <Pictogram name={status.playing ? 'pause' : 'listen'} size={30} color={colors.textOnPrimary} />
+        <Text style={styles.text}>{status.playing ? t.pause : t.listen}</Text>
+      </View>
     </Pressable>
   );
 }
@@ -55,6 +59,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 24,
   },
-  pressed: { backgroundColor: colors.primaryPress },
-  text: { color: colors.textOnPrimary, fontSize: sizes.textLarge, fontWeight: 'bold' },
+  pressed: { backgroundColor: colors.primaryPress, transform: [{ scale: 0.97 }] },
+  text: { color: colors.textOnPrimary, fontSize: sizes.textLarge, fontFamily: fonts.bodyBold },
+  content: { flexDirection: 'row', alignItems: 'center', gap: 10 },
 });

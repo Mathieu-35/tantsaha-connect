@@ -4,8 +4,10 @@
 
 import { useEffect, useState } from 'react';
 import { View, Text, Pressable, StyleSheet, Vibration } from 'react-native';
-import { colors, sizes } from '../theme';
+import { colors, fonts, sizes } from '../theme';
+import SavedCheck from '../components/SavedCheck';
 import { t } from '../i18n/mg';
+import Pictogram, { pictoFor } from '../components/Pictogram';
 import { OBSERVATION_TYPES, addObservation } from '../db/observationsRepository';
 import { listCrops } from '../db/referenceRepository';
 import { syncAll } from '../services/syncService';
@@ -18,13 +20,13 @@ function isoDate(daysAgo) {
   return `${d.getFullYear()}-${m}-${day}`;
 }
 
-function BigButton({ emoji, label, onPress }) {
+function BigButton({ picto, label, onPress }) {
   return (
     <Pressable
       onPress={onPress}
       style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
     >
-      <Text style={styles.buttonEmoji}>{emoji}</Text>
+      <Pictogram name={picto} size={52} style={styles.buttonEmoji} />
       <Text style={styles.buttonLabel}>{label}</Text>
     </Pressable>
   );
@@ -62,7 +64,7 @@ export default function NewNoteScreen({ navigation }) {
   if (done) {
     return (
       <View style={styles.center}>
-        <Text style={styles.checkEmoji}>✅</Text>
+        <SavedCheck size={120} />
         <Text style={styles.savedText}>{t.saved}</Text>
       </View>
     );
@@ -76,7 +78,7 @@ export default function NewNoteScreen({ navigation }) {
         <>
           <Text style={styles.question}>{t.stepType}</Text>
           {OBSERVATION_TYPES.map((o) => (
-            <BigButton key={o} emoji={t.obsEmoji[o]} label={t.obsType[o]} onPress={() => chooseType(o)} />
+            <BigButton key={o} picto={pictoFor.observation[o]} label={t.obsType[o]} onPress={() => chooseType(o)} />
           ))}
         </>
       )}
@@ -87,7 +89,7 @@ export default function NewNoteScreen({ navigation }) {
           {crops.map((c) => (
             <BigButton
               key={c.id}
-              emoji={t.cropEmoji[c.icon] || '🌿'}
+              picto={pictoFor.crop[c.icon] || 'plant'}
               label={c.name_mg}
               onPress={() => chooseCrop(c.id)}
             />
@@ -98,8 +100,8 @@ export default function NewNoteScreen({ navigation }) {
       {step === 3 && (
         <>
           <Text style={styles.question}>{t.stepDate}</Text>
-          <BigButton emoji="📅" label={t.today} onPress={() => chooseDate(0)} />
-          <BigButton emoji="⏪" label={t.yesterday} onPress={() => chooseDate(1)} />
+          <BigButton picto="today" label={t.today} onPress={() => chooseDate(0)} />
+          <BigButton picto="yesterday" label={t.yesterday} onPress={() => chooseDate(1)} />
         </>
       )}
     </View>
@@ -109,10 +111,10 @@ export default function NewNoteScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background, padding: sizes.padding },
   center: { flex: 1, backgroundColor: colors.background, justifyContent: 'center', alignItems: 'center' },
-  progress: { fontSize: sizes.textBody, color: colors.text, opacity: 0.6, textAlign: 'center', marginBottom: 4 },
+  progress: { fontFamily: fonts.bodyBold, fontSize: sizes.textBody, color: colors.text, opacity: 0.75, textAlign: 'center', marginBottom: 4 },
   question: {
     fontSize: sizes.title,
-    fontWeight: 'bold',
+    fontFamily: fonts.title,
     color: colors.text,
     textAlign: 'center',
     marginBottom: sizes.gap * 2,
@@ -128,9 +130,8 @@ const styles = StyleSheet.create({
     marginBottom: sizes.gap,
     minHeight: sizes.minTouch + 20,
   },
-  buttonPressed: { backgroundColor: colors.accent },
-  buttonEmoji: { fontSize: 36, marginRight: 16 },
-  buttonLabel: { fontSize: sizes.textLarge, fontWeight: 'bold', color: colors.text },
-  checkEmoji: { fontSize: 120 },
-  savedText: { fontSize: sizes.title, fontWeight: 'bold', color: colors.primary, marginTop: sizes.gap },
+  buttonPressed: { backgroundColor: colors.accent, transform: [{ scale: 0.97 }] },
+  buttonEmoji: { marginRight: 16 },
+  buttonLabel: { fontFamily: fonts.title, fontSize: sizes.textLarge, color: colors.text },
+  savedText: { fontFamily: fonts.title, fontSize: sizes.title, color: colors.primary, marginTop: sizes.gap },
 });

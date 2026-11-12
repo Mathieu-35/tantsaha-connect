@@ -1,7 +1,15 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api';
+import Icon from '../components/Icon.jsx';
+import { Terraces } from '../components/Motifs.jsx';
 
-const TYPE_LABELS = { RAIN: '🌧️ Pluie', PEST: '🐛 Parasite', PLANTING: '🌱 Plantation', HARVEST: '🧺 Récolte' };
+// Chaque type de note a son pictogramme et sa couleur de talon (comme dans l'application).
+const TYPES = [
+  { type: 'RAIN', label: 'Pluie', icon: 'rain', color: '#8DBBD6' },
+  { type: 'PEST', label: 'Parasite', icon: 'pest', color: '#F2C98A' },
+  { type: 'PLANTING', label: 'Plantation', icon: 'plant', color: '#76C457' },
+  { type: 'HARVEST', label: 'Récolte', icon: 'harvest', color: '#E0A526' },
+];
 
 export default function Dashboard({ onSessionExpired }) {
   const [stats, setStats] = useState(null);
@@ -21,26 +29,33 @@ export default function Dashboard({ onSessionExpired }) {
     <>
       <h2>Tableau de bord</h2>
       <div className="stats">
-        <div className="stat"><div className="n">{stats.activeDevices}</div>Téléphones actifs (7 jours)</div>
-        <div className="stat"><div className="n">{stats.notesThisWeek}</div>Notes cette semaine</div>
+        <div className="card stat hero">
+          <Terraces />
+          <Icon name="pin" size={64} color="#FFF8CF" />
+          <div><div className="n">{stats.activeDevices}</div><div className="label">Téléphones actifs (7 jours)</div></div>
+        </div>
+        <div className="card stat sun">
+          <Icon name="journal" size={64} tone="#FFF8CF" />
+          <div><div className="n">{stats.notesThisWeek}</div><div className="label">Notes cette semaine</div></div>
+        </div>
       </div>
 
       <h2>Notes de la semaine par type</h2>
       <div className="stats">
-        {Object.keys(TYPE_LABELS).map((type) => (
-          <div className="stat" key={type}>
-            <div className="n">{stats.notesByType[type] || 0}</div>
-            {TYPE_LABELS[type]}
+        {TYPES.map((x) => (
+          <div className="card stat ticket" key={x.type}>
+            <div className="stub" style={{ background: x.color }}><Icon name={x.icon} size={48} tone="#FFF8CF" /></div>
+            <div className="body"><div className="n">{stats.notesByType[x.type] || 0}</div><div className="label">{x.label}</div></div>
           </div>
         ))}
       </div>
 
       <h2>Données de référence</h2>
       <div className="stats">
-        <div className="stat"><div className="n">{stats.totals.regions}</div>Régions</div>
-        <div className="stat"><div className="n">{stats.totals.crops}</div>Cultures</div>
-        <div className="stat"><div className="n">{stats.totals.calendars}</div>Calendriers</div>
-        <div className="stat"><div className="n">{stats.totals.advices}</div>Conseils</div>
+        <div className="card stat paper"><Icon name="pin" size={44} /><div><div className="n">{stats.totals.regions}</div><div className="label">Régions</div></div></div>
+        <div className="card stat paper"><Icon name="rice" size={44} /><div><div className="n">{stats.totals.crops}</div><div className="label">Cultures</div></div></div>
+        <div className="card stat paper"><Icon name="today" size={44} /><div><div className="n">{stats.totals.calendars}</div><div className="label">Calendriers</div></div></div>
+        <div className="card stat paper"><Icon name="tip" size={44} /><div><div className="n">{stats.totals.advices}</div><div className="label">Conseils</div></div></div>
       </div>
       <p className="muted">Les statistiques sont anonymes : aucun identifiant de téléphone n'est affiché.</p>
     </>

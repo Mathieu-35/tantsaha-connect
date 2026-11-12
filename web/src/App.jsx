@@ -7,11 +7,13 @@ import Login from './pages/Login.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Calendars from './pages/Calendars.jsx';
 import Advices from './pages/Advices.jsx';
+import Icon from './components/Icon.jsx';
+import { Logo, ZafiBand } from './components/Motifs.jsx';
 
 const TABS = [
-  { id: 'dashboard', label: 'Tableau de bord', Page: Dashboard },
-  { id: 'calendars', label: 'Calendriers', Page: Calendars },
-  { id: 'advices', label: 'Conseils', Page: Advices },
+  { id: 'dashboard', label: 'Tableau de bord', icon: 'sun', Page: Dashboard },
+  { id: 'calendars', label: 'Calendriers', icon: 'today', Page: Calendars },
+  { id: 'advices', label: 'Conseils', icon: 'tip', Page: Advices },
 ];
 
 export default function App() {
@@ -41,24 +43,31 @@ export default function App() {
 
   const { Page } = TABS.find((x) => x.id === tab);
   return (
-    <>
+    <div className="shell">
+      <div className="sticky-top">
       <header className="topbar">
-        <h1>🌱 Tantsaha Connect — Administration</h1>
+        <div className="brand">
+          <Logo size={44} bg="#FFF8CF" leaf="#2A7C13" />
+          <h1>Tantsaha Connect<br />Administration</h1>
+        </div>
         <span className="who">{user.email} ({user.role})</span>
-        <button className="btn ghost small" style={{ color: '#fff', borderColor: '#fff' }} onClick={logout}>
+        <button className="btn ghost small" onClick={logout}>
           Déconnexion
         </button>
       </header>
       <nav className="tabs">
         {TABS.map((x) => (
           <button key={x.id} className={`tab ${tab === x.id ? 'active' : ''}`} onClick={() => setTab(x.id)}>
+            <Icon name={x.icon} size={32} color={tab === x.id ? '#FFF8CF' : '#1F2A17'} />
             {x.label}
           </button>
         ))}
       </nav>
+      </div>
       <main className="page">
         <Page onSessionExpired={logout} />
       </main>
-    </>
+      <div className="footband"><ZafiBand id="zafiFoot" height={26} /></div>
+    </div>
   );
 }

@@ -4,8 +4,10 @@
 import { useCallback, useState } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { colors, sizes } from '../theme';
+import { colors, fonts, sizes } from '../theme';
 import { t } from '../i18n/mg';
+import Pictogram, { pictoFor } from '../components/Pictogram';
+import { ZafiBand } from '../components/Motifs';
 import { getMeta } from '../db/metaRepository';
 import { listCalendars, listCrops } from '../db/referenceRepository';
 import { getWeather } from '../db/weatherRepository';
@@ -21,6 +23,54 @@ function stormDate(dateStr) {
   const [y, m, d] = dateStr.split('-').map(Number);
   const day = t.dayNames[new Date(y, m - 1, d).getDay()];
   return `${day} ${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')}`;
+}
+
+// Frise des 12 mois : les mois de la période sont pleins (se lit sans mot).
+function MonthsBar({ start, end, color }) {
+  const inRange = (m) => (start <= end ? m >= start && m <= end : m >= start || m <= end);
+  return (
+    <View style={styles.months} accessible={false}>
+      {Array.from({ length: 12 }, (_, i) => (
+        <View key={i} style={[styles.month, inRange(i + 1) && { backgroundColor: color }]} />
+      ))}
+    </View>
+  );
+}
+
+function StormCard({ item }) {
+  return (
+    <View style={styles.storm}>
+      <View style={styles.stormBody}>
+        <Pictogram name="storm" size={84} color={colors.cream} tone={colors.ochre} />
+        <View style={styles.stormText}>
+          <Text style={styles.stormTitle}>{t.alertTitle.STORM}</Text>
+          <Text style={styles.stormBodyText}>{t.alertStormBody}</Text>
+          <Text style={styles.stormDate}>{stormDate(item.date)}</Text>
+        </View>
+      </View>
+      <ZafiBand id="zafiStorm" height={22} bg={colors.dangerDark} line={colors.cream} fill={colors.cream} />
+    </View>
+  );
+}
+
+function PeriodCard({ item, crop }) {
+  const isSow = item.kind === 'SOW';
+  return (
+    <View style={styles.period}>
+      <Pictogram name={pictoFor.alert[item.kind]} size={60} />
+      <View style={styles.periodText}>
+        <Text style={styles.periodTitle}>{t.alertTitle[item.kind]}</Text>
+        {crop && (
+          <View style={styles.cropLine}>
+            <Pictogram name={pictoFor.crop[crop.icon] || 'plant'} size={26} />
+            <Text style={styles.cropName}>{crop.name_mg}</Text>
+          </View>
+        )}
+        <Text style={styles.date}>{periodText(item)}</Text>
+        <MonthsBar start={item.startMonth} end={item.endMonth} color={isSow ? colors.primary : colors.ochre} />
+      </View>
+    </View>
+  );
 }
 
 export default function AlertsScreen() {
@@ -48,20 +98,8 @@ export default function AlertsScreen() {
   );
 
   function renderItem({ item }) {
-    const isStorm = item.kind === 'STORM';
-    const crop = crops[item.cropId];
-    return (
-      <View style={[styles.row, isStorm && styles.rowDanger]}>
-        <Text style={styles.emoji}>{t.alertEmoji[item.kind]}</Text>
-        <View style={styles.rowText}>
-          <Text style={styles.title}>
-            {t.alertTitle[item.kind]}
-            {crop ? ` · ${t.cropEmoji[crop.icon] || ''} ${crop.name_mg}` : ''}
-          </Text>
-          <Text style={styles.date}>{isStorm ? stormDate(item.date) : periodText(item)}</Text>
-        </View>
-      </View>
-    );
+    if (item.kind === 'STORM') return <StormCard item={item} />;
+    return <PeriodCard item={item} crop={crops[item.cropId]} />;
   }
 
   return (
@@ -79,24 +117,44 @@ export default function AlertsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background, padding: sizes.padding },
+  container: { flex: 1, backgroundColor: colors.background, padding: sizes.padding + 4 },
   listen: { marginBottom: sizes.gap },
-  list: { paddingBottom: 32 },
-  empty: { fontSize: sizes.textBody, color: colors.text, textAlign: 'center', marginTop: 40 },
-  row: {
+  list: { paddingBottom: 32, gap: sizes.gap },
+  empty: { fontFamily: fonts.body, fontSize: sizes.textBody, color: colors.text, textAlign: 'center', marginTop: 40 },
+
+  // Tempête : bandeau rouge plein, FIXE (pas de pulsation) — le rouge sert au danger seulement
+  storm: { borderRadius: 20, overflow: 'hidden', backgroundColor: colors.danger },
+  stormBody: { flexDirection: 'row', alignItems: 'center', gap: 14, padding: 16 },
+  stormText: { flex: 1, gap: 4 },
+  stormTitle: { fontFamily: fonts.title, fontSize: 28, color: colors.textOnPrimary },
+  stormBodyText: { fontFamily: fonts.body, fontSize: sizes.textBody, color: colors.textOnPrimary },
+  stormDate: { fontFamily: fonts.bodyBold, fontSize: sizes.textSmall, color: colors.textOnPrimary },
+
+  // Période de semis / récolte : carte à coins asymétriques + frise des mois
+  period: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 12,
+    padding: 14,
     backgroundColor: colors.surface,
-    borderWidth: 2,
-    borderColor: colors.accent,
-    borderRadius: sizes.radius,
-    padding: sizes.padding,
-    marginBottom: sizes.gap,
-    minHeight: sizes.minTouch + 20,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 8,
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 24,
+    minHeight: sizes.minTouch + 40,
   },
-  rowDanger: { borderColor: colors.danger },
-  emoji: { fontSize: 40, marginRight: 14 },
-  rowText: { flex: 1 },
-  title: { fontSize: sizes.textLarge, fontWeight: 'bold', color: colors.text },
-  date: { fontSize: sizes.textBody, color: colors.text, opacity: 0.75, marginTop: 2 },
+  periodText: { flex: 1, gap: 2 },
+  periodTitle: { fontFamily: fonts.title, fontSize: 24, color: colors.text },
+  cropLine: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  cropName: { fontFamily: fonts.body, fontSize: sizes.textBody, color: colors.text },
+  date: { fontFamily: fonts.body, fontSize: sizes.textBody, color: colors.text },
+  months: { flexDirection: 'row', gap: 3, marginTop: 6 },
+  month: {
+    flex: 1,
+    height: 14,
+    borderRadius: 4,
+    borderWidth: 2,
+    borderColor: colors.text,
+    backgroundColor: colors.cream,
+  },
 });

@@ -4,8 +4,9 @@
 
 import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { colors, sizes } from '../theme';
+import { colors, fonts, sizes } from '../theme';
 import { t } from '../i18n/mg';
+import Pictogram from '../components/Pictogram';
 import { listRegions } from '../db/referenceRepository';
 import { setMeta } from '../db/metaRepository';
 
@@ -35,7 +36,7 @@ export default function RegionChoiceScreen({ navigation }) {
             pressed && styles.choicePressed,
           ]}
         >
-          <Text style={styles.choiceIcon}>📍</Text>
+          <Pictogram name="pin" size={44} />
           <Text style={styles.choiceText}>{region.name_mg}</Text>
         </Pressable>
       ))}
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
   },
   question: {
     fontSize: sizes.title,
-    fontWeight: '800',
+    fontFamily: fonts.title,
     textAlign: 'center',
     color: colors.text,
     marginVertical: 4,
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
   },
   choiceText: {
     fontSize: sizes.textLarge,
-    fontWeight: '700',
+    fontFamily: fonts.bodyBold,
     color: colors.text,
   },
 });
